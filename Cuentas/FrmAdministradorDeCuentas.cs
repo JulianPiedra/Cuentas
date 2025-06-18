@@ -2,17 +2,24 @@ namespace Cuentas
 {
     public partial class FrmAdministradorDeCuentas : Form
     {
+        FrmAgregarCuenta frmAgregarCuenta;
+        FrmVerCuentas frmVerCuentas;
+        FrmAgregarCliente frmAgregarCliente;
 
-        public FrmAdministradorDeCuentas()
+
+        public FrmAdministradorDeCuentas(FrmAgregarCuenta frmAgregar, FrmVerCuentas frmVer, FrmAgregarCliente frmAgregarCliente)
         {
+            frmAgregarCuenta = frmAgregar;
+            frmVerCuentas = frmVer;
             InitializeComponent();
+            this.frmAgregarCliente = frmAgregarCliente;
         }
 
         private void CerrarVentanas()
         {
             foreach (Form form in this.MdiChildren)
             {
-                form.Dispose();
+                form.Hide();
             }
         }
 
@@ -24,17 +31,22 @@ namespace Cuentas
         private void crearCuentaToolStripMenuItem_Click(object sender, EventArgs e)
         {
             CerrarVentanas();
-            FrmAgregarCuenta frmCrearCuenta = new FrmAgregarCuenta();
-            frmCrearCuenta.MdiParent = this;
-            frmCrearCuenta.Show();
+            frmAgregarCuenta.MdiParent = this;
+            frmAgregarCuenta.Show();
         }
 
         private void verCuentasToolStripMenuItem_Click(object sender, EventArgs e)
         {
             CerrarVentanas();
-            FrmVerCuentas frmVerCuentas = new FrmVerCuentas();
             frmVerCuentas.MdiParent = this;
             frmVerCuentas.Show();
+        }
+
+        private void agregarClienteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            CerrarVentanas();
+            frmAgregarCliente.MdiParent = this;
+            frmAgregarCliente.Show();
         }
     }
 }

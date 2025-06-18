@@ -1,0 +1,27 @@
+using System.Configuration;
+using BussinessLogic;
+using DataAccess;
+using DataAccess.Models;
+
+namespace Cuentas
+{
+    internal static class Program
+    {
+        [STAThread]
+        static void Main()
+        {
+             
+            string connStr = ConfigurationManager.ConnectionStrings["Default"].ConnectionString;
+            BdContext.Initialize(connStr);
+            Task.WhenAll(
+                ClientesLogic.ObtenerClientes()
+            );
+            var asd = ClientesLogic.ListaClientes;
+            ApplicationConfiguration.Initialize();
+            Application.Run(new FrmAdministradorDeCuentas(
+                new FrmAgregarCuenta(),
+                new FrmVerCuentas(),
+                new FrmAgregarCliente()));
+        }
+    }
+}

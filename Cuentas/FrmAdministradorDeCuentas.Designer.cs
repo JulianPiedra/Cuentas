@@ -28,57 +28,66 @@
         /// </summary>
         private void InitializeComponent()
         {
-            menuStrip1 = new MenuStrip();
+            menuStrip = new MenuStrip();
             verCuentasToolStripMenuItem = new ToolStripMenuItem();
             crearCuentaToolStripMenuItem = new ToolStripMenuItem();
-            menuStrip1.SuspendLayout();
+            agregarClienteToolStripMenuItem = new ToolStripMenuItem();
+            menuStrip.SuspendLayout();
             SuspendLayout();
             // 
-            // menuStrip1
+            // menuStrip
             // 
-            menuStrip1.Dock = DockStyle.Top;
-            menuStrip1.Items.AddRange(new ToolStripItem[] { verCuentasToolStripMenuItem, crearCuentaToolStripMenuItem });
-            menuStrip1.Location = new Point(0, 0);
-            menuStrip1.Name = "menu_bar";
-            menuStrip1.Size = new Size(126, 450);
-            menuStrip1.TabIndex = 0;
-            menuStrip1.Text = "menu_bar";
+            menuStrip.Items.AddRange(new ToolStripItem[] { verCuentasToolStripMenuItem, crearCuentaToolStripMenuItem, agregarClienteToolStripMenuItem });
+            menuStrip.Location = new Point(0, 0);
+            menuStrip.Name = "menuStrip";
+            menuStrip.Size = new Size(995, 24);
+            menuStrip.TabIndex = 0;
+            menuStrip.Text = "menu_bar";
             // 
             // verCuentasToolStripMenuItem
             // 
             verCuentasToolStripMenuItem.Name = "verCuentasToolStripMenuItem";
-            verCuentasToolStripMenuItem.Size = new Size(113, 19);
+            verCuentasToolStripMenuItem.Size = new Size(79, 20);
             verCuentasToolStripMenuItem.Text = "Ver cuentas";
             verCuentasToolStripMenuItem.Click += verCuentasToolStripMenuItem_Click;
             // 
             // crearCuentaToolStripMenuItem
             // 
             crearCuentaToolStripMenuItem.Name = "crearCuentaToolStripMenuItem";
-            crearCuentaToolStripMenuItem.Size = new Size(113, 19);
+            crearCuentaToolStripMenuItem.Size = new Size(86, 20);
             crearCuentaToolStripMenuItem.Text = "Crear cuenta";
             crearCuentaToolStripMenuItem.Click += crearCuentaToolStripMenuItem_Click;
+            // 
+            // agregarClienteToolStripMenuItem
+            // 
+            agregarClienteToolStripMenuItem.Name = "agregarClienteToolStripMenuItem";
+            agregarClienteToolStripMenuItem.Size = new Size(99, 20);
+            agregarClienteToolStripMenuItem.Text = "Agregar cliente";
+            agregarClienteToolStripMenuItem.Click += agregarClienteToolStripMenuItem_Click;
             // 
             // FrmAdministradorDeCuentas
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             AutoSize = true;
-            ClientSize = new Size(800, 450);
-            Controls.Add(menuStrip1);
+            ClientSize = new Size(995, 519);
+            Controls.Add(menuStrip);
             IsMdiContainer = true;
-            MainMenuStrip = menuStrip1;
+            MainMenuStrip = menuStrip;
             Name = "FrmAdministradorDeCuentas";
             Text = "Cuentas";
-            menuStrip1.ResumeLayout(false);
-            menuStrip1.PerformLayout();
+            WindowState = FormWindowState.Maximized;
+            menuStrip.ResumeLayout(false);
+            menuStrip.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
 
-        private MenuStrip menuStrip1;
+        private MenuStrip menuStrip;
         private ToolStripMenuItem crearCuentaToolStripMenuItem;
         private ToolStripMenuItem verCuentasToolStripMenuItem;
+        private ToolStripMenuItem agregarClienteToolStripMenuItem;
     }
 }
