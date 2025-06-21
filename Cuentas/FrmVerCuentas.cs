@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BussinessLogic;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -19,10 +20,69 @@ namespace Cuentas
 
         private void FrmVerCuentas_Load(object sender, EventArgs e)
         {
-            // Agregar filas de prueba
-            DgvCuentas.Rows.Add("Marta", "₡10,000", "5", "2", "15/06/2025");
-            DgvCuentas.Rows.Add("Pedro", "₡20,000", "10", "5", "20/06/2025");
-            DgvCuentas.Rows.Add("Daniel", "₡15,500", "6", "6", "Pagada");
+            var cuentas = CuentaLogic.ListaCuentas
+             .Select(c => new
+             {
+                 Cuenta = c.IdCuenta,
+                 Cliente = c.IdClienteNavigation.Nombre,
+                 c.Monto,
+                 c.Cuotas,
+                 c.Canceladas,
+                 c.SiguientePago
+             })
+             .ToList();
+
+            var source = new BindingSource
+            {
+                DataSource = cuentas
+            };
+
+            DgvCuentas.DataSource = source;
+            DgvCuentas.Columns["SiguientePago"].HeaderText = "Siguiente Pago";
+            DgvCuentas.Columns["Cuenta"].Visible = false;
+            DgvCuentas.Columns.Add(new DataGridViewButtonColumn
+            {
+                Name = "VerPagos",
+                Text = "Ver Pagos",
+                UseColumnTextForButtonValue = true,
+                HeaderText = "Pagos"
+            });
+            DgvCuentas.CellClick += DgvCuentas_CellContentClick;
+        }
+        private async void DgvCuentas_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0 || e.ColumnIndex <0) return; 
+            if (DgvCuentas.Columns[e.ColumnIndex].Name == "VerPagos" && e.RowIndex >= 0)
+            {
+                var listaPagos = await CuentaLogic.ObtenerCuentasConPagos(int.Parse(DgvCuentas.Rows[e.RowIndex].Cells["Cuenta"].Value.ToString()));
+
+                var frmVerPagos = new FrmVerPagos(listaPagos);
+                frmVerPagos.ShowDialog();
+            }
+        }
+
+        private void txtBuscar_TextChanged(object sender, EventArgs e)
+        {
+            var searchText = txtBuscar.Text.ToLower();
+            var filteredCuentas = CuentaLogic.ListaCuentas
+                .Where(c => c.IdClienteNavigation.Nombre.ToLower().Contains(searchText))
+                .Select(c => new
+                {
+                    Cuenta = c.IdCuenta,
+                    Cliente = c.IdClienteNavigation.Nombre,
+                    c.Monto,
+                    c.Cuotas,
+                    c.Canceladas,
+                    c.SiguientePago
+                })
+                .ToList();
+
+            var source = new BindingSource
+            {
+                DataSource = filteredCuentas
+            };
+
+            DgvCuentas.DataSource = source;
 
         }
     }

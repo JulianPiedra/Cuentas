@@ -13,13 +13,13 @@ namespace Models
 
         public string? Correo { get; set; }
 
-        public int? Telefono { get; set; }
+        public long? Telefono { get; set; }
         public string? Direccion { get; set; }
 
         public string Nombre { get; set; } = null!;
         public Dictionary<string, byte[]>? Files { get; set; }
 
-        public ClienteDAO(string idCliente, string? correo, int? telefono, string? direccion, string nombre, Dictionary<string, byte[]>? files)
+        public ClienteDAO(string idCliente, string? correo, long? telefono, string? direccion, string nombre, Dictionary<string, byte[]>? files)
         {
             IdCliente = idCliente;
             Correo = correo;

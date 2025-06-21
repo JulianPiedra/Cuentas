@@ -29,12 +29,8 @@
         private void InitializeComponent()
         {
             DgvCuentas = new DataGridView();
-            Cuenta = new DataGridViewTextBoxColumn();
-            Monto = new DataGridViewTextBoxColumn();
-            Cuotas = new DataGridViewTextBoxColumn();
-            Canceladas = new DataGridViewTextBoxColumn();
-            SiguientePago = new DataGridViewTextBoxColumn();
-            AgregarMonto = new DataGridViewButtonColumn();
+            txtBuscar = new TextBox();
+            lblBuscar = new Label();
             ((System.ComponentModel.ISupportInitialize)DgvCuentas).BeginInit();
             SuspendLayout();
             // 
@@ -45,50 +41,32 @@
             DgvCuentas.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             DgvCuentas.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             DgvCuentas.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            DgvCuentas.Columns.AddRange(new DataGridViewColumn[] { Cuenta, Monto, Cuotas, Canceladas, SiguientePago, AgregarMonto });
             DgvCuentas.Dock = DockStyle.Fill;
             DgvCuentas.EditMode = DataGridViewEditMode.EditOnEnter;
-            DgvCuentas.Location = new Point(0, 0);
+            DgvCuentas.Location = new Point(0, 38);
             DgvCuentas.Name = "DgvCuentas";
             DgvCuentas.ReadOnly = true;
-            DgvCuentas.Size = new Size(800, 450);
+            DgvCuentas.Size = new Size(800, 412);
             DgvCuentas.TabIndex = 0;
             // 
-            // Cuenta
+            // txtBuscar
             // 
-            Cuenta.HeaderText = "Cuenta";
-            Cuenta.Name = "Cuenta";
-            Cuenta.ReadOnly = true;
+            txtBuscar.Dock = DockStyle.Top;
+            txtBuscar.Location = new Point(0, 15);
+            txtBuscar.Name = "txtBuscar";
+            txtBuscar.Size = new Size(800, 23);
+            txtBuscar.TabIndex = 1;
+            txtBuscar.TextChanged += txtBuscar_TextChanged;
             // 
-            // Monto
+            // lblBuscar
             // 
-            Monto.HeaderText = "Monto";
-            Monto.Name = "Monto";
-            Monto.ReadOnly = true;
-            // 
-            // Cuotas
-            // 
-            Cuotas.HeaderText = "Cuotas";
-            Cuotas.Name = "Cuotas";
-            Cuotas.ReadOnly = true;
-            // 
-            // Canceladas
-            // 
-            Canceladas.HeaderText = "Canceladas";
-            Canceladas.Name = "Canceladas";
-            Canceladas.ReadOnly = true;
-            // 
-            // SiguientePago
-            // 
-            SiguientePago.HeaderText = "Siguiente Pago";
-            SiguientePago.Name = "SiguientePago";
-            SiguientePago.ReadOnly = true;
-            // 
-            // AgregarMonto
-            // 
-            AgregarMonto.HeaderText = "AgregarMonto";
-            AgregarMonto.Name = "AgregarMonto";
-            AgregarMonto.ReadOnly = true;
+            lblBuscar.AutoSize = true;
+            lblBuscar.Dock = DockStyle.Top;
+            lblBuscar.Location = new Point(0, 0);
+            lblBuscar.Name = "lblBuscar";
+            lblBuscar.Size = new Size(86, 15);
+            lblBuscar.TabIndex = 2;
+            lblBuscar.Text = "Buscar cuentas";
             // 
             // FrmVerCuentas
             // 
@@ -98,6 +76,8 @@
             ClientSize = new Size(800, 450);
             ControlBox = false;
             Controls.Add(DgvCuentas);
+            Controls.Add(txtBuscar);
+            Controls.Add(lblBuscar);
             DoubleBuffered = true;
             MaximizeBox = false;
             MdiChildrenMinimizedAnchorBottom = false;
@@ -109,16 +89,13 @@
             Load += FrmVerCuentas_Load;
             ((System.ComponentModel.ISupportInitialize)DgvCuentas).EndInit();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
 
         private DataGridView DgvCuentas;
-        private DataGridViewTextBoxColumn Cuenta;
-        private DataGridViewTextBoxColumn Monto;
-        private DataGridViewTextBoxColumn Cuotas;
-        private DataGridViewTextBoxColumn Canceladas;
-        private DataGridViewTextBoxColumn SiguientePago;
-        private DataGridViewButtonColumn AgregarMonto;
+        private TextBox txtBuscar;
+        private Label lblBuscar;
     }
 }

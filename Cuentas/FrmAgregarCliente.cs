@@ -71,14 +71,14 @@ namespace Cuentas
         {
             try
             {
-                if (!int.TryParse(txtTelefono.Text, out int telefono))
+                if (!long.TryParse(txtTelefono.Text, out long telefono))
                 {
                     throw new ArgumentException("El número de teléfono no puede contener caracteres no numéricos.");
                 }
                 ClienteDAO cliente = new ClienteDAO(
                     txtCedula.Text,
                     txtCorreo.Text,
-                    string.IsNullOrEmpty(txtTelefono.Text) ? (int?)null : int.Parse(txtTelefono.Text),
+                    string.IsNullOrEmpty(txtTelefono.Text) ? (long?)null : long.Parse(txtTelefono.Text),
                     txtDireccion.Text,
                     txtNombre.Text,
                     files);

@@ -14,14 +14,15 @@ namespace BussinessLogic
             {
                 var clientes = BdContext.Context.Clientes;
                 var files = BdContext.Context.Multimedia;
-                clientes.AddAsync(new Cliente
+                var AddCliente = new Cliente
                 {
                     IdCliente = clienteDAO.IdCliente,
                     Correo = clienteDAO.Correo,
                     Telefono = clienteDAO.Telefono,
                     Direccion = clienteDAO.Direccion,
                     Nombre = clienteDAO.Nombre
-                });
+                };
+                clientes.AddAsync(AddCliente);
                 if (clienteDAO.Files != null)
                 {
                     foreach (var file in clienteDAO.Files)
@@ -34,7 +35,7 @@ namespace BussinessLogic
                     }
                 }
                  BdContext.Context.SaveChanges();
-
+                ListaClientes.Add(AddCliente);
                 return "Cliente agregado con exito";
             }
             catch (Exception)

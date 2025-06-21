@@ -111,7 +111,6 @@ namespace Cuentas
             cbIniciado.TabIndex = 6;
             cbIniciado.Text = "Cuenta en curso o ya pagada";
             cbIniciado.UseVisualStyleBackColor = true;
-            cbIniciado.Visible = false;
             cbIniciado.CheckedChanged += cbIniciado_CheckedChanged;
             // 
             // RbMensual
@@ -166,11 +165,11 @@ namespace Cuentas
             lblFrecuencia.Size = new Size(110, 21);
             lblFrecuencia.TabIndex = 0;
             lblFrecuencia.Text = "Fecha de pago";
-            lblFrecuencia.Visible = false;
             // 
             // cmbSemanal
             // 
             cmbSemanal.Dock = DockStyle.Top;
+            cmbSemanal.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbSemanal.Font = new Font("Segoe UI", 12F);
             cmbSemanal.FormattingEnabled = true;
             cmbSemanal.Items.AddRange(new object[] { "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo" });
@@ -216,7 +215,6 @@ namespace Cuentas
             lblNumCuotas.Size = new Size(145, 21);
             lblNumCuotas.TabIndex = 6;
             lblNumCuotas.Text = "Cantidad de cuotas:";
-            lblNumCuotas.Visible = false;
             // 
             // lblMontoCuotas
             // 
@@ -228,7 +226,6 @@ namespace Cuentas
             lblMontoCuotas.Size = new Size(158, 21);
             lblMontoCuotas.TabIndex = 9;
             lblMontoCuotas.Text = "Monto de cada cuota:";
-            lblMontoCuotas.Visible = false;
             // 
             // txtMontoCuotas
             // 
@@ -239,7 +236,6 @@ namespace Cuentas
             txtMontoCuotas.Name = "txtMontoCuotas";
             txtMontoCuotas.Size = new Size(800, 29);
             txtMontoCuotas.TabIndex = 10;
-            txtMontoCuotas.Visible = false;
             txtMontoCuotas.TextChanged += Control_ValueChanged;
             // 
             // tlpCuotas
@@ -274,7 +270,7 @@ namespace Cuentas
             txtMontoCuenta.Name = "txtMontoCuenta";
             txtMontoCuenta.Size = new Size(800, 23);
             txtMontoCuenta.TabIndex = 7;
-            txtMontoCuenta.TextChanged += CalcularMontoCuota;
+            txtMontoCuenta.TextChanged += TextBox_TextChanged;
             txtMontoCuenta.KeyPress += txtChanged_KeyPress;
             // 
             // txtCantCuotas
@@ -284,8 +280,7 @@ namespace Cuentas
             txtCantCuotas.Name = "txtCantCuotas";
             txtCantCuotas.Size = new Size(800, 23);
             txtCantCuotas.TabIndex = 13;
-            txtCantCuotas.Visible = false;
-            txtCantCuotas.TextChanged += CalcularMontoCuota;
+            txtCantCuotas.TextChanged += TextBox_TextChanged;
             txtCantCuotas.KeyPress += txtChanged_KeyPress;
             // 
             // cmbCuenta
@@ -328,6 +323,7 @@ namespace Cuentas
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Agregar Cuenta";
             WindowState = FormWindowState.Maximized;
+            Activated += FrmAgregarCuenta_Activated;
             pnlRadios.ResumeLayout(false);
             pnlRadios.PerformLayout();
             pnlFrecuencia.ResumeLayout(false);
