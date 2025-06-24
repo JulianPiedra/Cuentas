@@ -22,7 +22,7 @@ namespace Models
         public ClienteDAO(string idCliente, string? correo, long telefono, string direccion, string nombre, Dictionary<string, byte[]>? files)
         {
             IdCliente = idCliente.Trim();
-            Correo = string.IsNullOrWhiteSpace(Correo) ? null : correo.Trim();
+            Correo = !string.IsNullOrWhiteSpace(Correo) ? null : correo.Trim();
             Telefono = telefono;
             Direccion = direccion;
             Nombre = nombre;

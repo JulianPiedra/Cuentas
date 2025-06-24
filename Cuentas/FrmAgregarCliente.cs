@@ -48,7 +48,7 @@ namespace Cuentas
                 if (files.ContainsKey(Path.GetFileName(fileName))) continue;
 
                 var multimedia = File.ReadAllBytes(fileName);
-                files.Add(ext, multimedia);
+                files.Add(fileName, multimedia);
 
                 Panel mediaPanel = new Panel
                 {
@@ -86,7 +86,7 @@ namespace Cuentas
                     {
                         Dock = DockStyle.Bottom,
                         FlowDirection = FlowDirection.LeftToRight,
-                        Padding = new Padding(100, 0, 100, 0),
+                        Padding = new Padding(90, 0, 90, 0),
                         AutoSize = true
                     };
 
@@ -127,6 +127,8 @@ namespace Cuentas
 
         private void LimpiarCampos()
         {
+
+
             foreach (Control control in this.Controls)
             {
                 if (control is TextBox textBox)
@@ -136,33 +138,40 @@ namespace Cuentas
                     panel.Controls.Clear();
                     files.Clear();
                 }
+
             }
         }
 
-        private void btnAgregar_Click(object sender, EventArgs e)
+        private async void btnAgregar_Click(object sender, EventArgs e)
         {
             try
             {
-                
-                if (!long.TryParse(txtTelefono.Text, out long telefono)){
-                    if (txtTelefono.Text.IsNullOrEmpty())
-                        throw new ArgumentException("El número de teléfono no puede ir vacio.");
+                progressBar1.Style = ProgressBarStyle.Marquee;
+                foreach (Control ctrl in this.Controls)
+                {
+                    ctrl.Enabled = false;
+                }
+
+                if (!long.TryParse(txtTelefono.Text, out long telefono))
+                {
+                    if (string.IsNullOrEmpty(txtTelefono.Text))
+                        throw new ArgumentException("El número de teléfono no puede ir vacío.");
                     throw new ArgumentException("El número de teléfono no puede contener caracteres no numéricos.");
                 }
-               
-
 
                 ClienteDAO cliente = new ClienteDAO(
                     txtCedula.Text,
                     txtCorreo.Text,
-                    long.Parse(txtTelefono.Text),
+                    telefono,
                     txtDireccion.Text,
                     txtNombre.Text,
                     files);
+
                 cliente.Validate();
 
                 ClientesLogic logic = new ClientesLogic();
-                string result = logic.AgregarCliente(cliente);
+
+                string result = await Task.Run(() => logic.AgregarCliente(cliente));
 
                 MessageBox.Show(result, "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 LimpiarCampos();
@@ -171,7 +180,16 @@ namespace Cuentas
             {
                 MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+            finally
+            {
+                progressBar1.Style = ProgressBarStyle.Blocks;
+                foreach (Control ctrl in this.Controls)
+                {
+                    ctrl.Enabled = true;
+                }
+            }
         }
+
 
         private void txtTelefono_KeyPress(object sender, KeyPressEventArgs e)
         {

@@ -32,12 +32,13 @@
             verCuentasToolStripMenuItem = new ToolStripMenuItem();
             crearCuentaToolStripMenuItem = new ToolStripMenuItem();
             agregarClienteToolStripMenuItem = new ToolStripMenuItem();
+            estadísticasToolStripMenuItem = new ToolStripMenuItem();
             menuStrip.SuspendLayout();
             SuspendLayout();
             // 
             // menuStrip
             // 
-            menuStrip.Items.AddRange(new ToolStripItem[] { verCuentasToolStripMenuItem, crearCuentaToolStripMenuItem, agregarClienteToolStripMenuItem });
+            menuStrip.Items.AddRange(new ToolStripItem[] { verCuentasToolStripMenuItem, crearCuentaToolStripMenuItem, agregarClienteToolStripMenuItem, estadísticasToolStripMenuItem });
             menuStrip.Location = new Point(0, 0);
             menuStrip.Name = "menuStrip";
             menuStrip.Size = new Size(995, 24);
@@ -65,6 +66,13 @@
             agregarClienteToolStripMenuItem.Text = "Agregar cliente";
             agregarClienteToolStripMenuItem.Click += agregarClienteToolStripMenuItem_Click;
             // 
+            // estadísticasToolStripMenuItem
+            // 
+            estadísticasToolStripMenuItem.Name = "estadísticasToolStripMenuItem";
+            estadísticasToolStripMenuItem.Size = new Size(79, 20);
+            estadísticasToolStripMenuItem.Text = "Estadísticas";
+            estadísticasToolStripMenuItem.Click += estadísticasToolStripMenuItem_Click;
+            // 
             // FrmAdministradorDeCuentas
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -89,5 +97,6 @@
         private ToolStripMenuItem crearCuentaToolStripMenuItem;
         private ToolStripMenuItem verCuentasToolStripMenuItem;
         private ToolStripMenuItem agregarClienteToolStripMenuItem;
+        private ToolStripMenuItem estadísticasToolStripMenuItem;
     }
 }

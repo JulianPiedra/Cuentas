@@ -21,7 +21,9 @@ namespace Cuentas
             Application.Run(new FrmAdministradorDeCuentas(
                 new FrmAgregarCuenta(),
                 new FrmVerCuentas(),
-                new FrmAgregarCliente()));
+                new FrmAgregarCliente(),
+                new FrmEstadisticas()
+                ));
         }
     }
 }

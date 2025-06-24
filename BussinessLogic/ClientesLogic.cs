@@ -10,9 +10,12 @@ namespace BussinessLogic
 
         public string AgregarCliente(ClienteDAO clienteDAO)
         {
+            
             try
             {
                 var clientes = BdContext.Context.Clientes;
+                if (clientes.FirstOrDefault(c => c.IdCliente == clienteDAO.IdCliente) != null)
+                    throw new Exception("Ya existe un cliente con esta cédula");
                 var files = BdContext.Context.Multimedia;
                 var AddCliente = new Cliente
                 {
@@ -22,26 +25,28 @@ namespace BussinessLogic
                     Direccion = clienteDAO.Direccion,
                     Nombre = clienteDAO.Nombre
                 };
-                clientes.AddAsync(AddCliente);
+                clientes.Add(AddCliente);
+
                 if (clienteDAO.Files != null)
                 {
                     foreach (var file in clienteDAO.Files)
                     {
-                        files.AddAsync(new Multimedium
+                         files.Add(new Multimedium
                         {
                             IdCliente = clienteDAO.IdCliente,
                             Multimedia = file.Value,
-                            Extension = file.Key
+                            Extension = file.Key.Split('.').LastOrDefault() ?? string.Empty
                         });
                     }
                 }
-                 BdContext.Context.SaveChanges();
+                BdContext.Context.SaveChanges();
+
                 ListaClientes.Add(AddCliente);
                 return "Cliente agregado con exito";
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw new Exception("Error al agregar cliente"); 
+                throw new Exception("Error al agregar cliente: "+ ex.Message); 
             }
 
         }

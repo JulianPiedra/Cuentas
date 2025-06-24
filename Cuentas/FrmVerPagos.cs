@@ -30,19 +30,23 @@ namespace Cuentas
 
         private async void DgvPagos_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
+            try{if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
             if (DgvPagos.Rows[e.RowIndex].ReadOnly) return;
 
-            if (DgvPagos.Columns[e.ColumnIndex].Name == "Pagado")
+                if (DgvPagos.Columns[e.ColumnIndex].Name == "Pagado")
+                {
+                    var idPago = Convert.ToInt32(DgvPagos.Rows[e.RowIndex].Cells["IdPago"].Value);
+
+                    await CuentaLogic.ActualizarEstadoPago(_cuentum[0].IdCuenta, idPago);
+
+                    var cuentaActualizada = await CuentaLogic.ObtenerCuentasConPagos(_cuentum[0].IdCuenta);
+                    _cuentum = cuentaActualizada;
+
+                    ActualizarVista();
+                }
+            } catch (Exception ex)
             {
-                var idPago = Convert.ToInt32(DgvPagos.Rows[e.RowIndex].Cells["IdPago"].Value);
-
-                await CuentaLogic.ActualizarEstadoPago(_cuentum[0].IdCuenta, idPago);
-
-                var cuentaActualizada = await CuentaLogic.ObtenerCuentasConPagos(_cuentum[0].IdCuenta);
-                _cuentum = cuentaActualizada;
-
-                ActualizarVista();
+                return;
             }
         }
 

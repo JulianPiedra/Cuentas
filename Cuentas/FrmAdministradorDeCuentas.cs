@@ -1,3 +1,5 @@
+using Cuentas;
+
 namespace Cuentas
 {
     public partial class FrmAdministradorDeCuentas : Form
@@ -5,12 +7,15 @@ namespace Cuentas
         FrmAgregarCuenta frmAgregarCuenta;
         FrmVerCuentas frmVerCuentas;
         FrmAgregarCliente frmAgregarCliente;
+        FrmEstadisticas frmEstadisticas;
 
 
-        public FrmAdministradorDeCuentas(FrmAgregarCuenta frmAgregar, FrmVerCuentas frmVer, FrmAgregarCliente frmAgregarCliente)
+        public FrmAdministradorDeCuentas(FrmAgregarCuenta frmAgregarCuenta, FrmVerCuentas frmVerCuentas, FrmAgregarCliente frmAgregarCliente, FrmEstadisticas frmEstadisticas)
         {
-            frmAgregarCuenta = frmAgregar;
-            frmVerCuentas = frmVer;
+            this.frmAgregarCuenta = frmAgregarCuenta;
+            this.frmVerCuentas = frmVerCuentas;
+            this.frmEstadisticas = frmEstadisticas;
+
             InitializeComponent();
             this.frmAgregarCliente = frmAgregarCliente;
         }
@@ -47,6 +52,13 @@ namespace Cuentas
             CerrarVentanas();
             frmAgregarCliente.MdiParent = this;
             frmAgregarCliente.Show();
+        }
+
+        private void estadísticasToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            CerrarVentanas();
+            frmEstadisticas.MdiParent = this;
+            frmEstadisticas.Show();
         }
     }
 }

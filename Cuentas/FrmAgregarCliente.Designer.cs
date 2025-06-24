@@ -43,6 +43,7 @@
             flpMultimedia = new FlowLayoutPanel();
             btnAgregar = new Button();
             panel1 = new Panel();
+            progressBar1 = new ProgressBar();
             panel1.SuspendLayout();
             SuspendLayout();
             // 
@@ -171,7 +172,7 @@
             flpMultimedia.Dock = DockStyle.Fill;
             flpMultimedia.Location = new Point(0, 250);
             flpMultimedia.Name = "flpMultimedia";
-            flpMultimedia.Size = new Size(700, 200);
+            flpMultimedia.Size = new Size(700, 177);
             flpMultimedia.TabIndex = 11;
             // 
             // btnAgregar
@@ -179,7 +180,7 @@
             btnAgregar.Dock = DockStyle.Right;
             btnAgregar.Location = new Point(0, 50);
             btnAgregar.Name = "btnAgregar";
-            btnAgregar.Size = new Size(100, 150);
+            btnAgregar.Size = new Size(100, 127);
             btnAgregar.TabIndex = 12;
             btnAgregar.Text = "Agregar cliente";
             btnAgregar.UseVisualStyleBackColor = true;
@@ -192,8 +193,16 @@
             panel1.Dock = DockStyle.Right;
             panel1.Location = new Point(700, 250);
             panel1.Name = "panel1";
-            panel1.Size = new Size(100, 200);
+            panel1.Size = new Size(100, 177);
             panel1.TabIndex = 13;
+            // 
+            // progressBar1
+            // 
+            progressBar1.Dock = DockStyle.Bottom;
+            progressBar1.Location = new Point(0, 427);
+            progressBar1.Name = "progressBar1";
+            progressBar1.Size = new Size(800, 23);
+            progressBar1.TabIndex = 0;
             // 
             // FrmAgregarCliente
             // 
@@ -213,6 +222,7 @@
             Controls.Add(lblNombre);
             Controls.Add(txtCedula);
             Controls.Add(lblCedula);
+            Controls.Add(progressBar1);
             DoubleBuffered = true;
             MaximizeBox = false;
             MdiChildrenMinimizedAnchorBottom = false;
@@ -244,5 +254,6 @@
         private FlowLayoutPanel flpMultimedia;
         private Button btnAgregar;
         private Panel panel1;
+        private ProgressBar progressBar1;
     }
 }
