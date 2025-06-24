@@ -10,5 +10,6 @@ namespace Models
     {
         public DateOnly FechaPago { get; set; }
         public bool Cancelado { get; set; }
+        public decimal Monto { get; set; }  
     }
 }

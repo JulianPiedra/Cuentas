@@ -45,13 +45,16 @@ namespace Cuentas
             lblNumCuotas = new Label();
             lblMontoCuotas = new Label();
             txtMontoCuotas = new TextBox();
-            tlpCuotas = new TableLayoutPanel();
             btnCrearCuenta = new Button();
             txtMontoCuenta = new TextBox();
             txtCantCuotas = new TextBox();
             cmbCuenta = new ComboBox();
+            DgvPagos = new DataGridView();
+            Pagos = new DataGridViewTextBoxColumn();
+            Pagado = new DataGridViewCheckBoxColumn();
             pnlRadios.SuspendLayout();
             pnlFrecuencia.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)DgvPagos).BeginInit();
             SuspendLayout();
             // 
             // lblCuenta
@@ -238,18 +241,6 @@ namespace Cuentas
             txtMontoCuotas.TabIndex = 10;
             txtMontoCuotas.TextChanged += Control_ValueChanged;
             // 
-            // tlpCuotas
-            // 
-            tlpCuotas.AutoScroll = true;
-            tlpCuotas.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single;
-            tlpCuotas.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 20F));
-            tlpCuotas.Dock = DockStyle.Fill;
-            tlpCuotas.Font = new Font("Segoe UI", 12F);
-            tlpCuotas.Location = new Point(0, 287);
-            tlpCuotas.Name = "tlpCuotas";
-            tlpCuotas.Size = new Size(800, 132);
-            tlpCuotas.TabIndex = 0;
-            // 
             // btnCrearCuenta
             // 
             btnCrearCuenta.Dock = DockStyle.Bottom;
@@ -294,6 +285,34 @@ namespace Cuentas
             cmbCuenta.Size = new Size(800, 23);
             cmbCuenta.TabIndex = 14;
             // 
+            // DgvPagos
+            // 
+            DgvPagos.AllowUserToAddRows = false;
+            DgvPagos.AllowUserToDeleteRows = false;
+            DgvPagos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            DgvPagos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            DgvPagos.Columns.AddRange(new DataGridViewColumn[] { Pagos, Pagado });
+            DgvPagos.Dock = DockStyle.Fill;
+            DgvPagos.EditMode = DataGridViewEditMode.EditOnEnter;
+            DgvPagos.Location = new Point(0, 287);
+            DgvPagos.Name = "DgvPagos";
+            DgvPagos.Size = new Size(800, 132);
+            DgvPagos.TabIndex = 15;
+            DgvPagos.CellContentClick += DgvPagos_CellContentClick;
+            // 
+            // Pagos
+            // 
+            Pagos.HeaderText = "Fecha del pago";
+            Pagos.Name = "Pagos";
+            Pagos.ReadOnly = true;
+            // 
+            // Pagado
+            // 
+            Pagado.HeaderText = "Pago hecho";
+            Pagado.Name = "Pagado";
+            Pagado.Resizable = DataGridViewTriState.True;
+            Pagado.SortMode = DataGridViewColumnSortMode.Automatic;
+            // 
             // FrmAgregarCuenta
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -301,7 +320,7 @@ namespace Cuentas
             AutoSize = true;
             ClientSize = new Size(800, 450);
             ControlBox = false;
-            Controls.Add(tlpCuotas);
+            Controls.Add(DgvPagos);
             Controls.Add(txtMontoCuotas);
             Controls.Add(lblMontoCuotas);
             Controls.Add(txtCantCuotas);
@@ -327,6 +346,7 @@ namespace Cuentas
             pnlRadios.ResumeLayout(false);
             pnlRadios.PerformLayout();
             pnlFrecuencia.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)DgvPagos).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -348,10 +368,12 @@ namespace Cuentas
         private Label lblNumCuotas;
         private Label lblMontoCuotas;
         private TextBox txtMontoCuotas;
-        private TableLayoutPanel tlpCuotas;
         private Button btnCrearCuenta;
         private TextBox txtMontoCuenta;
         private TextBox txtCantCuotas;
         private ComboBox cmbCuenta;
+        private DataGridView DgvPagos;
+        private DataGridViewTextBoxColumn Pagos;
+        private DataGridViewCheckBoxColumn Pagado;
     }
 }

@@ -11,5 +11,7 @@ public partial class Multimedium
 
     public byte[] Multimedia { get; set; } = null!;
 
+    public string Extension { get; set; } = null!;
+
     public virtual Cliente IdClienteNavigation { get; set; } = null!;
 }

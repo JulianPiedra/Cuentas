@@ -17,20 +17,21 @@ namespace Cuentas
         {
             InitializeComponent();
         }
-
-        private void FrmVerCuentas_Load(object sender, EventArgs e)
+        public void RecargarDatos()
         {
             var cuentas = CuentaLogic.ListaCuentas
-             .Select(c => new
-             {
-                 Cuenta = c.IdCuenta,
-                 Cliente = c.IdClienteNavigation.Nombre,
-                 c.Monto,
-                 c.Cuotas,
-                 c.Canceladas,
-                 c.SiguientePago
-             })
-             .ToList();
+                .Select(c => new
+                {
+                    Cuenta = c.IdCuenta,
+                    Cliente = c.IdClienteNavigation.Nombre,
+                    c.Monto,
+                    c.Cuotas,
+                    c.Canceladas,
+                    SiguientePago = c.SiguientePago != DateOnly.MinValue
+                        ? c.SiguientePago.ToString("dd-MM-yyyy")
+                        : "Cancelado"
+                })
+                .ToList();
 
             var source = new BindingSource
             {
@@ -38,25 +39,38 @@ namespace Cuentas
             };
 
             DgvCuentas.DataSource = source;
-            DgvCuentas.Columns["SiguientePago"].HeaderText = "Siguiente Pago";
-            DgvCuentas.Columns["Cuenta"].Visible = false;
-            DgvCuentas.Columns.Add(new DataGridViewButtonColumn
+        }
+
+
+        private void FrmVerCuentas_Load(object sender, EventArgs e)
+        {
+           RecargarDatos();
+
+            if (!DgvCuentas.Columns.Contains("VerPagos"))
             {
-                Name = "VerPagos",
-                Text = "Ver Pagos",
-                UseColumnTextForButtonValue = true,
-                HeaderText = "Pagos"
-            });
-            DgvCuentas.CellClick += DgvCuentas_CellContentClick;
+                DgvCuentas.Columns["SiguientePago"].HeaderText = "Siguiente Pago";
+                DgvCuentas.Columns["Cuenta"].Visible = false;
+                DgvCuentas.Columns.Add(new DataGridViewButtonColumn
+                {
+                    Name = "VerPagos",
+                    Text = "Ver Pagos",
+                    UseColumnTextForButtonValue = true,
+                    HeaderText = "Pagos"
+                });
+                DgvCuentas.CellClick += DgvCuentas_CellContentClick;
+            }
         }
         private async void DgvCuentas_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex < 0 || e.ColumnIndex <0) return; 
+            if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
             if (DgvCuentas.Columns[e.ColumnIndex].Name == "VerPagos" && e.RowIndex >= 0)
             {
                 var listaPagos = await CuentaLogic.ObtenerCuentasConPagos(int.Parse(DgvCuentas.Rows[e.RowIndex].Cells["Cuenta"].Value.ToString()));
 
-                var frmVerPagos = new FrmVerPagos(listaPagos);
+                var frmVerPagos = new FrmVerPagos(listaPagos)
+                {
+                    Owner = this
+                };
                 frmVerPagos.ShowDialog();
             }
         }

@@ -86,7 +86,7 @@
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Ver cuentas";
             WindowState = FormWindowState.Maximized;
-            Load += FrmVerCuentas_Load;
+            Activated += FrmVerCuentas_Load;
             ((System.ComponentModel.ISupportInitialize)DgvCuentas).EndInit();
             ResumeLayout(false);
             PerformLayout();

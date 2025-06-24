@@ -18,16 +18,13 @@ namespace Models
 
         public int Canceladas { get; set; }
 
-        public DateOnly SiguientePago { get; set; }
 
         public List<PagosCuenta> PagosCuenta { get; set; }
-        public CuentaDAO(string idCliente, decimal monto, int cuotas, int canceladas, DateOnly siguientePago, List<PagosCuenta> pagosCuenta)
+        public CuentaDAO(string idCliente, decimal monto, int cuotas, List<PagosCuenta> pagosCuenta)
         {
             IdCliente = idCliente;
             Monto = monto;
             Cuotas = cuotas;
-            Canceladas = canceladas;
-            SiguientePago = siguientePago;
             PagosCuenta = pagosCuenta;
         }
 

@@ -30,7 +30,8 @@ namespace BussinessLogic
                         files.AddAsync(new Multimedium
                         {
                             IdCliente = clienteDAO.IdCliente,
-                            Multimedia = file.Value
+                            Multimedia = file.Value,
+                            Extension = file.Key
                         });
                     }
                 }

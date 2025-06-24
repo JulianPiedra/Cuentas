@@ -70,10 +70,10 @@ namespace Cuentas
             {
                 "Lunes" => DayOfWeek.Monday,
                 "Martes" => DayOfWeek.Tuesday,
-                "Miércoles" => DayOfWeek.Wednesday,
+                "Miercoles" => DayOfWeek.Wednesday,
                 "Jueves" => DayOfWeek.Thursday,
                 "Viernes" => DayOfWeek.Friday,
-                "Sábado" => DayOfWeek.Saturday,
+                "Sabado" => DayOfWeek.Saturday,
                 "Domingo" => DayOfWeek.Sunday,
                 _ => DateTime.Today.DayOfWeek
             };
@@ -100,15 +100,7 @@ namespace Cuentas
             return fechas;
         }
 
-        private void LimpiarTlp()
-        {
-            tlpCuotas.SuspendLayout();
-            tlpCuotas.Controls.Clear();
-            tlpCuotas.RowStyles.Clear();
-            tlpCuotas.ColumnStyles.Clear();
-            tlpCuotas.RowCount = 0;
-            tlpCuotas.AutoScrollPosition = new Point(0, 0);
-        }
+
         private void LimpiarCampos()
         {
             foreach (Control control in Controls)
@@ -118,21 +110,19 @@ namespace Cuentas
                     case TextBox txt: txt.Clear(); break;
                     case ComboBox cmb: cmb.SelectedIndex = -1; break;
                     case CheckBox chk: chk.Checked = false; break;
+                    case DataGridView dgv: dgv.Rows.Clear(); break;
                 }
             }
 
-            LimpiarTlp();
-            tlpCuotas.ResumeLayout();
         }
 
         private void GenerarCuotas()
         {
-            if (!decimal.TryParse(txtMontoCuotas.Text, out var monto) || monto <= 0)
+            if (txtMontoCuotas.Text == string.Empty || txtCantCuotas.Text == string.Empty)
             {
-                LimpiarTlp();
-                tlpCuotas.ResumeLayout();
                 return;
             }
+            DgvPagos.Rows.Clear();
 
             int numCuotas = int.Parse(txtCantCuotas.Text);
             var frecuencia = FrecuenciaSeleccionada();
@@ -143,41 +133,26 @@ namespace Cuentas
             var fechas = CalcularFechasCuotas(inicio, numCuotas, frecuencia);
             var hoy = DateTime.Today;
 
-            LimpiarTlp();
             pagosCuentas.Clear();
 
-            tlpCuotas.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 70F));
-            tlpCuotas.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 30F));
+
 
             for (int i = 0; i < numCuotas; i++)
             {
-                tlpCuotas.RowCount++;
-                tlpCuotas.RowStyles.Add(new RowStyle(SizeType.Absolute, 50));
-
-                var label = new Label
-                {
-                    Text = $"Cuota {i + 1}: {monto:C} - {fechas[i]:dd/MM/yyyy}",
-                    AutoSize = true,
-                };
-
-                var checkBox = new CheckBox
-                {
-                    Text = "Pagada",
-                    Checked = cbIniciado.Checked && fechas[i] <= hoy,
-                    AutoSize = true
-                };
-
-                tlpCuotas.Controls.Add(label, 0, i);
-                tlpCuotas.Controls.Add(checkBox, 1, i);
-
                 pagosCuentas.Add(new PagosCuenta
                 {
                     FechaPago = DateOnly.FromDateTime(fechas[i]),
-                    Cancelado = checkBox.Checked
+                    Cancelado = true && fechas[i] <= hoy,
+                    Monto = Math.Round(decimal.Parse(txtMontoCuotas.Text), 2)
                 });
             }
-
-            tlpCuotas.ResumeLayout();
+            foreach (var pago in pagosCuentas)
+            {
+                DgvPagos.Rows.Add(
+                    $"{pago.FechaPago.ToString("dd/MM/yyyy")} - ₡{txtMontoCuotas.Text}",
+                    pago.Cancelado
+                );
+            }
         }
 
         private async void btnCrearCuenta_Click(object sender, EventArgs e)
@@ -192,10 +167,8 @@ namespace Cuentas
 
                 var monto = decimal.Parse(txtMontoCuenta.Text);
                 var cuotas = int.Parse(txtCantCuotas.Text);
-                var canceladas = pagosCuentas.Count(p => p.Cancelado);
-                var siguientePago = pagosCuentas.First(p => !p.Cancelado).FechaPago;
 
-                var cuenta = new CuentaDAO(cliente.IdCliente, monto, cuotas, canceladas, siguientePago, pagosCuentas);
+                var cuenta = new CuentaDAO(cliente.IdCliente, monto, cuotas, pagosCuentas);
                 cuenta.Validate();
 
                 var resultado = await CuentaLogic.AgregarCuenta(cuenta);
@@ -223,6 +196,12 @@ namespace Cuentas
         }
         private void Control_ValueChanged(object sender, EventArgs e)
         {
+            if (dtpFecha.Visible && cbIniciado.Checked && dtpFecha.Value.Date > DateTime.Today)
+            {
+                MessageBox.Show("La fecha de inicio no puede ser anterior a hoy.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
             inputDelayTimer.Stop();
             inputDelayTimer.Start();
         }
@@ -258,6 +237,16 @@ namespace Cuentas
         {
             inputDelayTimer.Stop();
             GenerarCuotas();
+        }
+
+        private void DgvPagos_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
+            if (DgvPagos.Columns[e.ColumnIndex].Name == "Pagado" && e.RowIndex >= 0)
+            {
+                pagosCuentas[e.RowIndex].Cancelado = !pagosCuentas[e.RowIndex].Cancelado;
+            }
+
         }
     }
 }

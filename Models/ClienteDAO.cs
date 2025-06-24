@@ -13,16 +13,16 @@ namespace Models
 
         public string? Correo { get; set; }
 
-        public long? Telefono { get; set; }
-        public string? Direccion { get; set; }
+        public long Telefono { get; set; }
+        public string Direccion { get; set; }
 
         public string Nombre { get; set; } = null!;
         public Dictionary<string, byte[]>? Files { get; set; }
 
-        public ClienteDAO(string idCliente, string? correo, long? telefono, string? direccion, string nombre, Dictionary<string, byte[]>? files)
+        public ClienteDAO(string idCliente, string? correo, long telefono, string direccion, string nombre, Dictionary<string, byte[]>? files)
         {
-            IdCliente = idCliente;
-            Correo = correo;
+            IdCliente = idCliente.Trim();
+            Correo = string.IsNullOrWhiteSpace(Correo) ? null : correo.Trim();
             Telefono = telefono;
             Direccion = direccion;
             Nombre = nombre;
@@ -31,21 +31,29 @@ namespace Models
 
         public void Validate()
         {
+            if (string.IsNullOrEmpty(IdCliente))
+            {
+                throw new ArgumentException("La cédula no puede ir vacía.");
+            }
             if (string.IsNullOrEmpty(Nombre))
             {
                 throw new ArgumentException("El nombre no puede estar vacío.");
             }
 
-            if (Telefono.HasValue && Telefono.ToString().Length < 5)
+            if (Telefono.ToString().Length < 5)
             {
                 throw new ArgumentException("Numero de télefono invalido.");
             }
 
-            if (Correo != null && !System.Text.RegularExpressions.Regex.IsMatch(Correo, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
+            if (!string.IsNullOrWhiteSpace(Correo) && !System.Text.RegularExpressions.Regex.IsMatch(Correo, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
             {
                 throw new ArgumentException("El correo electrónico no es válido.");
             }
-            if (Direccion != null && Direccion.Length < 20)
+            if (string.IsNullOrWhiteSpace(Direccion))
+            {
+                throw new ArgumentException("La dirección no ir vacia.");
+            }
+            if (!string.IsNullOrWhiteSpace(Direccion) && Direccion.Length < 20)
             {
                 throw new ArgumentException("La dirección no puede tener menos de 20 caracteres.");
             }

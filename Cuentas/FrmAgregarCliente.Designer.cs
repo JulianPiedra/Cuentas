@@ -167,6 +167,7 @@
             // 
             // flpMultimedia
             // 
+            flpMultimedia.AutoScroll = true;
             flpMultimedia.Dock = DockStyle.Fill;
             flpMultimedia.Location = new Point(0, 250);
             flpMultimedia.Name = "flpMultimedia";
@@ -220,7 +221,6 @@
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Agregar Cliente";
             WindowState = FormWindowState.Maximized;
-            Load += FrmAgregarCliente_Load;
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
             ResumeLayout(false);

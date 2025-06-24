@@ -34,8 +34,12 @@
             lblCuotas = new Label();
             lblCanceladas = new Label();
             lblSiguientePago = new Label();
-            tlpCuotas = new TableLayoutPanel();
+            DgvPagos = new DataGridView();
+            IdPago = new DataGridViewTextBoxColumn();
+            Pagos = new DataGridViewTextBoxColumn();
+            Pagado = new DataGridViewCheckBoxColumn();
             flowLayoutPanel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)DgvPagos).BeginInit();
             SuspendLayout();
             // 
             // flowLayoutPanel1
@@ -97,30 +101,54 @@
             lblSiguientePago.Size = new Size(0, 15);
             lblSiguientePago.TabIndex = 5;
             // 
-            // tlpCuotas
+            // DgvPagos
             // 
-            tlpCuotas.AutoScroll = true;
-            tlpCuotas.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single;
-            tlpCuotas.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 20F));
-            tlpCuotas.Dock = DockStyle.Fill;
-            tlpCuotas.Font = new Font("Segoe UI", 12F);
-            tlpCuotas.Location = new Point(212, 0);
-            tlpCuotas.Name = "tlpCuotas";
-            tlpCuotas.Size = new Size(588, 450);
-            tlpCuotas.TabIndex = 7;
+            DgvPagos.AllowUserToAddRows = false;
+            DgvPagos.AllowUserToDeleteRows = false;
+            DgvPagos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            DgvPagos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            DgvPagos.Columns.AddRange(new DataGridViewColumn[] { IdPago, Pagos, Pagado });
+            DgvPagos.Dock = DockStyle.Fill;
+            DgvPagos.EditMode = DataGridViewEditMode.EditOnEnter;
+            DgvPagos.Location = new Point(212, 0);
+            DgvPagos.Name = "DgvPagos";
+            DgvPagos.Size = new Size(588, 450);
+            DgvPagos.TabIndex = 16;
+            DgvPagos.CellContentClick += DgvPagos_CellContentClick;
+            // 
+            // IdPago
+            // 
+            IdPago.HeaderText = "IdPago";
+            IdPago.Name = "IdPago";
+            IdPago.Visible = false;
+            // 
+            // Pagos
+            // 
+            Pagos.HeaderText = "Fecha del pago";
+            Pagos.Name = "Pagos";
+            Pagos.ReadOnly = true;
+            // 
+            // Pagado
+            // 
+            Pagado.HeaderText = "Pago hecho";
+            Pagado.Name = "Pagado";
+            Pagado.Resizable = DataGridViewTriState.True;
+            Pagado.SortMode = DataGridViewColumnSortMode.Automatic;
             // 
             // FrmVerPagos
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
-            Controls.Add(tlpCuotas);
+            Controls.Add(DgvPagos);
             Controls.Add(flowLayoutPanel1);
             Name = "FrmVerPagos";
             Text = "FrmVerPagos";
-            Load += FrmVerPagos_Load;
+            Activated += FrmVerPagos_Load;
+            FormClosing += FrmVerPagos_FormClosing;
             flowLayoutPanel1.ResumeLayout(false);
             flowLayoutPanel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)DgvPagos).EndInit();
             ResumeLayout(false);
         }
 
@@ -131,6 +159,9 @@
         private Label lblCuotas;
         private Label lblCanceladas;
         private Label lblSiguientePago;
-        private TableLayoutPanel tlpCuotas;
+        private DataGridView DgvPagos;
+        private DataGridViewTextBoxColumn IdPago;
+        private DataGridViewTextBoxColumn Pagos;
+        private DataGridViewCheckBoxColumn Pagado;
     }
 }

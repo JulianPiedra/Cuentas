@@ -77,6 +77,10 @@ public partial class BdContext : DbContext
                 .HasMaxLength(20)
                 .IsUnicode(false);
             entity.Property(e => e.IdMultimedia).ValueGeneratedOnAdd();
+            entity.Property(e => e.Extension)
+                .HasMaxLength(10)
+                .IsUnicode(false)
+                .HasDefaultValue(".png");
 
             entity.HasOne(d => d.IdClienteNavigation).WithMany(p => p.Multimedia)
                 .HasForeignKey(d => d.IdCliente)
@@ -88,7 +92,10 @@ public partial class BdContext : DbContext
         {
             entity.HasKey(e => new { e.IdCuenta, e.IdPago }).HasName("PK_PagoCuenta_1");
 
+            entity.ToTable(tb => tb.HasTrigger("trg_ActualizarSiguientePago"));
+
             entity.Property(e => e.IdPago).ValueGeneratedOnAdd();
+            entity.Property(e => e.Monto).HasColumnType("numeric(10, 2)");
 
             entity.HasOne(d => d.IdCuentaNavigation).WithMany(p => p.PagoCuenta)
                 .HasForeignKey(d => d.IdCuenta)

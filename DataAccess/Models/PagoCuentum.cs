@@ -13,5 +13,7 @@ public partial class PagoCuentum
 
     public bool Cancelado { get; set; }
 
+    public decimal Monto { get; set; }
+
     public virtual Cuentum IdCuentaNavigation { get; set; } = null!;
 }

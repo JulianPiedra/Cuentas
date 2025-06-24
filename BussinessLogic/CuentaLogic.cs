@@ -1,5 +1,6 @@
 ﻿using DataAccess.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Models;
 
 namespace BussinessLogic
@@ -14,14 +15,11 @@ namespace BussinessLogic
             {
                 var pagos = BdContext.Context.PagoCuenta;
                 var cuenta = BdContext.Context.Cuenta;
-                cuenta.Include(cuenta => cuenta.IdClienteNavigation).AsNoTracking();
                 var Addcuenta = new Cuentum
                 {
                     IdCliente = cuentaDAO.IdCliente,
                     Monto = cuentaDAO.Monto,
                     Cuotas = cuentaDAO.Cuotas,
-                    Canceladas = cuentaDAO.Canceladas,
-                    SiguientePago = cuentaDAO.SiguientePago
                 };
 
                 await cuenta.AddAsync(Addcuenta);
@@ -29,21 +27,26 @@ namespace BussinessLogic
 
                 foreach (var pago in cuentaDAO.PagosCuenta)
                 {
-                    pagos.AddAsync(new PagoCuentum
+                    pagos.Add(new PagoCuentum
                     {
                         IdCuenta = Addcuenta.IdCuenta,
                         FechaPago = pago.FechaPago,
-                        Cancelado = pago.Cancelado
+                        Cancelado = pago.Cancelado,
+                        Monto = pago.Monto
                     });
 
                 }
 
                 await BdContext.Context.SaveChangesAsync();
-                ListaCuentas.Add(Addcuenta);
+                ListaCuentas.Add(await cuenta
+                    .AsNoTracking()
+                    .Include(c => c.IdClienteNavigation)
+                    .FirstAsync(c => c.IdCuenta == Addcuenta.IdCuenta));
                 return "Cuenta creada con exito";
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                var asd = ex.Message;
                 throw new Exception("Error al agregar cuenta");
             }
         }
@@ -53,6 +56,8 @@ namespace BussinessLogic
         {
             try
             {
+                if (!ListaCuentas.IsNullOrEmpty()) ListaCuentas.Clear();
+
                 var cuenta = BdContext.Context.Cuenta;
                 cuenta.Include(c => c.IdClienteNavigation)
                       .AsNoTracking();
@@ -67,7 +72,6 @@ namespace BussinessLogic
         {
             try
             {
-
                 var cuenta = BdContext.Context.Cuenta
                     .Where(c => c.IdCuenta == id)
                       .Include(c => c.IdClienteNavigation)
@@ -81,6 +85,38 @@ namespace BussinessLogic
                 throw new Exception("Error al obtener las cuentas con pagos");
             }
         }
+        public async static Task ActualizarEstadoPago(int idCuenta, int idPago)
+        {
+            try
+            {
+                var pago = BdContext.Context.PagoCuenta
+                    .FirstOrDefault(p => p.IdCuenta == idCuenta && p.IdPago == idPago);
+
+                if (pago != null)
+                {
+                    pago.Cancelado = !pago.Cancelado;
+                    await BdContext.Context.SaveChangesAsync(); 
+                }
+
+                var cuentaActualizada = await BdContext.Context.Cuenta
+                    .AsNoTracking()
+                    .Include(c => c.IdClienteNavigation)
+                    .FirstAsync(c => c.IdCuenta == idCuenta);
+
+                var index = ListaCuentas.FindIndex(c => c.IdCuenta == idCuenta);
+                if (index != -1)
+                {
+                    ListaCuentas[index] = cuentaActualizada;
+                }
+            }
+            catch (Exception)
+            {
+                throw new Exception("Error al actualizar el estado del pago");
+            }
+
+        }
+
+
     }
 
 }
