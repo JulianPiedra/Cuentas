@@ -15,5 +15,7 @@ public partial class PagoCuentum
 
     public decimal Monto { get; set; }
 
+    public bool Multa { get; set; }
+
     public virtual Cuentum IdCuentaNavigation { get; set; } = null!;
 }

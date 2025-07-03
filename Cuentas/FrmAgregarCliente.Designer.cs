@@ -53,6 +53,7 @@
             lblCedula.Dock = DockStyle.Top;
             lblCedula.Font = new Font("Segoe UI", 12F);
             lblCedula.Location = new Point(0, 0);
+            lblCedula.Margin = new Padding(4, 0, 4, 0);
             lblCedula.Name = "lblCedula";
             lblCedula.Size = new Size(135, 21);
             lblCedula.TabIndex = 0;
@@ -63,8 +64,9 @@
             txtCedula.Dock = DockStyle.Top;
             txtCedula.Font = new Font("Segoe UI", 12F);
             txtCedula.Location = new Point(0, 21);
+            txtCedula.Margin = new Padding(4);
             txtCedula.Name = "txtCedula";
-            txtCedula.Size = new Size(800, 29);
+            txtCedula.Size = new Size(1029, 29);
             txtCedula.TabIndex = 1;
             // 
             // txtNombre
@@ -72,8 +74,9 @@
             txtNombre.Dock = DockStyle.Top;
             txtNombre.Font = new Font("Segoe UI", 12F);
             txtNombre.Location = new Point(0, 71);
+            txtNombre.Margin = new Padding(4);
             txtNombre.Name = "txtNombre";
-            txtNombre.Size = new Size(800, 29);
+            txtNombre.Size = new Size(1029, 29);
             txtNombre.TabIndex = 3;
             // 
             // lblNombre
@@ -82,6 +85,7 @@
             lblNombre.Dock = DockStyle.Top;
             lblNombre.Font = new Font("Segoe UI", 12F);
             lblNombre.Location = new Point(0, 50);
+            lblNombre.Margin = new Padding(4, 0, 4, 0);
             lblNombre.Name = "lblNombre";
             lblNombre.Size = new Size(145, 21);
             lblNombre.TabIndex = 2;
@@ -92,8 +96,9 @@
             txtCorreo.Dock = DockStyle.Top;
             txtCorreo.Font = new Font("Segoe UI", 12F);
             txtCorreo.Location = new Point(0, 121);
+            txtCorreo.Margin = new Padding(4);
             txtCorreo.Name = "txtCorreo";
-            txtCorreo.Size = new Size(800, 29);
+            txtCorreo.Size = new Size(1029, 29);
             txtCorreo.TabIndex = 5;
             // 
             // lblCorreo
@@ -102,6 +107,7 @@
             lblCorreo.Dock = DockStyle.Top;
             lblCorreo.Font = new Font("Segoe UI", 12F);
             lblCorreo.Location = new Point(0, 100);
+            lblCorreo.Margin = new Padding(4, 0, 4, 0);
             lblCorreo.Name = "lblCorreo";
             lblCorreo.Size = new Size(135, 21);
             lblCorreo.TabIndex = 4;
@@ -112,8 +118,9 @@
             txtTelefono.Dock = DockStyle.Top;
             txtTelefono.Font = new Font("Segoe UI", 12F);
             txtTelefono.Location = new Point(0, 171);
+            txtTelefono.Margin = new Padding(4);
             txtTelefono.Name = "txtTelefono";
-            txtTelefono.Size = new Size(800, 29);
+            txtTelefono.Size = new Size(1029, 29);
             txtTelefono.TabIndex = 7;
             txtTelefono.KeyPress += txtTelefono_KeyPress;
             // 
@@ -123,6 +130,7 @@
             lblTelefono.Dock = DockStyle.Top;
             lblTelefono.Font = new Font("Segoe UI", 12F);
             lblTelefono.Location = new Point(0, 150);
+            lblTelefono.Margin = new Padding(4, 0, 4, 0);
             lblTelefono.Name = "lblTelefono";
             lblTelefono.Size = new Size(145, 21);
             lblTelefono.TabIndex = 6;
@@ -133,8 +141,9 @@
             txtDireccion.Dock = DockStyle.Top;
             txtDireccion.Font = new Font("Segoe UI", 12F);
             txtDireccion.Location = new Point(0, 221);
+            txtDireccion.Margin = new Padding(4);
             txtDireccion.Name = "txtDireccion";
-            txtDireccion.Size = new Size(800, 29);
+            txtDireccion.Size = new Size(1029, 29);
             txtDireccion.TabIndex = 9;
             // 
             // lblDireccion
@@ -143,6 +152,7 @@
             lblDireccion.Dock = DockStyle.Top;
             lblDireccion.Font = new Font("Segoe UI", 12F);
             lblDireccion.Location = new Point(0, 200);
+            lblDireccion.Margin = new Padding(4, 0, 4, 0);
             lblDireccion.Name = "lblDireccion";
             lblDireccion.Size = new Size(152, 21);
             lblDireccion.TabIndex = 8;
@@ -157,10 +167,12 @@
             // 
             btnMultimedia.AutoSize = true;
             btnMultimedia.Dock = DockStyle.Top;
+            btnMultimedia.Font = new Font("Segoe UI", 12F);
             btnMultimedia.Location = new Point(0, 0);
-            btnMultimedia.MaximumSize = new Size(100, 50);
+            btnMultimedia.Margin = new Padding(4);
+            btnMultimedia.MaximumSize = new Size(129, 70);
             btnMultimedia.Name = "btnMultimedia";
-            btnMultimedia.Size = new Size(100, 50);
+            btnMultimedia.Size = new Size(129, 70);
             btnMultimedia.TabIndex = 10;
             btnMultimedia.Text = "Agregar multimedia";
             btnMultimedia.UseVisualStyleBackColor = true;
@@ -170,17 +182,21 @@
             // 
             flpMultimedia.AutoScroll = true;
             flpMultimedia.Dock = DockStyle.Fill;
+            flpMultimedia.Font = new Font("Segoe UI", 12F);
             flpMultimedia.Location = new Point(0, 250);
+            flpMultimedia.Margin = new Padding(4);
             flpMultimedia.Name = "flpMultimedia";
-            flpMultimedia.Size = new Size(700, 177);
+            flpMultimedia.Size = new Size(900, 348);
             flpMultimedia.TabIndex = 11;
             // 
             // btnAgregar
             // 
             btnAgregar.Dock = DockStyle.Right;
-            btnAgregar.Location = new Point(0, 50);
+            btnAgregar.Font = new Font("Segoe UI", 12F);
+            btnAgregar.Location = new Point(0, 70);
+            btnAgregar.Margin = new Padding(4);
             btnAgregar.Name = "btnAgregar";
-            btnAgregar.Size = new Size(100, 127);
+            btnAgregar.Size = new Size(129, 278);
             btnAgregar.TabIndex = 12;
             btnAgregar.Text = "Agregar cliente";
             btnAgregar.UseVisualStyleBackColor = true;
@@ -191,24 +207,26 @@
             panel1.Controls.Add(btnAgregar);
             panel1.Controls.Add(btnMultimedia);
             panel1.Dock = DockStyle.Right;
-            panel1.Location = new Point(700, 250);
+            panel1.Location = new Point(900, 250);
+            panel1.Margin = new Padding(4);
             panel1.Name = "panel1";
-            panel1.Size = new Size(100, 177);
+            panel1.Size = new Size(129, 348);
             panel1.TabIndex = 13;
             // 
             // progressBar1
             // 
             progressBar1.Dock = DockStyle.Bottom;
-            progressBar1.Location = new Point(0, 427);
+            progressBar1.Location = new Point(0, 598);
+            progressBar1.Margin = new Padding(4);
             progressBar1.Name = "progressBar1";
-            progressBar1.Size = new Size(800, 23);
+            progressBar1.Size = new Size(1029, 32);
             progressBar1.TabIndex = 0;
             // 
             // FrmAgregarCliente
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(9F, 21F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(1029, 630);
             ControlBox = false;
             Controls.Add(flpMultimedia);
             Controls.Add(panel1);
@@ -224,6 +242,8 @@
             Controls.Add(lblCedula);
             Controls.Add(progressBar1);
             DoubleBuffered = true;
+            Font = new Font("Segoe UI", 12F);
+            Margin = new Padding(4);
             MaximizeBox = false;
             MdiChildrenMinimizedAnchorBottom = false;
             MinimizeBox = false;

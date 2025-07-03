@@ -8,6 +8,47 @@ namespace BussinessLogic
     public class CuentaLogic
     {
         public static List<Cuentum> ListaCuentas { get; set; }
+        public static async Task<string> MultarCuenta(int idCuenta, DateOnly fechaPago)
+        {
+            try
+            {
+                var pago = BdContext.Context.PagoCuenta
+                            .FirstOrDefault(p => p.IdCuenta == idCuenta && p.FechaPago == fechaPago);
+                if (pago == null)
+                {
+                    return "No se encontró un pago con la fecha especificada para esta cuenta.";
+                }
+                if (pago.Multa)
+                {
+                    return "El siguiente pago ya ha sido multado.";
+                }
+                pago.Multa = true;
+                pago.Monto += 5000;
+                var cuenta = BdContext.Context.Cuenta
+                                .FirstOrDefault(p => p.IdCuenta == idCuenta);
+                cuenta.Monto += 5000;
+
+                await BdContext.Context.SaveChangesAsync();
+                var cuentaActualizada = await BdContext.Context.Cuenta
+                    .AsNoTracking()
+                    .Include(c => c.IdClienteNavigation)
+                    .FirstAsync(c => c.IdCuenta == idCuenta);
+
+                var index = ListaCuentas.FindIndex(c => c.IdCuenta == idCuenta);
+                if (index != -1)
+                {
+                    ListaCuentas[index] = cuentaActualizada;
+                }
+
+                return "Cuenta multada con exito";
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al multar el siguiente pago de esta cuenta");
+            }
+
+        }
 
         public static async Task<string> AgregarCuenta(CuentaDAO cuentaDAO)
         {
@@ -46,7 +87,6 @@ namespace BussinessLogic
             }
             catch (Exception ex)
             {
-                var asd = ex.Message;
                 throw new Exception("Error al agregar cuenta");
             }
         }

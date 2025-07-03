@@ -30,6 +30,9 @@ namespace Cuentas
         /// </summary>
         private void InitializeComponent()
         {
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
             lblCuenta = new Label();
             lblMonto = new Label();
             lblTipoPago = new Label();
@@ -73,7 +76,7 @@ namespace Cuentas
             lblMonto.AutoSize = true;
             lblMonto.Dock = DockStyle.Top;
             lblMonto.Font = new Font("Segoe UI", 12F);
-            lblMonto.Location = new Point(0, 44);
+            lblMonto.Location = new Point(0, 50);
             lblMonto.Name = "lblMonto";
             lblMonto.Size = new Size(150, 21);
             lblMonto.TabIndex = 0;
@@ -84,7 +87,7 @@ namespace Cuentas
             lblTipoPago.AutoSize = true;
             lblTipoPago.Dock = DockStyle.Top;
             lblTipoPago.Font = new Font("Segoe UI", 12F);
-            lblTipoPago.Location = new Point(0, 88);
+            lblTipoPago.Location = new Point(0, 100);
             lblTipoPago.Name = "lblTipoPago";
             lblTipoPago.Size = new Size(103, 21);
             lblTipoPago.TabIndex = 4;
@@ -98,7 +101,7 @@ namespace Cuentas
             pnlRadios.Controls.Add(RbSemanal);
             pnlRadios.Dock = DockStyle.Top;
             pnlRadios.Font = new Font("Segoe UI", 12F);
-            pnlRadios.Location = new Point(0, 109);
+            pnlRadios.Location = new Point(0, 121);
             pnlRadios.Name = "pnlRadios";
             pnlRadios.Size = new Size(800, 33);
             pnlRadios.TabIndex = 3;
@@ -163,7 +166,7 @@ namespace Cuentas
             lblFrecuencia.AutoSize = true;
             lblFrecuencia.Dock = DockStyle.Top;
             lblFrecuencia.Font = new Font("Segoe UI", 12F);
-            lblFrecuencia.Location = new Point(0, 142);
+            lblFrecuencia.Location = new Point(0, 154);
             lblFrecuencia.Name = "lblFrecuencia";
             lblFrecuencia.Size = new Size(110, 21);
             lblFrecuencia.TabIndex = 0;
@@ -203,9 +206,9 @@ namespace Cuentas
             pnlFrecuencia.Controls.Add(cmbSemanal);
             pnlFrecuencia.Dock = DockStyle.Top;
             pnlFrecuencia.Font = new Font("Segoe UI", 12F);
-            pnlFrecuencia.Location = new Point(0, 163);
+            pnlFrecuencia.Location = new Point(0, 175);
             pnlFrecuencia.Name = "pnlFrecuencia";
-            pnlFrecuencia.Size = new Size(800, 30);
+            pnlFrecuencia.Size = new Size(800, 50);
             pnlFrecuencia.TabIndex = 0;
             // 
             // lblNumCuotas
@@ -213,7 +216,7 @@ namespace Cuentas
             lblNumCuotas.AutoSize = true;
             lblNumCuotas.Dock = DockStyle.Top;
             lblNumCuotas.Font = new Font("Segoe UI", 12F);
-            lblNumCuotas.Location = new Point(0, 193);
+            lblNumCuotas.Location = new Point(0, 225);
             lblNumCuotas.Name = "lblNumCuotas";
             lblNumCuotas.Size = new Size(145, 21);
             lblNumCuotas.TabIndex = 6;
@@ -224,7 +227,7 @@ namespace Cuentas
             lblMontoCuotas.AutoSize = true;
             lblMontoCuotas.Dock = DockStyle.Top;
             lblMontoCuotas.Font = new Font("Segoe UI", 12F);
-            lblMontoCuotas.Location = new Point(0, 237);
+            lblMontoCuotas.Location = new Point(0, 275);
             lblMontoCuotas.Name = "lblMontoCuotas";
             lblMontoCuotas.Size = new Size(158, 21);
             lblMontoCuotas.TabIndex = 9;
@@ -235,7 +238,7 @@ namespace Cuentas
             txtMontoCuotas.Dock = DockStyle.Top;
             txtMontoCuotas.Enabled = false;
             txtMontoCuotas.Font = new Font("Segoe UI", 12F);
-            txtMontoCuotas.Location = new Point(0, 258);
+            txtMontoCuotas.Location = new Point(0, 296);
             txtMontoCuotas.Name = "txtMontoCuotas";
             txtMontoCuotas.Size = new Size(800, 29);
             txtMontoCuotas.TabIndex = 10;
@@ -245,7 +248,7 @@ namespace Cuentas
             // 
             btnCrearCuenta.Dock = DockStyle.Bottom;
             btnCrearCuenta.Font = new Font("Segoe UI", 12F);
-            btnCrearCuenta.Location = new Point(0, 419);
+            btnCrearCuenta.Location = new Point(0, 439);
             btnCrearCuenta.Name = "btnCrearCuenta";
             btnCrearCuenta.RightToLeft = RightToLeft.Yes;
             btnCrearCuenta.Size = new Size(800, 31);
@@ -257,9 +260,10 @@ namespace Cuentas
             // txtMontoCuenta
             // 
             txtMontoCuenta.Dock = DockStyle.Top;
-            txtMontoCuenta.Location = new Point(0, 65);
+            txtMontoCuenta.Font = new Font("Segoe UI", 12F);
+            txtMontoCuenta.Location = new Point(0, 71);
             txtMontoCuenta.Name = "txtMontoCuenta";
-            txtMontoCuenta.Size = new Size(800, 23);
+            txtMontoCuenta.Size = new Size(800, 29);
             txtMontoCuenta.TabIndex = 7;
             txtMontoCuenta.TextChanged += TextBox_TextChanged;
             txtMontoCuenta.KeyPress += txtChanged_KeyPress;
@@ -267,9 +271,10 @@ namespace Cuentas
             // txtCantCuotas
             // 
             txtCantCuotas.Dock = DockStyle.Top;
-            txtCantCuotas.Location = new Point(0, 214);
+            txtCantCuotas.Font = new Font("Segoe UI", 12F);
+            txtCantCuotas.Location = new Point(0, 246);
             txtCantCuotas.Name = "txtCantCuotas";
-            txtCantCuotas.Size = new Size(800, 23);
+            txtCantCuotas.Size = new Size(800, 29);
             txtCantCuotas.TabIndex = 13;
             txtCantCuotas.TextChanged += TextBox_TextChanged;
             txtCantCuotas.KeyPress += txtChanged_KeyPress;
@@ -279,10 +284,11 @@ namespace Cuentas
             cmbCuenta.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
             cmbCuenta.AutoCompleteSource = AutoCompleteSource.ListItems;
             cmbCuenta.Dock = DockStyle.Top;
+            cmbCuenta.Font = new Font("Segoe UI", 12F);
             cmbCuenta.FormattingEnabled = true;
             cmbCuenta.Location = new Point(0, 21);
             cmbCuenta.Name = "cmbCuenta";
-            cmbCuenta.Size = new Size(800, 23);
+            cmbCuenta.Size = new Size(800, 29);
             cmbCuenta.TabIndex = 14;
             // 
             // DgvPagos
@@ -290,13 +296,37 @@ namespace Cuentas
             DgvPagos.AllowUserToAddRows = false;
             DgvPagos.AllowUserToDeleteRows = false;
             DgvPagos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = SystemColors.Control;
+            dataGridViewCellStyle1.Font = new Font("Segoe UI", 12F);
+            dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            DgvPagos.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             DgvPagos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             DgvPagos.Columns.AddRange(new DataGridViewColumn[] { Pagos, Pagado });
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = SystemColors.Window;
+            dataGridViewCellStyle2.Font = new Font("Segoe UI", 12F);
+            dataGridViewCellStyle2.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
+            DgvPagos.DefaultCellStyle = dataGridViewCellStyle2;
             DgvPagos.Dock = DockStyle.Fill;
             DgvPagos.EditMode = DataGridViewEditMode.EditOnEnter;
-            DgvPagos.Location = new Point(0, 287);
+            DgvPagos.Location = new Point(0, 325);
             DgvPagos.Name = "DgvPagos";
-            DgvPagos.Size = new Size(800, 132);
+            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = SystemColors.Control;
+            dataGridViewCellStyle3.Font = new Font("Segoe UI", 12F);
+            dataGridViewCellStyle3.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
+            DgvPagos.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            DgvPagos.Size = new Size(800, 114);
             DgvPagos.TabIndex = 15;
             DgvPagos.CellContentClick += DgvPagos_CellContentClick;
             // 
@@ -318,7 +348,7 @@ namespace Cuentas
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             AutoSize = true;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(800, 470);
             ControlBox = false;
             Controls.Add(DgvPagos);
             Controls.Add(txtMontoCuotas);

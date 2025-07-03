@@ -30,8 +30,10 @@ namespace Cuentas
 
         private async void DgvPagos_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            try{if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
-            if (DgvPagos.Rows[e.RowIndex].ReadOnly) return;
+            try
+            {
+                if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
+                if (DgvPagos.Rows[e.RowIndex].ReadOnly) return;
 
                 if (DgvPagos.Columns[e.ColumnIndex].Name == "Pagado")
                 {
@@ -44,7 +46,8 @@ namespace Cuentas
 
                     ActualizarVista();
                 }
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return;
             }
@@ -69,7 +72,12 @@ namespace Cuentas
                         $"{pago.FechaPago:dd/MM/yyyy} - ₡{pago.Monto:N2}",
                         pago.Cancelado
                     );
+                    if (pago.Multa)
+                    {
+                        DgvPagos.Rows[rowIndex].DefaultCellStyle.BackColor = Color.Red;
+                        DgvPagos.Rows[rowIndex].DefaultCellStyle.ForeColor = Color.White;
 
+                    }
                     if (pago.Cancelado)
                     {
                         DgvPagos.Rows[rowIndex].ReadOnly = true;
@@ -83,13 +91,6 @@ namespace Cuentas
             }
         }
 
-        private void FrmVerPagos_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            if (this.Owner is FrmVerCuentas frmVerCuentas)
-            {
-                frmVerCuentas.RecargarDatos();
-            }
-        }
 
     }
 }

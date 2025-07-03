@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             flowLayoutPanel1 = new FlowLayoutPanel();
             lblCliente = new Label();
             lblMonto = new Label();
@@ -51,6 +52,7 @@
             flowLayoutPanel1.Controls.Add(lblSiguientePago);
             flowLayoutPanel1.Dock = DockStyle.Left;
             flowLayoutPanel1.FlowDirection = FlowDirection.TopDown;
+            flowLayoutPanel1.Font = new Font("Segoe UI", 12F);
             flowLayoutPanel1.Location = new Point(0, 0);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
             flowLayoutPanel1.Size = new Size(212, 450);
@@ -59,46 +61,50 @@
             // lblCliente
             // 
             lblCliente.AutoSize = true;
+            lblCliente.Font = new Font("Segoe UI", 12F);
             lblCliente.Location = new Point(5, 35);
             lblCliente.Margin = new Padding(5, 35, 5, 35);
             lblCliente.Name = "lblCliente";
-            lblCliente.Size = new Size(0, 15);
+            lblCliente.Size = new Size(0, 21);
             lblCliente.TabIndex = 9;
             // 
             // lblMonto
             // 
             lblMonto.AutoSize = true;
-            lblMonto.Location = new Point(5, 120);
+            lblMonto.Font = new Font("Segoe UI", 12F);
+            lblMonto.Location = new Point(5, 126);
             lblMonto.Margin = new Padding(5, 35, 5, 35);
             lblMonto.Name = "lblMonto";
-            lblMonto.Size = new Size(0, 15);
+            lblMonto.Size = new Size(0, 21);
             lblMonto.TabIndex = 8;
             // 
             // lblCuotas
             // 
             lblCuotas.AutoSize = true;
-            lblCuotas.Location = new Point(5, 205);
+            lblCuotas.Font = new Font("Segoe UI", 12F);
+            lblCuotas.Location = new Point(5, 217);
             lblCuotas.Margin = new Padding(5, 35, 5, 35);
             lblCuotas.Name = "lblCuotas";
-            lblCuotas.Size = new Size(0, 15);
+            lblCuotas.Size = new Size(0, 21);
             lblCuotas.TabIndex = 7;
             // 
             // lblCanceladas
             // 
             lblCanceladas.AutoSize = true;
-            lblCanceladas.Location = new Point(5, 290);
+            lblCanceladas.Font = new Font("Segoe UI", 12F);
+            lblCanceladas.Location = new Point(5, 308);
             lblCanceladas.Margin = new Padding(5, 35, 5, 35);
             lblCanceladas.Name = "lblCanceladas";
-            lblCanceladas.Size = new Size(0, 15);
+            lblCanceladas.Size = new Size(0, 21);
             lblCanceladas.TabIndex = 6;
             // 
             // lblSiguientePago
             // 
             lblSiguientePago.AutoSize = true;
-            lblSiguientePago.Location = new Point(5, 375);
+            lblSiguientePago.Location = new Point(15, 35);
             lblSiguientePago.Margin = new Padding(5, 35, 5, 35);
             lblSiguientePago.Name = "lblSiguientePago";
-            lblSiguientePago.Size = new Size(0, 15);
+            lblSiguientePago.Size = new Size(0, 21);
             lblSiguientePago.TabIndex = 5;
             // 
             // DgvPagos
@@ -108,6 +114,14 @@
             DgvPagos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             DgvPagos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             DgvPagos.Columns.AddRange(new DataGridViewColumn[] { IdPago, Pagos, Pagado });
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = SystemColors.Window;
+            dataGridViewCellStyle1.Font = new Font("Segoe UI", 12F);
+            dataGridViewCellStyle1.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.False;
+            DgvPagos.DefaultCellStyle = dataGridViewCellStyle1;
             DgvPagos.Dock = DockStyle.Fill;
             DgvPagos.EditMode = DataGridViewEditMode.EditOnEnter;
             DgvPagos.Location = new Point(212, 0);
@@ -145,7 +159,6 @@
             Name = "FrmVerPagos";
             Text = "FrmVerPagos";
             Activated += FrmVerPagos_Load;
-            FormClosing += FrmVerPagos_FormClosing;
             flowLayoutPanel1.ResumeLayout(false);
             flowLayoutPanel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)DgvPagos).EndInit();
