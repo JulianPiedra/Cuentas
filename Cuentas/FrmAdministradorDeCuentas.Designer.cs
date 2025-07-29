@@ -29,54 +29,62 @@
         private void InitializeComponent()
         {
             menuStrip = new MenuStrip();
-            verCuentasToolStripMenuItem = new ToolStripMenuItem();
-            crearCuentaToolStripMenuItem = new ToolStripMenuItem();
-            agregarClienteToolStripMenuItem = new ToolStripMenuItem();
-            estadísticasToolStripMenuItem = new ToolStripMenuItem();
+            FrmVerCuentas = new ToolStripMenuItem();
+            FrmVerClientes = new ToolStripMenuItem();
+            FrmAgregarCuenta = new ToolStripMenuItem();
+            FrmAgregarCliente = new ToolStripMenuItem();
+            FrmEstadisticas = new ToolStripMenuItem();
             menuStrip.SuspendLayout();
             SuspendLayout();
             // 
             // menuStrip
             // 
             menuStrip.Font = new Font("Segoe UI", 12F);
-            menuStrip.Items.AddRange(new ToolStripItem[] { verCuentasToolStripMenuItem, crearCuentaToolStripMenuItem, agregarClienteToolStripMenuItem, estadísticasToolStripMenuItem });
+            menuStrip.Items.AddRange(new ToolStripItem[] { FrmVerCuentas, FrmVerClientes, FrmAgregarCuenta, FrmAgregarCliente, FrmEstadisticas });
             menuStrip.Location = new Point(0, 0);
             menuStrip.Name = "menuStrip";
             menuStrip.Size = new Size(995, 29);
             menuStrip.TabIndex = 0;
             menuStrip.Text = "menu_bar";
             // 
-            // verCuentasToolStripMenuItem
+            // FrmVerCuentas
             // 
-            verCuentasToolStripMenuItem.Font = new Font("Segoe UI", 12F);
-            verCuentasToolStripMenuItem.Name = "verCuentasToolStripMenuItem";
-            verCuentasToolStripMenuItem.Size = new Size(102, 25);
-            verCuentasToolStripMenuItem.Text = "Ver cuentas";
-            verCuentasToolStripMenuItem.Click += verCuentasToolStripMenuItem_Click;
+            FrmVerCuentas.Font = new Font("Segoe UI", 12F);
+            FrmVerCuentas.Name = "FrmVerCuentas";
+            FrmVerCuentas.Size = new Size(102, 25);
+            FrmVerCuentas.Text = "Ver cuentas";
+            FrmVerCuentas.Click += verCuentasToolStripMenuItem_Click;
             // 
-            // crearCuentaToolStripMenuItem
+            // FrmVerClientes
             // 
-            crearCuentaToolStripMenuItem.Font = new Font("Segoe UI", 12F);
-            crearCuentaToolStripMenuItem.Name = "crearCuentaToolStripMenuItem";
-            crearCuentaToolStripMenuItem.Size = new Size(110, 25);
-            crearCuentaToolStripMenuItem.Text = "Crear cuenta";
-            crearCuentaToolStripMenuItem.Click += crearCuentaToolStripMenuItem_Click;
+            FrmVerClientes.Name = "FrmVerClientes";
+            FrmVerClientes.Size = new Size(101, 25);
+            FrmVerClientes.Text = "Ver clientes";
+            FrmVerClientes.Click += verClientesToolStripMenuItem_Click;
             // 
-            // agregarClienteToolStripMenuItem
+            // FrmAgregarCuenta
             // 
-            agregarClienteToolStripMenuItem.Font = new Font("Segoe UI", 12F);
-            agregarClienteToolStripMenuItem.Name = "agregarClienteToolStripMenuItem";
-            agregarClienteToolStripMenuItem.Size = new Size(127, 25);
-            agregarClienteToolStripMenuItem.Text = "Agregar cliente";
-            agregarClienteToolStripMenuItem.Click += agregarClienteToolStripMenuItem_Click;
+            FrmAgregarCuenta.Font = new Font("Segoe UI", 12F);
+            FrmAgregarCuenta.Name = "FrmAgregarCuenta";
+            FrmAgregarCuenta.Size = new Size(110, 25);
+            FrmAgregarCuenta.Text = "Crear cuenta";
+            FrmAgregarCuenta.Click += crearCuentaToolStripMenuItem_Click;
             // 
-            // estadísticasToolStripMenuItem
+            // FrmAgregarCliente
             // 
-            estadísticasToolStripMenuItem.Font = new Font("Segoe UI", 12F);
-            estadísticasToolStripMenuItem.Name = "estadísticasToolStripMenuItem";
-            estadísticasToolStripMenuItem.Size = new Size(101, 25);
-            estadísticasToolStripMenuItem.Text = "Estadísticas";
-            estadísticasToolStripMenuItem.Click += estadísticasToolStripMenuItem_Click;
+            FrmAgregarCliente.Font = new Font("Segoe UI", 12F);
+            FrmAgregarCliente.Name = "FrmAgregarCliente";
+            FrmAgregarCliente.Size = new Size(127, 25);
+            FrmAgregarCliente.Text = "Agregar cliente";
+            FrmAgregarCliente.Click += agregarClienteToolStripMenuItem_Click;
+            // 
+            // FrmEstadisticas
+            // 
+            FrmEstadisticas.Font = new Font("Segoe UI", 12F);
+            FrmEstadisticas.Name = "FrmEstadisticas";
+            FrmEstadisticas.Size = new Size(101, 25);
+            FrmEstadisticas.Text = "Estadísticas";
+            FrmEstadisticas.Click += estadísticasToolStripMenuItem_Click;
             // 
             // FrmAdministradorDeCuentas
             // 
@@ -99,9 +107,10 @@
         #endregion
 
         private MenuStrip menuStrip;
-        private ToolStripMenuItem crearCuentaToolStripMenuItem;
-        private ToolStripMenuItem verCuentasToolStripMenuItem;
-        private ToolStripMenuItem agregarClienteToolStripMenuItem;
-        private ToolStripMenuItem estadísticasToolStripMenuItem;
+        private ToolStripMenuItem FrmAgregarCuenta;
+        private ToolStripMenuItem FrmVerCuentas;
+        private ToolStripMenuItem FrmAgregarCliente;
+        private ToolStripMenuItem FrmEstadisticas;
+        private ToolStripMenuItem FrmVerClientes;
     }
 }

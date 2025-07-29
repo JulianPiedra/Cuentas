@@ -22,6 +22,7 @@ namespace Cuentas
                 DataSource = cuentas
             };
             DgvCuentas.DataSource = source;
+            
 
             if (!DgvCuentas.Columns.Contains("VerPagos"))
             {
@@ -38,6 +39,7 @@ namespace Cuentas
                     UseColumnTextForButtonValue = true,
                     HeaderText = "Multa"
                 });
+                
 
                 DgvCuentas.Columns.Add(new DataGridViewButtonColumn
                 {
@@ -46,6 +48,8 @@ namespace Cuentas
                     UseColumnTextForButtonValue = true,
                     HeaderText = "Pagos"
                 });
+
+               
             }
         }
 
@@ -84,6 +88,12 @@ namespace Cuentas
             {
                 if (int.TryParse(cuenta, out int cuentaId))
                 {
+                    if(siguientePago == "Cancelado")
+                    {
+                        MessageBox.Show("Cuenta ya ha sido cancelada", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        return;
+                    }
+
                     DialogResult result = MessageBox.Show(
                         "¿Está seguro de que desea multar el siguiente pago de esta cuenta?",
                         "Confirmar multa",
@@ -93,7 +103,6 @@ namespace Cuentas
                     {
                         try {
                             DateOnly fechaSiguientePago = DateOnly.ParseExact(siguientePago, "dd-MM-yyyy", System.Globalization.CultureInfo.InvariantCulture);
-
                             var resultado = await CuentaLogic.MultarCuenta(cuentaId,fechaSiguientePago);
                             MessageBox.Show(resultado, "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
                             CargarTodasLasCuentas();
@@ -136,9 +145,8 @@ namespace Cuentas
         private void txtBuscar_TextChanged(object sender, EventArgs e)
         {
             var searchText = txtBuscar.Text.ToLower();
-
             var filteredCuentas = CuentaLogic.ListaCuentas
-                .Where(c => c.IdClienteNavigation.Nombre.ToLower().Contains(searchText))
+                .Where(c => c.IdClienteNavigation.Nombre.ToLower().Contains(searchText) || c.SiguientePago.ToString("dd-MM-yyyy").Contains(searchText))
                 .Select(c => new
                 {
                     Cuenta = c.IdCuenta,

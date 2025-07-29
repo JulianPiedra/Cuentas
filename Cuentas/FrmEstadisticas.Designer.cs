@@ -316,7 +316,7 @@
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Estadísticas";
             WindowState = FormWindowState.Maximized;
-            Activated += FrmEstadisticas_Load;
+            Load += FrmEstadisticas_Load;
             ((System.ComponentModel.ISupportInitialize)pbMontoTotalPendientes).EndInit();
             ((System.ComponentModel.ISupportInitialize)pbMontoTotalCuentas).EndInit();
             ((System.ComponentModel.ISupportInitialize)pbTotalCuentasActivas).EndInit();

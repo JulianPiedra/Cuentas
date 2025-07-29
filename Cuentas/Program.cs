@@ -18,12 +18,7 @@ namespace Cuentas
                 CuentaLogic.ObtenerCuentas()
             );
             ApplicationConfiguration.Initialize();
-            Application.Run(new FrmAdministradorDeCuentas(
-                new FrmAgregarCuenta(),
-                new FrmVerCuentas(),
-                new FrmAgregarCliente(),
-                new FrmEstadisticas()
-                ));
+            Application.Run(new FrmAdministradorDeCuentas());
         }
     }
 }

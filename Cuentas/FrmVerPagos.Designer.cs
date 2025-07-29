@@ -158,7 +158,7 @@
             Controls.Add(flowLayoutPanel1);
             Name = "FrmVerPagos";
             Text = "FrmVerPagos";
-            Activated += FrmVerPagos_Load;
+            Load += FrmVerPagos_Load;
             flowLayoutPanel1.ResumeLayout(false);
             flowLayoutPanel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)DgvPagos).EndInit();

@@ -1,6 +1,6 @@
 ﻿namespace Cuentas
 {
-    partial class FrmVerCuentas
+    partial class FrmVerClientes
     {
         /// <summary>
         /// Required designer variable.
@@ -31,21 +31,20 @@
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
-            DgvCuentas = new DataGridView();
+            DgvClientes = new DataGridView();
             txtBuscar = new TextBox();
             lblBuscar = new Label();
-            cbPagosHoy = new CheckBox();
             panel1 = new Panel();
-            ((System.ComponentModel.ISupportInitialize)DgvCuentas).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)DgvClientes).BeginInit();
             panel1.SuspendLayout();
             SuspendLayout();
             // 
-            // DgvCuentas
+            // DgvClientes
             // 
-            DgvCuentas.AllowUserToAddRows = false;
-            DgvCuentas.AllowUserToDeleteRows = false;
-            DgvCuentas.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            DgvCuentas.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            DgvClientes.AllowUserToAddRows = false;
+            DgvClientes.AllowUserToDeleteRows = false;
+            DgvClientes.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            DgvClientes.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.BackColor = SystemColors.Control;
             dataGridViewCellStyle1.Font = new Font("Segoe UI", 12F);
@@ -53,8 +52,8 @@
             dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
             dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
             dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
-            DgvCuentas.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
-            DgvCuentas.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            DgvClientes.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            DgvClientes.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = SystemColors.Window;
             dataGridViewCellStyle2.Font = new Font("Segoe UI", 12F);
@@ -62,12 +61,12 @@
             dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
             dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
             dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
-            DgvCuentas.DefaultCellStyle = dataGridViewCellStyle2;
-            DgvCuentas.Dock = DockStyle.Fill;
-            DgvCuentas.EditMode = DataGridViewEditMode.EditOnEnter;
-            DgvCuentas.Location = new Point(0, 52);
-            DgvCuentas.Name = "DgvCuentas";
-            DgvCuentas.ReadOnly = true;
+            DgvClientes.DefaultCellStyle = dataGridViewCellStyle2;
+            DgvClientes.Dock = DockStyle.Fill;
+            DgvClientes.EditMode = DataGridViewEditMode.EditOnEnter;
+            DgvClientes.Location = new Point(0, 52);
+            DgvClientes.Name = "DgvClientes";
+            DgvClientes.ReadOnly = true;
             dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle3.BackColor = SystemColors.Control;
             dataGridViewCellStyle3.Font = new Font("Segoe UI", 12F);
@@ -75,9 +74,10 @@
             dataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight;
             dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
             dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
-            DgvCuentas.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
-            DgvCuentas.Size = new Size(800, 398);
-            DgvCuentas.TabIndex = 0;
+            DgvClientes.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            DgvClientes.Size = new Size(800, 398);
+            DgvClientes.TabIndex = 0;
+            DgvClientes.CellContentClick += DgvClientes_CellContentClick;
             // 
             // txtBuscar
             // 
@@ -85,7 +85,7 @@
             txtBuscar.Font = new Font("Segoe UI", 12F);
             txtBuscar.Location = new Point(0, 21);
             txtBuscar.Name = "txtBuscar";
-            txtBuscar.Size = new Size(629, 29);
+            txtBuscar.Size = new Size(800, 29);
             txtBuscar.TabIndex = 1;
             txtBuscar.TextChanged += txtBuscar_TextChanged;
             // 
@@ -96,29 +96,13 @@
             lblBuscar.Font = new Font("Segoe UI", 12F);
             lblBuscar.Location = new Point(0, 0);
             lblBuscar.Name = "lblBuscar";
-            lblBuscar.Size = new Size(113, 21);
+            lblBuscar.Size = new Size(112, 21);
             lblBuscar.TabIndex = 2;
-            lblBuscar.Text = "Buscar cuentas";
-            // 
-            // cbPagosHoy
-            // 
-            cbPagosHoy.AutoSize = true;
-            cbPagosHoy.Dock = DockStyle.Right;
-            cbPagosHoy.Font = new Font("Segoe UI", 12F);
-            cbPagosHoy.Location = new Point(629, 21);
-            cbPagosHoy.MaximumSize = new Size(0, 29);
-            cbPagosHoy.Name = "cbPagosHoy";
-            cbPagosHoy.Padding = new Padding(50, 0, 0, 0);
-            cbPagosHoy.Size = new Size(171, 29);
-            cbPagosHoy.TabIndex = 3;
-            cbPagosHoy.Text = "Pagos de hoy";
-            cbPagosHoy.UseVisualStyleBackColor = true;
-            cbPagosHoy.CheckedChanged += cbPagosHoy_CheckedChanged;
+            lblBuscar.Text = "Buscar clientes";
             // 
             // panel1
             // 
             panel1.Controls.Add(txtBuscar);
-            panel1.Controls.Add(cbPagosHoy);
             panel1.Controls.Add(lblBuscar);
             panel1.Dock = DockStyle.Top;
             panel1.Font = new Font("Segoe UI", 12F);
@@ -127,25 +111,25 @@
             panel1.Size = new Size(800, 52);
             panel1.TabIndex = 4;
             // 
-            // FrmVerCuentas
+            // FrmVerClientes
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             AutoSize = true;
             ClientSize = new Size(800, 450);
             ControlBox = false;
-            Controls.Add(DgvCuentas);
+            Controls.Add(DgvClientes);
             Controls.Add(panel1);
             DoubleBuffered = true;
             MaximizeBox = false;
             MdiChildrenMinimizedAnchorBottom = false;
             MinimizeBox = false;
-            Name = "FrmVerCuentas";
+            Name = "FrmVerClientes";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Ver cuentas";
+            Text = "Ver clientes";
             WindowState = FormWindowState.Maximized;
-            Load += FrmVerCuentas_Load;
-            ((System.ComponentModel.ISupportInitialize)DgvCuentas).EndInit();
+            Load += FrmVerClientes_Load;
+            ((System.ComponentModel.ISupportInitialize)DgvClientes).EndInit();
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
             ResumeLayout(false);
@@ -153,10 +137,9 @@
 
         #endregion
 
-        private DataGridView DgvCuentas;
+        private DataGridView DgvClientes;
         private TextBox txtBuscar;
         private Label lblBuscar;
-        private CheckBox cbPagosHoy;
         private Panel panel1;
     }
 }

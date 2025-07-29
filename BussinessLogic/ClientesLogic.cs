@@ -57,13 +57,29 @@ namespace BussinessLogic
             {
                 var clientes = BdContext.Context.Clientes;
                 clientes.Include(c => c.Cuenta)
-                        .Include(c => c.Multimedia)
                         .AsNoTracking();
                 ListaClientes =  clientes.ToList();
             }
             catch (Exception)
             {
                 throw new Exception("Error al obtener los clientes");
+            }
+        }
+
+        public  static Task<List<Cliente>> ObtenerClienteConMultimedia(string id)
+        {
+            try
+            {
+                var clientes = BdContext.Context.Clientes
+                    .Where(c => c.IdCliente == id)
+                    .Include(c => c.Cuenta)
+                        .Include(c => c.Multimedia)
+                        .AsNoTracking();
+                return clientes.ToListAsync();
+            }
+            catch (Exception)
+            {
+                throw new Exception("Error al obtener el cliente");
             }
         }
 

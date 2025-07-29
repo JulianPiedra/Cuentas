@@ -372,7 +372,7 @@ namespace Cuentas
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Agregar Cuenta";
             WindowState = FormWindowState.Maximized;
-            Activated += FrmAgregarCuenta_Activated;
+            Load += FrmAgregarCuenta_Load;
             pnlRadios.ResumeLayout(false);
             pnlRadios.PerformLayout();
             pnlFrecuencia.ResumeLayout(false);

@@ -18,10 +18,7 @@ namespace BussinessLogic
                 {
                     return "No se encontró un pago con la fecha especificada para esta cuenta.";
                 }
-                if (pago.Multa)
-                {
-                    return "El siguiente pago ya ha sido multado.";
-                }
+
                 pago.Multa = true;
                 pago.Monto += 5000;
                 var cuenta = BdContext.Context.Cuenta

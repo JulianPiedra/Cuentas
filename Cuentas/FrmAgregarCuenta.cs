@@ -212,7 +212,7 @@ namespace Cuentas
                 e.Handled = true;
         }
 
-        private void FrmAgregarCuenta_Activated(object sender, EventArgs e)
+        private void FrmAgregarCuenta_Load(object sender, EventArgs e)
         {
             RecargarClientes();
         }
