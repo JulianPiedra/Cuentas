@@ -145,8 +145,13 @@ namespace Cuentas
         private void txtBuscar_TextChanged(object sender, EventArgs e)
         {
             var searchText = txtBuscar.Text.ToLower();
+
             var filteredCuentas = CuentaLogic.ListaCuentas
-                .Where(c => c.IdClienteNavigation.Nombre.ToLower().Contains(searchText) || c.SiguientePago.ToString("dd-MM-yyyy").Contains(searchText))
+                .Where(c =>
+                    c.IdClienteNavigation.Nombre.ToLower().Contains(searchText) ||
+                    c.SiguientePago.ToString("dd-MM-yyyy").Contains(searchText) ||
+                    (c.SiguientePago == DateOnly.MinValue && "cancelado".Contains(searchText))
+                )
                 .Select(c => new
                 {
                     Cuenta = c.IdCuenta,
@@ -162,6 +167,7 @@ namespace Cuentas
 
             RecargarDatos(filteredCuentas);
         }
+
 
         private void cbPagosHoy_CheckedChanged(object sender, EventArgs e)
         {
