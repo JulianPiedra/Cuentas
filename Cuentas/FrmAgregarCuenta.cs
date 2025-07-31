@@ -87,18 +87,54 @@ namespace Cuentas
         private DateTime[] CalcularFechasCuotas(DateTime inicio, int cantidad, Frecuencia frecuencia)
         {
             var fechas = new DateTime[cantidad];
+
+            
+
             for (int i = 0; i < cantidad; i++)
             {
                 fechas[i] = frecuencia switch
                 {
                     Frecuencia.Mensual => inicio.AddMonths(i),
-                    Frecuencia.Quincenal => inicio.AddDays(i * 15),
+                    Frecuencia.Quincenal => CalcularFechaFijaDesdeInicio(inicio, i),
                     Frecuencia.Semanal => inicio.AddDays(i * 7),
                     _ => inicio
                 };
+
             }
+
             return fechas;
         }
+
+        private DateTime CalcularFechaFijaDesdeInicio(DateTime inicio, int index)
+        {
+            int dia1 = inicio.Day;
+            int dia2 = dia1 <= 15 ? dia1 + 15 : dia1 - 15;
+
+            bool dia2EnMesSiguiente = dia2 < dia1;
+            int[] diasFijos = new[] { dia1, dia2 };
+
+            // Base: sumar meses completos según el índice
+            int mesOffset = index / 2;
+            int year = inicio.Year;
+            int month = inicio.Month;
+
+            // Si el día2 va al mes siguiente, sumamos uno adicional si toca el segundo día
+            if (dia2EnMesSiguiente && index % 2 == 1)
+            {
+                mesOffset++;
+            }
+
+            DateTime baseFecha = inicio.AddMonths(mesOffset);
+            int dia = diasFijos[index % 2];
+
+            // Ajustar si el día no existe en ese mes
+            int ultimoDiaMes = DateTime.DaysInMonth(baseFecha.Year, baseFecha.Month);
+            dia = Math.Min(dia, ultimoDiaMes);
+
+            return new DateTime(baseFecha.Year, baseFecha.Month, dia);
+        }
+
+
 
 
         private void LimpiarCampos()
