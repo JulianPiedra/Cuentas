@@ -1,87 +1,73 @@
 using Cuentas;
+using System;
 using System.Windows.Forms;
 
 namespace Cuentas
 {
     public partial class FrmAdministradorDeCuentas : Form
     {
-
-
-
         public FrmAdministradorDeCuentas()
         {
             InitializeComponent();
         }
 
-        private bool CerrarVentanas(string formName)
+        private void FrmAdministradorDeCuentas_Load(object sender, EventArgs e)
         {
-            Form activeChild = this.ActiveMdiChild;
-            if (activeChild != null && activeChild.Name == formName)
-            {
+            AbrirFormulario<FrmVerCuentas>();
+        }
+
+        // Cierra formularios hijos si no es del mismo tipo que el que se desea abrir
+        private bool CerrarVentanas(Type tipoFormulario)
+        {
+            var formularioActivo = this.ActiveMdiChild;
+            if (formularioActivo != null && formularioActivo.GetType() == tipoFormulario)
                 return false;
-            }
+
             foreach (Form child in this.MdiChildren)
             {
                 child.Close();
             }
+
             return true;
         }
 
+        // Método genérico para abrir formularios MDI hijos
+        private void AbrirFormulario<T>() where T : Form, new()
+        {
+            if (CerrarVentanas(typeof(T)))
+            {
+                var form = new T
+                {
+                    MdiParent = this
+                };
+                form.Show();
+            }
+        }
 
-
+        // Eventos del menú
         private void crearCuentaToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var cerrado = CerrarVentanas(((ToolStripMenuItem)sender).Name);
-            if (cerrado)
-            {
-                FrmAgregarCuenta frmAgregarCuenta = new FrmAgregarCuenta();
-                frmAgregarCuenta.MdiParent = this;
-                frmAgregarCuenta.Show();
-            }
+            AbrirFormulario<FrmAgregarCuenta>();
         }
 
         private void verCuentasToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var cerrado = CerrarVentanas(((ToolStripMenuItem)sender).Name);
-            if (cerrado)
-            {
-                FrmVerCuentas frmVerCuentas = new FrmVerCuentas();
-                frmVerCuentas.MdiParent = this;
-                frmVerCuentas.Show();
-            }
+            AbrirFormulario<FrmVerCuentas>();
         }
 
         private void agregarClienteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var cerrado = CerrarVentanas(((ToolStripMenuItem)sender).Name);
-            if (cerrado)
-            {
-                FrmAgregarCliente frmAgregarCliente = new FrmAgregarCliente();
-                frmAgregarCliente.MdiParent = this;
-                frmAgregarCliente.Show();
-            }
+            AbrirFormulario<FrmAgregarCliente>();
         }
 
         private void estadísticasToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var cerrado = CerrarVentanas(((ToolStripMenuItem)sender).Name);
-            if (cerrado)
-            {
-                FrmEstadisticas frmEstadisticas = new FrmEstadisticas();
-                frmEstadisticas.MdiParent = this;
-                frmEstadisticas.Show();
-            }
+            AbrirFormulario<FrmEstadisticas>();
         }
 
         private void verClientesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var cerrado = CerrarVentanas(((ToolStripMenuItem)sender).Name);
-            if (cerrado)
-            {
-                FrmVerClientes frmVerClientes = new FrmVerClientes();
-                frmVerClientes.MdiParent = this;
-                frmVerClientes.Show();
-            }
+            AbrirFormulario<FrmVerClientes>();
         }
     }
 }

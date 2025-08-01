@@ -32,6 +32,11 @@
             DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
             DgvClientes = new DataGridView();
+            IdCliente = new DataGridViewTextBoxColumn();
+            Nombre = new DataGridViewTextBoxColumn();
+            Telefono = new DataGridViewTextBoxColumn();
+            Correo = new DataGridViewTextBoxColumn();
+            VerCliente = new DataGridViewButtonColumn();
             txtBuscar = new TextBox();
             lblBuscar = new Label();
             panel1 = new Panel();
@@ -54,6 +59,7 @@
             dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
             DgvClientes.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             DgvClientes.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            DgvClientes.Columns.AddRange(new DataGridViewColumn[] { IdCliente, Nombre, Telefono, Correo, VerCliente });
             dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = SystemColors.Window;
             dataGridViewCellStyle2.Font = new Font("Segoe UI", 12F);
@@ -78,6 +84,36 @@
             DgvClientes.Size = new Size(800, 398);
             DgvClientes.TabIndex = 0;
             DgvClientes.CellContentClick += DgvClientes_CellContentClick;
+            // 
+            // IdCliente
+            // 
+            IdCliente.HeaderText = "Cedula";
+            IdCliente.Name = "IdCliente";
+            IdCliente.ReadOnly = true;
+            // 
+            // Nombre
+            // 
+            Nombre.HeaderText = "Nombre";
+            Nombre.Name = "Nombre";
+            Nombre.ReadOnly = true;
+            // 
+            // Telefono
+            // 
+            Telefono.HeaderText = "Teléfono";
+            Telefono.Name = "Telefono";
+            Telefono.ReadOnly = true;
+            // 
+            // Correo
+            // 
+            Correo.HeaderText = "Correo";
+            Correo.Name = "Correo";
+            Correo.ReadOnly = true;
+            // 
+            // VerCliente
+            // 
+            VerCliente.HeaderText = "Detalles Clientes";
+            VerCliente.Name = "VerCliente";
+            VerCliente.ReadOnly = true;
             // 
             // txtBuscar
             // 
@@ -141,5 +177,10 @@
         private TextBox txtBuscar;
         private Label lblBuscar;
         private Panel panel1;
+        private DataGridViewTextBoxColumn IdCliente;
+        private DataGridViewTextBoxColumn Nombre;
+        private DataGridViewTextBoxColumn Telefono;
+        private DataGridViewTextBoxColumn Correo;
+        private DataGridViewButtonColumn VerCliente;
     }
 }

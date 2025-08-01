@@ -18,6 +18,9 @@ namespace Models
 
         public string Nombre { get; set; } = null!;
         public Dictionary<string, byte[]>? Files { get; set; }
+        public ClienteDAO()
+        {
+        }
 
         public ClienteDAO(string idCliente, string? correo, long telefono, string direccion, string nombre, Dictionary<string, byte[]>? files)
         {

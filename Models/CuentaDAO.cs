@@ -9,6 +9,7 @@ namespace Models
     public class CuentaDAO
     {
 
+        public int Cuenta { get; set; }
 
         public string IdCliente { get; set; } = null!;
 
@@ -17,9 +18,14 @@ namespace Models
         public int Cuotas { get; set; }
 
         public int Canceladas { get; set; }
+        public string SiguientePago { get; set; }
 
 
         public List<PagosCuenta> PagosCuenta { get; set; }
+
+        public CuentaDAO()
+        {
+        }
         public CuentaDAO(string idCliente, decimal monto, int cuotas, List<PagosCuenta> pagosCuenta)
         {
             IdCliente = idCliente;

@@ -98,6 +98,7 @@
             Name = "FrmAdministradorDeCuentas";
             Text = "Cuentas";
             WindowState = FormWindowState.Maximized;
+            Load += FrmAdministradorDeCuentas_Load;
             menuStrip.ResumeLayout(false);
             menuStrip.PerformLayout();
             ResumeLayout(false);

@@ -1,5 +1,6 @@
 ﻿using BussinessLogic;
 using DataAccess.Models;
+using Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,65 +14,48 @@ namespace Cuentas
         {
             InitializeComponent();
             DgvCuentas.CellClick += DgvCuentas_CellContentClick;
+            cmbSemanal.SelectedIndex = 0;
+
         }
 
-        public void RecargarDatos(IEnumerable<object> cuentas)
+        public void RecargarDatos(IEnumerable<CuentaDAO> cuentas)
         {
-            var source = new BindingSource
+            DgvCuentas.Rows.Clear();
+
+            foreach (var item in cuentas)
             {
-                DataSource = cuentas
-            };
-            DgvCuentas.DataSource = source;
-            
-
-            if (!DgvCuentas.Columns.Contains("VerPagos"))
-            {
-                if (DgvCuentas.Columns.Contains("SiguientePago"))
-                    DgvCuentas.Columns["SiguientePago"].HeaderText = "Siguiente Pago";
-
-                if (DgvCuentas.Columns.Contains("Cuenta"))
-                    DgvCuentas.Columns["Cuenta"].Visible = false;
-
-                DgvCuentas.Columns.Add(new DataGridViewButtonColumn
-                {
-                    Name = "Multa",
-                    Text = "Multar cuenta",
-                    UseColumnTextForButtonValue = true,
-                    HeaderText = "Multa"
-                });
-                
-
-                DgvCuentas.Columns.Add(new DataGridViewButtonColumn
-                {
-                    Name = "VerPagos",
-                    Text = "Ver Pagos",
-                    UseColumnTextForButtonValue = true,
-                    HeaderText = "Pagos"
-                });
-
-               
+                DgvCuentas.Rows.Add(
+                    item.Cuenta,
+                    item.IdCliente,
+                    item.Monto,
+                    item.Cuotas,
+                    item.Canceladas,
+                    item.SiguientePago
+                );
             }
         }
+
 
         private void FrmVerCuentas_Load(object sender, EventArgs e)
         {
             CargarTodasLasCuentas();
+
         }
 
         private void CargarTodasLasCuentas()
         {
-            var cuentas = CuentaLogic.ListaCuentas
-                .Select(c => new
+            List<CuentaDAO> cuentas = CuentaLogic.ListaCuentas
+                .Select(c => new CuentaDAO
                 {
                     Cuenta = c.IdCuenta,
-                    Cliente = c.IdClienteNavigation.Nombre,
-                    c.Monto,
-                    c.Cuotas,
-                    c.Canceladas,
+                    IdCliente = c.IdClienteNavigation.Nombre,
+                    Monto = c.Monto,
+                    Cuotas = c.Cuotas,
+                    Canceladas = c.Canceladas,
                     SiguientePago = c.SiguientePago != DateOnly.MinValue
                         ? c.SiguientePago.ToString("dd-MM-yyyy")
                         : "Cancelado",
-                    
+
                 })
                 .ToList();
 
@@ -88,7 +72,7 @@ namespace Cuentas
             {
                 if (int.TryParse(cuenta, out int cuentaId))
                 {
-                    if(siguientePago == "Cancelado")
+                    if (siguientePago == "Cancelado")
                     {
                         MessageBox.Show("Cuenta ya ha sido cancelada", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         return;
@@ -101,9 +85,10 @@ namespace Cuentas
                         MessageBoxIcon.Warning);
                     if (result == DialogResult.Yes)
                     {
-                        try {
+                        try
+                        {
                             DateOnly fechaSiguientePago = DateOnly.ParseExact(siguientePago, "dd-MM-yyyy", System.Globalization.CultureInfo.InvariantCulture);
-                            var resultado = await CuentaLogic.MultarCuenta(cuentaId,fechaSiguientePago);
+                            var resultado = await CuentaLogic.MultarCuenta(cuentaId, fechaSiguientePago);
                             MessageBox.Show(resultado, "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
                             CargarTodasLasCuentas();
 
@@ -145,15 +130,15 @@ namespace Cuentas
         private void txtBuscar_TextChanged(object sender, EventArgs e)
         {
             var searchText = txtBuscar.Text.ToLower();
-            var filteredCuentas = CuentaLogic.ListaCuentas
+            List<CuentaDAO> filteredCuentas = CuentaLogic.ListaCuentas
                 .Where(c => c.IdClienteNavigation.Nombre.ToLower().Contains(searchText) || c.SiguientePago.ToString("dd-MM-yyyy").Contains(searchText))
-                .Select(c => new
+                .Select(c => new CuentaDAO
                 {
                     Cuenta = c.IdCuenta,
-                    Cliente = c.IdClienteNavigation.Nombre,
-                    c.Monto,
-                    c.Cuotas,
-                    c.Canceladas,
+                    IdCliente = c.IdClienteNavigation.Nombre,
+                    Monto = c.Monto,
+                    Cuotas = c.Cuotas,
+                    Canceladas = c.Canceladas,
                     SiguientePago = c.SiguientePago != DateOnly.MinValue
                         ? c.SiguientePago.ToString("dd-MM-yyyy")
                         : "Cancelado"
@@ -163,32 +148,54 @@ namespace Cuentas
             RecargarDatos(filteredCuentas);
         }
 
-        private void cbPagosHoy_CheckedChanged(object sender, EventArgs e)
-        {
-            if (cbPagosHoy.Checked)
-            {
-                var hoy = DateOnly.FromDateTime(DateTime.Today);
-                var filteredCuentas = CuentaLogic.ListaCuentas
-                    .Where(c => c.SiguientePago == hoy)
-                    .Select(c => new
-                    {
-                        Cuenta = c.IdCuenta,
-                        Cliente = c.IdClienteNavigation.Nombre,
-                        c.Monto,
-                        c.Cuotas,
-                        c.Canceladas,
-                        SiguientePago = c.SiguientePago != DateOnly.MinValue
-                            ? c.SiguientePago.ToString("dd-MM-yyyy")
-                            : "Cancelado"
-                    })
-                    .ToList();
 
-                RecargarDatos(filteredCuentas);
-            }
-            else
+        private DateTime ObtenerFechaSemanaSeleccionada()
+        {
+            if (cmbSemanal.SelectedItem == null)
+                return DateTime.Today;
+
+            var diaSeleccionado = cmbSemanal.SelectedItem.ToString();
+            var diaSemana = diaSeleccionado switch
+            {
+                "Lunes" => DayOfWeek.Monday,
+                "Martes" => DayOfWeek.Tuesday,
+                "Miercoles" => DayOfWeek.Wednesday,
+                "Jueves" => DayOfWeek.Thursday,
+                "Viernes" => DayOfWeek.Friday,
+                "Sabado" => DayOfWeek.Saturday,
+                "Domingo" => DayOfWeek.Sunday,
+            };
+
+
+            var hoy = DateTime.Today;
+            int diasDiferencia = ((int)diaSemana - (int)hoy.DayOfWeek + 7) % 7;
+
+            return hoy.AddDays(diasDiferencia == 0 ? 0 : diasDiferencia);
+        }
+        private void cmbSemanal_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cmbSemanal.SelectedIndex == 0)
             {
                 CargarTodasLasCuentas();
+                return;
             }
+            List<CuentaDAO> filteredCuentas = CuentaLogic.ListaCuentas
+                .Where(c => c.SiguientePago == DateOnly.FromDateTime(ObtenerFechaSemanaSeleccionada()))
+                .Select(c => new CuentaDAO
+                {
+                    Cuenta = c.IdCuenta,
+                    IdCliente = c.IdClienteNavigation.Nombre,
+                    Monto = c.Monto,
+                    Cuotas = c.Cuotas,
+                    Canceladas = c.Canceladas,
+                    SiguientePago = c.SiguientePago != DateOnly.MinValue
+                        ? c.SiguientePago.ToString("dd-MM-yyyy")
+                        : "Cancelado"
+                })
+                .ToList();
+
+            RecargarDatos(filteredCuentas);
+
         }
     }
 }

@@ -55,7 +55,7 @@
             flowLayoutPanel1.Font = new Font("Segoe UI", 12F);
             flowLayoutPanel1.Location = new Point(0, 0);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
-            flowLayoutPanel1.Size = new Size(212, 450);
+            flowLayoutPanel1.Size = new Size(321, 650);
             flowLayoutPanel1.TabIndex = 6;
             // 
             // lblCliente
@@ -101,7 +101,7 @@
             // lblSiguientePago
             // 
             lblSiguientePago.AutoSize = true;
-            lblSiguientePago.Location = new Point(15, 35);
+            lblSiguientePago.Location = new Point(5, 399);
             lblSiguientePago.Margin = new Padding(5, 35, 5, 35);
             lblSiguientePago.Name = "lblSiguientePago";
             lblSiguientePago.Size = new Size(0, 21);
@@ -124,9 +124,9 @@
             DgvPagos.DefaultCellStyle = dataGridViewCellStyle1;
             DgvPagos.Dock = DockStyle.Fill;
             DgvPagos.EditMode = DataGridViewEditMode.EditOnEnter;
-            DgvPagos.Location = new Point(212, 0);
+            DgvPagos.Location = new Point(321, 0);
             DgvPagos.Name = "DgvPagos";
-            DgvPagos.Size = new Size(588, 450);
+            DgvPagos.Size = new Size(679, 650);
             DgvPagos.TabIndex = 16;
             DgvPagos.CellContentClick += DgvPagos_CellContentClick;
             // 
@@ -134,6 +134,7 @@
             // 
             IdPago.HeaderText = "IdPago";
             IdPago.Name = "IdPago";
+            IdPago.SortMode = DataGridViewColumnSortMode.NotSortable;
             IdPago.Visible = false;
             // 
             // Pagos
@@ -141,19 +142,19 @@
             Pagos.HeaderText = "Fecha del pago";
             Pagos.Name = "Pagos";
             Pagos.ReadOnly = true;
+            Pagos.SortMode = DataGridViewColumnSortMode.NotSortable;
             // 
             // Pagado
             // 
             Pagado.HeaderText = "Pago hecho";
             Pagado.Name = "Pagado";
             Pagado.Resizable = DataGridViewTriState.True;
-            Pagado.SortMode = DataGridViewColumnSortMode.Automatic;
             // 
             // FrmVerPagos
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(1000, 650);
             Controls.Add(DgvPagos);
             Controls.Add(flowLayoutPanel1);
             Name = "FrmVerPagos";

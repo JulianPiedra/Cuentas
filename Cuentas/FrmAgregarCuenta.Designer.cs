@@ -335,13 +335,13 @@ namespace Cuentas
             Pagos.HeaderText = "Fecha del pago";
             Pagos.Name = "Pagos";
             Pagos.ReadOnly = true;
+            Pagos.SortMode = DataGridViewColumnSortMode.NotSortable;
             // 
             // Pagado
             // 
             Pagado.HeaderText = "Pago hecho";
             Pagado.Name = "Pagado";
             Pagado.Resizable = DataGridViewTriState.True;
-            Pagado.SortMode = DataGridViewColumnSortMode.Automatic;
             // 
             // FrmAgregarCuenta
             // 

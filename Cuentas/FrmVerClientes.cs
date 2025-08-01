@@ -1,5 +1,6 @@
 ﻿using BussinessLogic;
 using DataAccess.Models;
+using Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,23 +15,18 @@ namespace Cuentas
             InitializeComponent();
         }
 
-        public void RecargarDatos(IEnumerable<object> clientes)
+        public void RecargarDatos(IEnumerable<ClienteDAO> clientes)
         {
-            var source = new BindingSource
-            {
-                DataSource = clientes
-            };
-            DgvClientes.DataSource = source;
+            DgvClientes.Rows.Clear();
 
-            if (!DgvClientes.Columns.Contains("VerCliente"))
+            foreach (var item in clientes)
             {
-                DgvClientes.Columns.Add(new DataGridViewButtonColumn
-                {
-                    Name = "VerCliente",
-                    Text = "Detalles del cliente",
-                    UseColumnTextForButtonValue = true,
-                    HeaderText = "Ver cliente"
-                });
+                DgvClientes.Rows.Add(
+                    item.IdCliente,
+                    item.Nombre,
+                    item.Telefono,
+                    item.Correo
+                );
             }
         }
 
@@ -41,13 +37,13 @@ namespace Cuentas
 
         private void CargarTodosLosClientes()
         {
-            var clientes = ClientesLogic.ListaClientes
-                .Select(c => new
+            List< ClienteDAO > clientes = ClientesLogic.ListaClientes
+                .Select(c => new ClienteDAO
                 {
-                    Cedula = c.IdCliente,
-                    c.Nombre,
-                    c.Telefono,
-                    c.Correo,
+                    IdCliente = c.IdCliente,
+                    Nombre = c.Nombre,
+                    Telefono = c.Telefono,
+                    Correo = c.Correo,
                 })
                 .ToList();
 
@@ -60,24 +56,24 @@ namespace Cuentas
         {
             var searchText = txtBuscar.Text.ToLower();
 
-            var filteredClientes = ClientesLogic.ListaClientes
-                .Where(c => c.Nombre.Contains(searchText))
-                .Select(c => new
+            List<ClienteDAO> clientes = ClientesLogic.ListaClientes
+                .Where(c => c.Nombre.ToLower().Contains(searchText))
+                .Select(c => new ClienteDAO
                 {
-                    Cedula = c.IdCliente,
-                    c.Nombre,
-                    c.Telefono,
-                    c.Correo,
+                    IdCliente = c.IdCliente,
+                    Nombre = c.Nombre,
+                    Telefono = c.Telefono,
+                    Correo = c.Correo,
                 })
                 .ToList();
 
-            RecargarDatos(filteredClientes);
+            RecargarDatos(clientes);
         }
 
         private async void DgvClientes_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
-            var cliente = DgvClientes.Rows[e.RowIndex].Cells["Cedula"].Value?.ToString();
+            var cliente = DgvClientes.Rows[e.RowIndex].Cells["IdCliente"].Value?.ToString();
 
             if (DgvClientes.Columns[e.ColumnIndex].Name == "VerCliente")
             {

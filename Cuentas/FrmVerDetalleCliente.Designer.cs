@@ -50,7 +50,7 @@
             flowLayoutPanel1.Font = new Font("Segoe UI", 12F);
             flowLayoutPanel1.Location = new Point(0, 0);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
-            flowLayoutPanel1.Size = new Size(212, 450);
+            flowLayoutPanel1.Size = new Size(284, 650);
             flowLayoutPanel1.TabIndex = 6;
             // 
             // lblCedula
@@ -107,16 +107,16 @@
             // 
             flpMultimedia.AutoScroll = true;
             flpMultimedia.Dock = DockStyle.Fill;
-            flpMultimedia.Location = new Point(212, 15);
+            flpMultimedia.Location = new Point(284, 15);
             flpMultimedia.Name = "flpMultimedia";
-            flpMultimedia.Size = new Size(588, 435);
+            flpMultimedia.Size = new Size(716, 635);
             flpMultimedia.TabIndex = 7;
             // 
             // label1
             // 
             label1.AutoSize = true;
             label1.Dock = DockStyle.Top;
-            label1.Location = new Point(212, 0);
+            label1.Location = new Point(284, 0);
             label1.Name = "label1";
             label1.Size = new Size(177, 15);
             label1.TabIndex = 0;
@@ -126,7 +126,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(1000, 650);
             Controls.Add(flpMultimedia);
             Controls.Add(label1);
             Controls.Add(flowLayoutPanel1);

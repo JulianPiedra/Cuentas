@@ -23,12 +23,14 @@ namespace Cuentas
             try
             {
                 var estadisticas = await EstadisticasLogic.ObtenerEstadisticas();
-                lblTotalClientes.Text = estadisticas.TotalClientes.ToString();
-                lblTotalCuentas.Text = estadisticas.TotalCuentas.ToString();
-                lblTotalCuentasActivas.Text = estadisticas.TotalCuentasActivas.ToString();
-                lblMontoTotalCuentas.Text = estadisticas.MontoTotalCuentas.ToString("C2");
-                lblMontoTotalCuentasPendientes.Text = estadisticas.MontoTotalCuentasPendientes.ToString("C2");
+
+                lblTotalClientes.Text = "Clientes Totales: \n" + estadisticas.TotalClientes.ToString();
+                lblTotalCuentas.Text = "Cuentas Totales: \n" + estadisticas.TotalCuentas.ToString();
+                lblTotalCuentasActivas.Text = "Total de cuentas activas: \n" + estadisticas.TotalCuentasActivas.ToString();
+                lblMontoTotalCuentas.Text = "Monto total de cuentas: \n" + estadisticas.MontoTotalCuentas.ToString("C2");
+                lblMontoTotalCuentasPendientes.Text = "Monto total de cuentas activas: \n" + estadisticas.MontoTotalCuentasPendientes.ToString("C2");
             }
+
             catch (Exception ex)
             {
                 MessageBox.Show("Error al cargar las estadísticas: " + ex.Message);

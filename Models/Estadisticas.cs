@@ -13,6 +13,7 @@ namespace Models
         public int TotalCuentasActivas { get; set; }
         public decimal MontoTotalCuentas { get; set; }
         public decimal MontoTotalCuentasPendientes { get; set; }
+        public int MultasSemanales { get; set; }
 
     }
 }
