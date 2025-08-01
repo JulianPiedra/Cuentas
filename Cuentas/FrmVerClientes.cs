@@ -48,14 +48,17 @@ namespace Cuentas
                 .ToList();
 
             RecargarDatos(clientes);
-        }
+        } 
 
 
 
         private void txtBuscar_TextChanged(object sender, EventArgs e)
         {
-            var searchText = txtBuscar.Text.ToLower();
+            var searchText = txtBuscar.Text;
 
+            var filteredClientes = ClientesLogic.ListaClientes
+                .Where(c => c.Nombre.Contains(searchText) || c.Telefono.ToString().Contains(searchText) || c.IdCliente.Contains(searchText))
+                .Select(c => new
             List<ClienteDAO> clientes = ClientesLogic.ListaClientes
                 .Where(c => c.Nombre.ToLower().Contains(searchText))
                 .Select(c => new ClienteDAO
