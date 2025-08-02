@@ -56,11 +56,8 @@ namespace Cuentas
         {
             var searchText = txtBuscar.Text;
 
-            var filteredClientes = ClientesLogic.ListaClientes
-                .Where(c => c.Nombre.Contains(searchText) || c.Telefono.ToString().Contains(searchText) || c.IdCliente.Contains(searchText))
-                .Select(c => new
             List<ClienteDAO> clientes = ClientesLogic.ListaClientes
-                .Where(c => c.Nombre.ToLower().Contains(searchText))
+                .Where(c => c.Nombre.Contains(searchText) || c.Telefono.ToString().Contains(searchText) || c.IdCliente.Contains(searchText))
                 .Select(c => new ClienteDAO
                 {
                     IdCliente = c.IdCliente,

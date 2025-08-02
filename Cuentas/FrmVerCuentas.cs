@@ -18,6 +18,7 @@ namespace Cuentas
 
         }
 
+
         public void RecargarDatos(IEnumerable<CuentaDAO> cuentas)
         {
             DgvCuentas.Rows.Clear();
@@ -39,7 +40,10 @@ namespace Cuentas
         private void FrmVerCuentas_Load(object sender, EventArgs e)
         {
             CargarTodasLasCuentas();
-
+            foreach (DataGridViewColumn column in DgvCuentas.Columns)
+            {
+                column.SortMode = DataGridViewColumnSortMode.Automatic;
+            }
         }
 
         private void CargarTodasLasCuentas()
@@ -130,52 +134,24 @@ namespace Cuentas
         private void txtBuscar_TextChanged(object sender, EventArgs e)
         {
             var searchText = txtBuscar.Text.ToLower();
-
-            var filteredCuentas = CuentaLogic.ListaCuentas
-                .Where(c =>
-                    c.IdClienteNavigation.Nombre.ToLower().Contains(searchText) ||
-                    c.SiguientePago.ToString("dd-MM-yyyy").Contains(searchText) ||
-                    (c.SiguientePago == DateOnly.MinValue && "cancelado".Contains(searchText))
-                )
-                .Select(c => new
+            List<CuentaDAO> filteredCuentas = CuentaLogic.ListaCuentas
+                .Where(c => c.IdClienteNavigation.Nombre.ToLower().Contains(searchText) || c.SiguientePago.ToString("dd-MM-yyyy").Contains(searchText))
+                .Select(c => new CuentaDAO
                 {
                     Cuenta = c.IdCuenta,
-                    Cliente = c.IdClienteNavigation.Nombre,
-                    c.Monto,
-                    c.Cuotas,
-                    c.Canceladas,
+                    IdCliente = c.IdClienteNavigation.Nombre,
+                    Monto = c.Monto,
+                    Cuotas = c.Cuotas,
+                    Canceladas = c.Canceladas,
                     SiguientePago = c.SiguientePago != DateOnly.MinValue
                         ? c.SiguientePago.ToString("dd-MM-yyyy")
                         : "Cancelado"
                 })
                 .ToList();
 
-            List<CuentaDAO> filteredCuentas = CuentaLogic.ListaCuentas
             RecargarDatos(filteredCuentas);
         }
 
-
-        private void cbPagosHoy_CheckedChanged(object sender, EventArgs e)
-        {
-                .Where(c => c.IdClienteNavigation.Nombre.ToLower().Contains(searchText) || c.SiguientePago.ToString("dd-MM-yyyy").Contains(searchText))
-                .Select(c => new CuentaDAO
-        private DateTime ObtenerFechaSemanaSeleccionada()
-        {
-            if (cmbSemanal.SelectedItem == null)
-                var filteredCuentas = CuentaLogic.ListaCuentas
-                    .Where(c => c.SiguientePago == hoy)
-
-        private DateTime ObtenerFechaSemanaSeleccionada()
-        {
-            if (cmbSemanal.SelectedItem == null)
-                        c.Monto,
-                        c.Cuotas,
-
-        private DateTime ObtenerFechaSemanaSeleccionada()
-        {
-            if (cmbSemanal.SelectedItem == null)
-                    })
-                    .ToList();
 
         private DateTime ObtenerFechaSemanaSeleccionada()
         {
@@ -201,6 +177,24 @@ namespace Cuentas
             return hoy.AddDays(diasDiferencia == 0 ? 0 : diasDiferencia);
         }
         private void cmbSemanal_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cmbSemanal.SelectedIndex == 0)
+            {
+                CargarTodasLasCuentas();
+                return;
+            }
+            List<CuentaDAO> filteredCuentas = CuentaLogic.ListaCuentas
+                .Where(c => c.SiguientePago == DateOnly.FromDateTime(ObtenerFechaSemanaSeleccionada()))
+                .Select(c => new CuentaDAO
+                {
+                    Cuenta = c.IdCuenta,
+                   IdCliente = c.IdClienteNavigation.Nombre,
+                    Monto = c.Monto,
+                    Cuotas = c.Cuotas,
+                    Canceladas = c.Canceladas,
+                    SiguientePago = c.SiguientePago != DateOnly.MinValue
+                        ? c.SiguientePago.ToString("dd-MM-yyyy")
+                        : "Cancelado"
                 })
                 .ToList();
 
