@@ -1,5 +1,6 @@
 ﻿using BussinessLogic;
 using DataAccess.Models;
+using Microsoft.IdentityModel.Tokens;
 using Models;
 using System;
 using System.Collections;
@@ -58,11 +59,25 @@ namespace Cuentas
         {
             try
             {
+
                 lblCedula.Text = "Cédula del cliente: " + _cliente[0].IdCliente;
                 lblTelefono.Text = "Telefono: " + _cliente[0].Telefono;
-                lblCorreo.Text = "Correo: " + _cliente[0].Correo;
+                lblCorreo.Text = "Correo: " + (string.IsNullOrEmpty(_cliente[0].Correo) ? "                    " : _cliente[0].Correo);
                 lblDireccion.Text = "Dirección: " + _cliente[0].Direccion;
                 lblNombre.Text = "Nombre: " + _cliente[0].Nombre;
+                linkLblCuentas.Text = "Cuentas asociadas:\n";
+                linkLblCuentas.Links.Clear(); // Limpia cualquier enlace previo
+
+                int startIndex = linkLblCuentas.Text.Length;
+
+                foreach (var cuenta in _cliente[0].Cuenta)
+                {
+                    string textoLink = $"Monto de cuenta: {cuenta.Monto:C}\n";
+                    linkLblCuentas.Text += textoLink;
+
+                    linkLblCuentas.Links.Add(startIndex, textoLink.Length, cuenta.IdCuenta);
+                    startIndex += textoLink.Length;
+                }
 
                 foreach (var multimedia in _cliente[0].Multimedia)
                 {
@@ -119,5 +134,26 @@ namespace Cuentas
                 return null;
             }
         }
+
+        private async void linkLblCuentas_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            var idCuentaObj = e.Link.LinkData;
+
+            if (int.TryParse(idCuentaObj?.ToString(), out int cuentaId))
+            {
+                var listaPagos = await CuentaLogic.ObtenerCuentasConPagos(cuentaId);
+
+                var frmVerPagos = new FrmVerPagos(listaPagos)
+                {
+                    Owner = this
+                };
+                frmVerPagos.ShowDialog();
+            }
+            else
+            {
+                MessageBox.Show("No se pudo obtener el ID de la cuenta.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
     }
 }

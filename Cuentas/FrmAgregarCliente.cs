@@ -13,7 +13,6 @@ namespace Cuentas
 {
     public partial class FrmAgregarCliente : Form
     {
-        // Use full file path as key to avoid duplicates
         private Dictionary<string, byte[]> files = new Dictionary<string, byte[]>();
 
         public FrmAgregarCliente()
@@ -89,18 +88,50 @@ namespace Cuentas
 
                 if (new[] { ".jpg", ".jpeg", ".png", ".gif" }.Contains(ext))
                 {
-                    thumbnail.Image = Image.FromFile(fileName);
+                    using (var ms = new MemoryStream(multimedia))
+                    {
+                        thumbnail.Image = Image.FromStream(ms);
+                    }
                 }
                 else if (new[] { ".mp4", ".mp3", ".wav" }.Contains(ext))
                 {
                     thumbnail.Image = Properties.Resources.play_button;
                 }
+                Button closeButton = new Button
+                {
+                    Text = "X",
+                    Width = 20,
+                    Height = 20,
+                    Top = 0,
+                    Left = mediaPanel.Width - 20,
+                    Anchor = AnchorStyles.Top | AnchorStyles.Right,
+                    BackColor = Color.Red,
+                    ForeColor = Color.White,
+                    FlatStyle = FlatStyle.Flat,
+                    Font = new Font("Arial", 8, FontStyle.Bold),
+                    Tag = fileName
+                };
+                closeButton.FlatAppearance.BorderSize = 0;
+
+                closeButton.Click += (s, args) =>
+                {
+                    var btn = (Button)s;
+                    string filePath = btn.Tag.ToString();
+                    var parentPanel = (Panel)btn.Parent;
+
+                    if (files.ContainsKey(filePath))
+                        files.Remove(filePath);
+
+                    flpMultimedia.Controls.Remove(parentPanel);
+                    parentPanel.Dispose();
+                };
+
+                mediaPanel.Controls.Add(closeButton);
+                mediaPanel.Controls.SetChildIndex(closeButton, 0);
+
 
                 mediaPanel.Controls.Add(thumbnail);
-
-                mediaPanel.Click += OpenFile;
                 thumbnail.Click += OpenFile;
-
 
                 flpMultimedia.Controls.Add(mediaPanel);
             }

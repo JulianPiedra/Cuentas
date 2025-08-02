@@ -114,6 +114,8 @@
             VerCliente.HeaderText = "Detalles Clientes";
             VerCliente.Name = "VerCliente";
             VerCliente.ReadOnly = true;
+            VerCliente.Text = "Ver detalles del cliente";
+            VerCliente.UseColumnTextForButtonValue = true;
             // 
             // txtBuscar
             // 
