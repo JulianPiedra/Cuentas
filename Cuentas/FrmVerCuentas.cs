@@ -15,8 +15,35 @@ namespace Cuentas
             InitializeComponent();
             DgvCuentas.CellClick += DgvCuentas_CellContentClick;
             cmbSemanal.SelectedIndex = 0;
-
+            DgvCuentas.CellFormatting += DgvCuentas_CellFormatting;
         }
+
+        private void DgvCuentas_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (DgvCuentas.Columns[e.ColumnIndex].Name != "SiguientePago" || e.RowIndex < 0)
+                return;
+
+            var valorCelda = DgvCuentas.Rows[e.RowIndex].Cells[e.ColumnIndex].Value?.ToString();
+            if (string.IsNullOrWhiteSpace(valorCelda) || valorCelda == "Cancelado")
+                return;
+
+            // Intentamos parsear la fecha como DateTime
+            if (DateTime.TryParseExact(valorCelda, "dd-MM-yyyy", System.Globalization.CultureInfo.InvariantCulture,
+                                       System.Globalization.DateTimeStyles.None, out var fechaPago))
+            {
+                var hoy = DateTime.Today;
+
+                if (fechaPago.Date == hoy)
+                {
+                    e.CellStyle.BackColor = System.Drawing.Color.LightBlue; // Hoy
+                }
+                else if (fechaPago.Date < hoy)
+                {
+                    e.CellStyle.BackColor = System.Drawing.Color.LightCoral; // Atrasado
+                }
+            }
+        }
+ 
 
 
         public void RecargarDatos(IEnumerable<CuentaDAO> cuentas)
@@ -135,7 +162,10 @@ namespace Cuentas
         {
             var searchText = txtBuscar.Text.ToLower();
             List<CuentaDAO> filteredCuentas = CuentaLogic.ListaCuentas
-                .Where(c => c.IdClienteNavigation.Nombre.ToLower().Contains(searchText) || c.SiguientePago.ToString("dd-MM-yyyy").Contains(searchText))
+                .Where(c => c.IdClienteNavigation.Nombre.ToLower().Contains(searchText) 
+                            || c.SiguientePago.ToString("dd-MM-yyyy").Contains(searchText) 
+                            || c.IdCliente.ToLower().Contains(searchText)
+                            || c.IdClienteNavigation.Telefono.ToString().Contains(searchText))
                 .Select(c => new CuentaDAO
                 {
                     Cuenta = c.IdCuenta,
@@ -158,8 +188,15 @@ namespace Cuentas
             if (cmbSemanal.SelectedItem == null)
                 return DateTime.Today;
 
-            var diaSeleccionado = cmbSemanal.SelectedItem.ToString();
-            var diaSemana = diaSeleccionado switch
+            var seleccion = cmbSemanal.SelectedItem.ToString();
+
+            if (seleccion == "15")
+                return new DateTime(DateTime.Today.Year, DateTime.Today.Month, 15);
+
+            if (seleccion == "30")
+                return new DateTime(DateTime.Today.Year, DateTime.Today.Month, 30);
+
+            var diaSemana = seleccion switch
             {
                 "Lunes" => DayOfWeek.Monday,
                 "Martes" => DayOfWeek.Tuesday,
@@ -168,14 +205,15 @@ namespace Cuentas
                 "Viernes" => DayOfWeek.Friday,
                 "Sabado" => DayOfWeek.Saturday,
                 "Domingo" => DayOfWeek.Sunday,
+                _ => DateTime.Today.DayOfWeek
             };
-
 
             var hoy = DateTime.Today;
             int diasDiferencia = ((int)diaSemana - (int)hoy.DayOfWeek + 7) % 7;
 
             return hoy.AddDays(diasDiferencia == 0 ? 0 : diasDiferencia);
         }
+
         private void cmbSemanal_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (cmbSemanal.SelectedIndex == 0)
