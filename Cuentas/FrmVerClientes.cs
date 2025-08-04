@@ -54,10 +54,10 @@ namespace Cuentas
 
         private void txtBuscar_TextChanged(object sender, EventArgs e)
         {
-            var searchText = txtBuscar.Text;
+            var searchText = txtBuscar.Text.ToLower();
 
             List<ClienteDAO> clientes = ClientesLogic.ListaClientes
-                .Where(c => c.Nombre.Contains(searchText) || c.Telefono.ToString().Contains(searchText) || c.IdCliente.Contains(searchText))
+                .Where(c => c.Nombre.ToLower().Contains(searchText) || c.Telefono.ToString().Contains(searchText) || c.IdCliente.ToLower().Contains(searchText))
                 .Select(c => new ClienteDAO
                 {
                     IdCliente = c.IdCliente,
