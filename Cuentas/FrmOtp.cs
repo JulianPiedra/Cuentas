@@ -1,4 +1,5 @@
-﻿using OtpNet;
+﻿using BussinessLogic;
+using OtpNet;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -20,7 +21,6 @@ namespace Cuentas
         }
         private static readonly string secretKey = ConfigurationManager.AppSettings["OtpPassword"];
 
-
         private void btnVerify_Click(object sender, EventArgs e)
         {
             string codeEntered = txtOTP.Text.Trim();
@@ -36,7 +36,7 @@ namespace Cuentas
 
         private bool ValidateOtp(string code)
         {
-            byte[] bytes = Base32Encoding.ToBytes(secretKey);
+            byte[] bytes = Base32Encoding.ToBytes(Cifrado.Desencriptar(secretKey));
             Totp totp = new Totp(bytes);
 
             return totp.VerifyTotp(code, out long timeStepMatched, new VerificationWindow(1, 1));
