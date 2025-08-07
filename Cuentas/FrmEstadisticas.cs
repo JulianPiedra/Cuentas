@@ -28,7 +28,7 @@ namespace Cuentas
                 lblTotalCuentas.Text = "Cuentas Totales: \n" + estadisticas.TotalCuentas.ToString();
                 lblTotalCuentasActivas.Text = "Total de cuentas activas: \n" + estadisticas.TotalCuentasActivas.ToString();
                 lblMontoTotalCuentas.Text = "Monto total de cuentas: \n" + estadisticas.MontoTotalCuentas.ToString("C2");
-                lblMontoTotalCuentasPendientes.Text = "Monto total de cuentas activas: \n" + estadisticas.MontoTotalCuentasPendientes.ToString("C2");
+                lblMontoTotalCuentasPendientes.Text = "Plata en la calle: \n" + estadisticas.MontoTotalCuentasPendientes.ToString("C2");
             }
 
             catch (Exception ex)

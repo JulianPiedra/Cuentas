@@ -71,9 +71,9 @@
             // 
             lblTotalCuentas.Dock = DockStyle.Fill;
             lblTotalCuentas.Font = new Font("Arial Narrow", 18F, FontStyle.Bold);
-            lblTotalCuentas.Location = new Point(0, 226);
+            lblTotalCuentas.Location = new Point(0, 349);
             lblTotalCuentas.Name = "lblTotalCuentas";
-            lblTotalCuentas.Size = new Size(154, 218);
+            lblTotalCuentas.Size = new Size(154, 95);
             lblTotalCuentas.TabIndex = 6;
             lblTotalCuentas.TextAlign = ContentAlignment.TopCenter;
             // 
@@ -83,7 +83,7 @@
             pbTotalCuentas.Image = Properties.Resources.accounting;
             pbTotalCuentas.Location = new Point(0, 0);
             pbTotalCuentas.Name = "pbTotalCuentas";
-            pbTotalCuentas.Size = new Size(154, 226);
+            pbTotalCuentas.Size = new Size(154, 349);
             pbTotalCuentas.SizeMode = PictureBoxSizeMode.CenterImage;
             pbTotalCuentas.TabIndex = 1;
             pbTotalCuentas.TabStop = false;
@@ -102,9 +102,9 @@
             // 
             lblTotalCuentasActivas.Dock = DockStyle.Fill;
             lblTotalCuentasActivas.Font = new Font("Arial Narrow", 18F, FontStyle.Bold);
-            lblTotalCuentasActivas.Location = new Point(0, 226);
+            lblTotalCuentasActivas.Location = new Point(0, 349);
             lblTotalCuentasActivas.Name = "lblTotalCuentasActivas";
-            lblTotalCuentasActivas.Size = new Size(154, 218);
+            lblTotalCuentasActivas.Size = new Size(154, 95);
             lblTotalCuentasActivas.TabIndex = 7;
             lblTotalCuentasActivas.TextAlign = ContentAlignment.TopCenter;
             // 
@@ -114,7 +114,7 @@
             pbTotalCuentasActivas.Image = Properties.Resources.bank;
             pbTotalCuentasActivas.Location = new Point(0, 0);
             pbTotalCuentasActivas.Name = "pbTotalCuentasActivas";
-            pbTotalCuentasActivas.Size = new Size(154, 226);
+            pbTotalCuentasActivas.Size = new Size(154, 349);
             pbTotalCuentasActivas.SizeMode = PictureBoxSizeMode.CenterImage;
             pbTotalCuentasActivas.TabIndex = 2;
             pbTotalCuentasActivas.TabStop = false;
@@ -133,9 +133,9 @@
             // 
             lblTotalClientes.Dock = DockStyle.Fill;
             lblTotalClientes.Font = new Font("Arial Narrow", 18F, FontStyle.Bold);
-            lblTotalClientes.Location = new Point(0, 226);
+            lblTotalClientes.Location = new Point(0, 349);
             lblTotalClientes.Name = "lblTotalClientes";
-            lblTotalClientes.Size = new Size(154, 218);
+            lblTotalClientes.Size = new Size(154, 95);
             lblTotalClientes.TabIndex = 5;
             lblTotalClientes.TextAlign = ContentAlignment.TopCenter;
             // 
@@ -145,7 +145,7 @@
             pbTotalClientes.Image = Properties.Resources.customer;
             pbTotalClientes.Location = new Point(0, 0);
             pbTotalClientes.Name = "pbTotalClientes";
-            pbTotalClientes.Size = new Size(154, 226);
+            pbTotalClientes.Size = new Size(154, 349);
             pbTotalClientes.SizeMode = PictureBoxSizeMode.CenterImage;
             pbTotalClientes.TabIndex = 0;
             pbTotalClientes.TabStop = false;
@@ -187,9 +187,9 @@
             // 
             lblMontoTotalCuentasPendientes.Dock = DockStyle.Fill;
             lblMontoTotalCuentasPendientes.Font = new Font("Arial Narrow", 18F, FontStyle.Bold);
-            lblMontoTotalCuentasPendientes.Location = new Point(0, 226);
+            lblMontoTotalCuentasPendientes.Location = new Point(0, 349);
             lblMontoTotalCuentasPendientes.Name = "lblMontoTotalCuentasPendientes";
-            lblMontoTotalCuentasPendientes.Size = new Size(154, 218);
+            lblMontoTotalCuentasPendientes.Size = new Size(154, 95);
             lblMontoTotalCuentasPendientes.TabIndex = 9;
             lblMontoTotalCuentasPendientes.TextAlign = ContentAlignment.TopCenter;
             // 
@@ -199,7 +199,7 @@
             pbMontoTotalPendientes.Image = Properties.Resources.time;
             pbMontoTotalPendientes.Location = new Point(0, 0);
             pbMontoTotalPendientes.Name = "pbMontoTotalPendientes";
-            pbMontoTotalPendientes.Size = new Size(154, 226);
+            pbMontoTotalPendientes.Size = new Size(154, 349);
             pbMontoTotalPendientes.SizeMode = PictureBoxSizeMode.CenterImage;
             pbMontoTotalPendientes.TabIndex = 4;
             pbMontoTotalPendientes.TabStop = false;
@@ -218,9 +218,9 @@
             // 
             lblMontoTotalCuentas.Dock = DockStyle.Fill;
             lblMontoTotalCuentas.Font = new Font("Arial Narrow", 18F, FontStyle.Bold);
-            lblMontoTotalCuentas.Location = new Point(0, 226);
+            lblMontoTotalCuentas.Location = new Point(0, 349);
             lblMontoTotalCuentas.Name = "lblMontoTotalCuentas";
-            lblMontoTotalCuentas.Size = new Size(154, 218);
+            lblMontoTotalCuentas.Size = new Size(154, 95);
             lblMontoTotalCuentas.TabIndex = 8;
             lblMontoTotalCuentas.TextAlign = ContentAlignment.TopCenter;
             // 
@@ -230,7 +230,7 @@
             pbMontoTotalCuentas.Image = Properties.Resources.profit;
             pbMontoTotalCuentas.Location = new Point(0, 0);
             pbMontoTotalCuentas.Name = "pbMontoTotalCuentas";
-            pbMontoTotalCuentas.Size = new Size(154, 226);
+            pbMontoTotalCuentas.Size = new Size(154, 349);
             pbMontoTotalCuentas.SizeMode = PictureBoxSizeMode.CenterImage;
             pbMontoTotalCuentas.TabIndex = 3;
             pbMontoTotalCuentas.TabStop = false;

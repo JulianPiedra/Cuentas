@@ -182,7 +182,7 @@
             cmbSemanal.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbSemanal.Font = new Font("Segoe UI", 12F);
             cmbSemanal.FormattingEnabled = true;
-            cmbSemanal.Items.AddRange(new object[] { "Seleccione un día de filtrado", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo" });
+            cmbSemanal.Items.AddRange(new object[] { "Seleccione un día de filtrado", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo", "15", "30" });
             cmbSemanal.Location = new Point(561, 21);
             cmbSemanal.Name = "cmbSemanal";
             cmbSemanal.Size = new Size(239, 29);
