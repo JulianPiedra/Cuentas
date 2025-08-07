@@ -18,7 +18,15 @@ namespace Cuentas
                 CuentaLogic.ObtenerCuentas()
             );
             ApplicationConfiguration.Initialize();
-            Application.Run(new FrmAdministradorDeCuentas());
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+
+            FrmOtp login = new FrmOtp();
+            if (login.ShowDialog() == DialogResult.OK)
+            {
+                Application.Run(new FrmAdministradorDeCuentas());
+            }
+
         }
     }
 }
