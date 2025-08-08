@@ -12,11 +12,6 @@ namespace Cuentas
         {
              
             string connStr = ConfigurationManager.ConnectionStrings["Default"].ConnectionString;
-            BdContext.Initialize(connStr);
-            Task.WhenAll(
-                ClientesLogic.ObtenerClientes(),
-                CuentaLogic.ObtenerCuentas()
-            );
             ApplicationConfiguration.Initialize();
             Application.Run(new FrmAdministradorDeCuentas());
         }
