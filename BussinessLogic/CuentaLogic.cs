@@ -7,15 +7,14 @@ namespace BussinessLogic
 {
     public class CuentaLogic : ICuentaLogic
     {
-
         private readonly BdContext Context;
         public CuentaLogic(BdContext context)
         {
             Context = context;
         }
+
         public async Task<BusinessLogicResponse> MultarCuenta(int idCuenta, DateOnly fechaPago)
         {
-
             try
             {
                 var pago = await Context.PagoCuenta
@@ -89,7 +88,17 @@ namespace BussinessLogic
                     .AsNoTracking()
                     .ToListAsync();
 
-                return new BusinessLogicResponse(200, cuentas);
+                var cuentasDAO = cuentas.Select(c => new CuentaDAO
+                {
+                    Cuenta = c.IdCuenta,
+                    IdCliente = c.IdCliente,
+                    Monto = c.Monto,
+                    Cuotas = c.Cuotas,
+                    Canceladas = c.Canceladas,
+                    SiguientePago = c.SiguientePago.ToString("yyyy-MM-dd"),
+                }).ToList();
+
+                return new BusinessLogicResponse(200, cuentasDAO);
             }
             catch (Exception ex)
             {
@@ -108,8 +117,26 @@ namespace BussinessLogic
                     .AsNoTracking()
                     .ToListAsync();
 
+                var cuentasDAO = cuentas.Select(c => new CuentaDAO
+                {
+                    Cuenta = c.IdCuenta,
+                    IdCliente = c.IdCliente,
+                    Monto = c.Monto,
+                    Cuotas = c.Cuotas,
+                    Canceladas = c.Canceladas,
+                    SiguientePago = c.SiguientePago.ToString("yyyy-MM-dd"),
+                    PagosCuenta = c.PagoCuenta.Select(p => new PagoCuentaDAO
+                    {
+                        IdCuenta = p.IdCuenta,
+                        IdPago = p.IdPago,
+                        FechaPago = p.FechaPago,
+                        Cancelado = p.Cancelado,
+                        Monto = p.Monto,
+                        Multa = p.Multa
+                    }).ToList()
+                }).ToList();
 
-                return new BusinessLogicResponse(200, cuentas);
+                return new BusinessLogicResponse(200, cuentasDAO);
             }
             catch (Exception ex)
             {

@@ -3,7 +3,6 @@ using DataAccess.Models;
 using Microsoft.EntityFrameworkCore;
 using Models;
 
-
 namespace BussinessLogic
 {
     public class ClientesLogic : IClienteLogic
@@ -57,6 +56,7 @@ namespace BussinessLogic
                 return new BusinessLogicResponse(500, $"Error al agregar cliente: {ex.Message}");
             }
         }
+
         public async Task<BusinessLogicResponse> AgregarMultimedia(string idCliente, Dictionary<string, byte[]> archivos)
         {
             try
@@ -99,7 +99,26 @@ namespace BussinessLogic
                     .AsNoTracking()
                     .ToListAsync();
 
-                return new BusinessLogicResponse(200, clientes);
+                var clientesDAO = clientes.Select(c => new ClienteDAO
+                {
+                    IdCliente = c.IdCliente,
+                    Correo = c.Correo,
+                    Telefono = c.Telefono,
+                    Direccion = c.Direccion,
+                    Nombre = c.Nombre,
+                    Cuentas = c.Cuenta.Select(cta => new CuentaDAO
+                    {
+                        Cuenta = cta.IdCuenta,
+                        IdCliente = cta.IdCliente,
+                        Monto = cta.Monto,
+                        Cuotas = cta.Cuotas,
+                        Canceladas = cta.Canceladas,
+                        SiguientePago = cta.SiguientePago.ToString("yyyy-MM-dd"),
+                        
+                    }).ToList()
+                }).ToList();
+
+                return new BusinessLogicResponse(200, clientesDAO);
             }
             catch (Exception ex)
             {
@@ -114,6 +133,7 @@ namespace BussinessLogic
                 var cliente = await Context.Clientes
                     .Where(c => c.IdCliente == id)
                     .Include(c => c.Cuenta)
+                        .ThenInclude(cta => cta.PagoCuenta)
                     .Include(c => c.Multimedia)
                     .AsNoTracking()
                     .FirstOrDefaultAsync();
@@ -121,7 +141,37 @@ namespace BussinessLogic
                 if (cliente == null)
                     return new BusinessLogicResponse(404, "Cliente no encontrado");
 
-                return new BusinessLogicResponse(200, cliente);
+                var clienteDAO = new ClienteDAO
+                {
+                    IdCliente = cliente.IdCliente,
+                    Correo = cliente.Correo,
+                    Telefono = cliente.Telefono,
+                    Direccion = cliente.Direccion,
+                    Nombre = cliente.Nombre,
+                    Files = cliente.Multimedia?.ToDictionary(
+                        m => $"{m.IdMultimedia}.{m.Extension}",
+                        m => m.Multimedia),
+                    Cuentas = cliente.Cuenta.Select(cta => new CuentaDAO
+                    {
+                        Cuenta = cta.IdCuenta,
+                        IdCliente = cta.IdCliente,
+                        Monto = cta.Monto,
+                        Cuotas = cta.Cuotas,
+                        Canceladas = cta.Canceladas,
+                        SiguientePago = cta.SiguientePago.ToString("yyyy-MM-dd"),
+                        PagosCuenta = cta.PagoCuenta.Select(pg => new PagoCuentaDAO
+                        {
+                            IdCuenta = pg.IdCuenta,
+                            IdPago = pg.IdPago,
+                            FechaPago = pg.FechaPago,
+                            Cancelado = pg.Cancelado,
+                            Monto = pg.Monto,
+                            Multa = pg.Multa
+                        }).ToList()
+                    }).ToList()
+                };
+
+                return new BusinessLogicResponse(200, clienteDAO);
             }
             catch (Exception ex)
             {

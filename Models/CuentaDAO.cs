@@ -20,18 +20,11 @@ namespace Models
         public int Canceladas { get; set; }
         public string SiguientePago { get; set; }
 
-
-        public List<PagosCuenta> PagosCuenta { get; set; }
+        
+        public List<PagoCuentaDAO> PagosCuenta { get; set; }
 
         public CuentaDAO()
         {
-        }
-        public CuentaDAO(string idCliente, decimal monto, int cuotas, List<PagosCuenta> pagosCuenta)
-        {
-            IdCliente = idCliente;
-            Monto = monto;
-            Cuotas = cuotas;
-            PagosCuenta = pagosCuenta;
         }
 
         public void Validate()

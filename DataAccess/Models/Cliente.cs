@@ -18,11 +18,11 @@ public partial class Cliente
     [Unicode(false)]
     public string? Correo { get; set; }
 
-    public long? Telefono { get; set; }
+    public long Telefono { get; set; }
 
     [StringLength(150)]
     [Unicode(false)]
-    public string? Direccion { get; set; }
+    public string Direccion { get; set; }
 
     [StringLength(50)]
     [Unicode(false)]
