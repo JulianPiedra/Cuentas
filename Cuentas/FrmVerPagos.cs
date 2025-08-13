@@ -10,13 +10,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using UILogic;
 
 namespace Cuentas
 {
     public partial class FrmVerPagos : Form
     {
-        List<Cuentum> _cuentum;
-        public FrmVerPagos(List<Cuentum> cuentum)
+        List<CuentaDAO> _cuentum;
+        public FrmVerPagos(List<CuentaDAO> cuentum)
         {
             InitializeComponent();
             _cuentum = cuentum;
@@ -39,9 +40,9 @@ namespace Cuentas
                 {
                     var idPago = Convert.ToInt32(DgvPagos.Rows[e.RowIndex].Cells["IdPago"].Value);
 
-                    await CuentaLogic.ActualizarEstadoPago(_cuentum[0].IdCuenta, idPago);
+                    var listaPagos = await ApiFetch.FetchAsync<List<CuentaDAO>>($"/cuentas/{_cuentum[0].Cuenta}/pago/{idPago}/estado", HttpMethod.Get, null);
 
-                    var cuentaActualizada = await CuentaLogic.ObtenerCuentasConPagos(_cuentum[0].IdCuenta);
+                    var cuentaActualizada = await ApiFetch.FetchAsync<List<CuentaDAO>>($"/cuentas/{_cuentum[0].Cuenta}/pagos", HttpMethod.Get, null);
                     _cuentum = cuentaActualizada;
 
                     ActualizarVista();
@@ -61,7 +62,7 @@ namespace Cuentas
                 lblCuotas.Text = "Numero total de cuotas: " + _cuentum[0].Cuotas.ToString();
                 lblMonto.Text = "Monto total: " + _cuentum[0].Monto.ToString("C2");
                 lblSiguientePago.Text = "Siguiente pago: " + _cuentum[0].SiguientePago.ToString("dd/MM/yyyy") ?? "N/A";
-                lblCliente.Text = "Nombre: " + _cuentum[0].IdClienteNavigation.Nombre;
+                lblCliente.Text = "Nombre: " + _cuentum[0].Cliente[0].Nombre;
 
                 DgvPagos.Rows.Clear();
 

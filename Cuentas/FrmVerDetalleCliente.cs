@@ -12,12 +12,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using UILogic;
 namespace Cuentas
 {
     public partial class FrmVerDetalleCliente : Form
     {
-        List<Cliente> _cliente;
-        public FrmVerDetalleCliente(List<Cliente> cliente)
+        List<ClienteDAO> _cliente;
+        public FrmVerDetalleCliente(List<ClienteDAO> cliente)
         {
             InitializeComponent();
             _cliente = cliente;
@@ -70,22 +71,22 @@ namespace Cuentas
 
                 int startIndex = linkLblCuentas.Text.Length;
 
-                foreach (var cuenta in _cliente[0].Cuenta)
+                foreach (var cuenta in _cliente[0].Cuentas)
                 {
                     string textoLink = $"Monto de cuenta: {cuenta.Monto:C}\n";
                     linkLblCuentas.Text += textoLink;
 
-                    linkLblCuentas.Links.Add(startIndex, textoLink.Length, cuenta.IdCuenta);
+                    linkLblCuentas.Links.Add(startIndex, textoLink.Length, cuenta.Cuenta);
                     startIndex += textoLink.Length;
                 }
 
-                foreach (var multimedia in _cliente[0].Multimedia)
+                foreach (var multimedia in _cliente[0].Files)
                 {
-                    string tempPath = Path.Combine(Path.GetTempPath(), $"{multimedia.IdMultimedia}.{multimedia.Extension}");
+                    string tempPath = Path.Combine(Path.GetTempPath(), $"{multimedia.Key}");
 
                     if (!File.Exists(tempPath))
                     {
-                        File.WriteAllBytes(tempPath, multimedia.Multimedia);
+                        File.WriteAllBytes(tempPath, multimedia.Value);
                     }
 
                     PictureBox thumbnail = new PictureBox
@@ -97,13 +98,13 @@ namespace Cuentas
                         Tag = tempPath // Guardar ruta para abrirla después
                     };
 
-                    if (new[] { "jpg", "jpeg", "png", "gif" }.Contains(multimedia.Extension.ToLower()))
+                    if (new[] { "jpg", "jpeg", "png", "gif" }.Contains(multimedia.Key.ToLower()))
                     {
-                        var image = ByteArrayToImage(multimedia.Multimedia);
+                        var image = ByteArrayToImage(multimedia.Value);
                         if (image != null)
                             thumbnail.Image = image;
                     }
-                    else if (new[] { "mp4", "mp3", "wav" }.Contains(multimedia.Extension.ToLower()))
+                    else if (new[] { "mp4", "mp3", "wav" }.Contains(multimedia.Key.ToLower()))
                     {
                         thumbnail.Image = Properties.Resources.play_button; // Icono genérico
                     }
@@ -141,7 +142,7 @@ namespace Cuentas
 
             if (int.TryParse(idCuentaObj?.ToString(), out int cuentaId))
             {
-                var listaPagos = await CuentaLogic.ObtenerCuentasConPagos(cuentaId);
+                var listaPagos = await ApiFetch.FetchAsync<List<CuentaDAO>>($"/cuentas/{cuentaId}/pagos", HttpMethod.Get, null);
 
                 var frmVerPagos = new FrmVerPagos(listaPagos)
                 {

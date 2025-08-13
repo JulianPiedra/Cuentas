@@ -2,6 +2,8 @@ using System.Configuration;
 using BussinessLogic;
 using DataAccess;
 using DataAccess.Models;
+using Models;
+using UILogic;
 
 namespace Cuentas
 {
@@ -10,8 +12,6 @@ namespace Cuentas
         [STAThread]
         static void Main()
         {
-             
-            string connStr = ConfigurationManager.ConnectionStrings["Default"].ConnectionString;
             ApplicationConfiguration.Initialize();
             Application.Run(new FrmAdministradorDeCuentas());
         }

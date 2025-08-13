@@ -1,52 +1,56 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Configuration;
 using System.Net.Http;
 using System.Net.Http.Headers;
 
 namespace UILogic
 {
-    public class ApiFetch
+    public static class ApiFetch
     {
+        private static readonly string baseUrl = ConfigurationManager.AppSettings["ApiBaseUrl"];
 
-        public async Task<object> FetchAsync(
-            string baseUrl,
+
+        public static async Task<T> FetchAsync<T>(
             string url,
             HttpMethod method,
-            string? json)
+            object? body = null)
         {
-            using (HttpClient client = new HttpClient())
+            try
             {
-                client.BaseAddress = new Uri(baseUrl);
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-
-                HttpRequestMessage request = new HttpRequestMessage(method, url);
-
-                if (!string.IsNullOrEmpty(json))
+                using (HttpClient client = new HttpClient())
                 {
-                    request.Content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
-                }
+                    client.BaseAddress = new Uri(baseUrl);
+                    client.DefaultRequestHeaders.Accept.Clear();
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-                HttpResponseMessage response = await client.SendAsync(request);
-                var bodyResponse = await response.Content.ReadAsStringAsync();
+                    HttpRequestMessage request = new HttpRequestMessage(method, url);
 
-                if (response.IsSuccessStatusCode)
-                {
-                    return (bodyResponse);
-                }
+                    if (body != null)
+                    {
+                        var json = JsonConvert.SerializeObject(body);
+                        request.Content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
+                    }
 
-                try
-                {
-                    string errorMessage = bodyResponse?.FirstOrDefault()?.Mensaje ?? "Error desconocido";
+                    HttpResponseMessage response = await client.SendAsync(request);
+                    var bodyResponse = await response.Content.ReadAsStringAsync();
 
-                    return (errorMessage, (int)response.StatusCode);
-                }
-                catch (JsonSerializationException)
-                {
-                    return ("Ha ocurrido un error al deserializar la respuesta del servidor.", (int)response.StatusCode);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return JsonConvert.DeserializeObject<T>(bodyResponse)!;
+                    }
+                    else
+                    {
+                        throw new Exception($"Error {response.StatusCode}: {bodyResponse}");
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error al realizar la solicitud a la API: {ex.Message}", ex);
+            }
         }
+
     }
 }
+

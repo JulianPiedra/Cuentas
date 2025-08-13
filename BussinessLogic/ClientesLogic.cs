@@ -159,15 +159,6 @@ namespace BussinessLogic
                         Cuotas = cta.Cuotas,
                         Canceladas = cta.Canceladas,
                         SiguientePago = cta.SiguientePago.ToString("yyyy-MM-dd"),
-                        PagosCuenta = cta.PagoCuenta.Select(pg => new PagoCuentaDAO
-                        {
-                            IdCuenta = pg.IdCuenta,
-                            IdPago = pg.IdPago,
-                            FechaPago = pg.FechaPago,
-                            Cancelado = pg.Cancelado,
-                            Monto = pg.Monto,
-                            Multa = pg.Multa
-                        }).ToList()
                     }).ToList()
                 };
 

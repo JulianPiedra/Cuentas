@@ -9,7 +9,7 @@ namespace Cuentas
     public partial class FrmAgregarCuenta : Form
     {
         private Timer inputDelayTimer;
-        private List<PagosCuenta> pagosCuentas = new();
+        private List<PagoCuentaDAO> pagosCuentas = new();
 
         public FrmAgregarCuenta()
         {
@@ -32,7 +32,7 @@ namespace Cuentas
         private void RecargarClientes()
         {
             cmbCuenta.DataSource = null;
-            cmbCuenta.DataSource = ClientesLogic.ListaClientes;
+            cmbCuenta.DataSource = "ASD";
             cmbCuenta.DisplayMember = "Nombre";
         }
 

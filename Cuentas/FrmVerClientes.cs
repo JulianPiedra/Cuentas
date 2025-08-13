@@ -3,8 +3,10 @@ using DataAccess.Models;
 using Models;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Windows.Forms;
+using UILogic;
 
 namespace Cuentas
 {
@@ -35,18 +37,9 @@ namespace Cuentas
             CargarTodosLosClientes();
         }
 
-        private void CargarTodosLosClientes()
+        private async void CargarTodosLosClientes()
         {
-            List< ClienteDAO > clientes = ClientesLogic.ListaClientes
-                .Select(c => new ClienteDAO
-                {
-                    IdCliente = c.IdCliente,
-                    Nombre = c.Nombre,
-                    Telefono = c.Telefono,
-                    Correo = c.Correo,
-                })
-                .ToList();
-
+            var clientes= await ApiFetch.FetchAsync<List<ClienteDAO>>("/clientes/obtener", HttpMethod.Get, null);
             RecargarDatos(clientes);
         } 
 
@@ -55,19 +48,7 @@ namespace Cuentas
         private void txtBuscar_TextChanged(object sender, EventArgs e)
         {
             var searchText = txtBuscar.Text.ToLower();
-
-            List<ClienteDAO> clientes = ClientesLogic.ListaClientes
-                .Where(c => c.Nombre.ToLower().Contains(searchText) || c.Telefono.ToString().Contains(searchText) || c.IdCliente.ToLower().Contains(searchText))
-                .Select(c => new ClienteDAO
-                {
-                    IdCliente = c.IdCliente,
-                    Nombre = c.Nombre,
-                    Telefono = c.Telefono,
-                    Correo = c.Correo,
-                })
-                .ToList();
-
-            RecargarDatos(clientes);
+            (DgvClientes.DataSource as DataTable).DefaultView.RowFilter = $"Field LIKE '%{searchText}%'";
         }
 
         private async void DgvClientes_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -77,8 +58,8 @@ namespace Cuentas
 
             if (DgvClientes.Columns[e.ColumnIndex].Name == "VerCliente")
             {
-                try { 
-                    var listaCliente = await ClientesLogic.ObtenerClienteConMultimedia(cliente);
+                try {
+                    var listaCliente = await ApiFetch.FetchAsync<List<ClienteDAO>>("/clientes/obtener", HttpMethod.Get, null);
 
                     var frmVerPagos = new FrmVerDetalleCliente(listaCliente)
                     {

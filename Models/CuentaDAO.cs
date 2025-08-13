@@ -18,9 +18,10 @@ namespace Models
         public int Cuotas { get; set; }
 
         public int Canceladas { get; set; }
-        public string SiguientePago { get; set; }
+        public DateOnly SiguientePago { get; set; }
+        public  List<ClienteDAO> Cliente { get; set; }
 
-        
+
         public List<PagoCuentaDAO> PagosCuenta { get; set; }
 
         public CuentaDAO()
