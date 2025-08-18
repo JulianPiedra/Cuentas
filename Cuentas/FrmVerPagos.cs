@@ -62,18 +62,18 @@ namespace Cuentas
                 lblCuotas.Text = "Numero total de cuotas: " + _cuentum[0].Cuotas.ToString();
                 lblMonto.Text = "Monto total: " + _cuentum[0].Monto.ToString("C2");
                 lblSiguientePago.Text = "Siguiente pago: " + _cuentum[0].SiguientePago.ToString("dd/MM/yyyy") ?? "N/A";
-                lblCliente.Text = "Nombre: " + _cuentum[0].Cliente[0].Nombre;
+                lblCliente.Text = "Nombre: " + _cuentum[0].Cliente.Nombre;
 
                 DgvPagos.Rows.Clear();
 
-                foreach (var pago in _cuentum[0].PagoCuenta)
+                foreach (var pago in _cuentum[0].PagosCuenta)
                 {
                     int rowIndex = DgvPagos.Rows.Add(
                         pago.IdPago,
                         $"{pago.FechaPago:dd/MM/yyyy} - ₡{pago.Monto:N2}",
                         pago.Cancelado
                     );
-                    if (pago.Multa)
+                    if (pago.Multa > 0)
                     {
                         DgvPagos.Rows[rowIndex].DefaultCellStyle.BackColor = Color.Red;
                         DgvPagos.Rows[rowIndex].DefaultCellStyle.ForeColor = Color.White;

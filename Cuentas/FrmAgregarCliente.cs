@@ -8,6 +8,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using UILogic;
 
 namespace Cuentas
 {
@@ -157,10 +158,6 @@ namespace Cuentas
         {
             try
             {
-                progressBar1.Style = ProgressBarStyle.Marquee;
-                foreach (Control ctrl in this.Controls)
-                    ctrl.Enabled = false;
-
                 if (!long.TryParse(txtTelefono.Text, out long telefono))
                 {
                     if (string.IsNullOrEmpty(txtTelefono.Text))
@@ -168,21 +165,20 @@ namespace Cuentas
                     throw new ArgumentException("El número de teléfono no puede contener caracteres no numéricos.");
                 }
 
-                ClienteDAO cliente = new ClienteDAO(
-                    txtCedula.Text,
-                    txtCorreo.Text,
-                    telefono,
-                    txtDireccion.Text,
-                    txtNombre.Text,
-                    files);
+                ClienteDAO cliente = new ClienteDAO { 
+                    IdCliente = txtCedula.Text,
+                    Correo = txtCorreo.Text,
+                    Telefono =telefono,
+                    Direccion=  txtDireccion.Text,
+                    Nombre = txtNombre.Text,
+                };
 
                 cliente.Validate();
 
-                ClientesLogic logic = new ClientesLogic();
 
-                string result = await Task.Run(() => logic.AgregarCliente(cliente));
+                var result = await ApiFetch.FetchAsync<BusinessLogicResponse>($"/clientes/agregar", HttpMethod.Post, null);
 
-                MessageBox.Show(result, "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(result.Message, "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 LimpiarCampos();
             }
             catch (Exception ex)

@@ -113,7 +113,7 @@ namespace BussinessLogic
                         Monto = cta.Monto,
                         Cuotas = cta.Cuotas,
                         Canceladas = cta.Canceladas,
-                        SiguientePago = cta.SiguientePago.ToString("yyyy-MM-dd"),
+                        SiguientePago = cta.SiguientePago,
                         
                     }).ToList()
                 }).ToList();
@@ -158,7 +158,7 @@ namespace BussinessLogic
                         Monto = cta.Monto,
                         Cuotas = cta.Cuotas,
                         Canceladas = cta.Canceladas,
-                        SiguientePago = cta.SiguientePago.ToString("yyyy-MM-dd"),
+                        SiguientePago = cta.SiguientePago,
                     }).ToList()
                 };
 

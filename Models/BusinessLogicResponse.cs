@@ -26,5 +26,9 @@ namespace Models
             StatusCode = statusCode;
             ObjectResponse = objectResponse;
         }
+        public BusinessLogicResponse(int statusCode)
+        {
+            StatusCode = statusCode;
+        }
     }
 }

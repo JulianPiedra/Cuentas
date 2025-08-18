@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Configuration;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 
@@ -24,7 +25,7 @@ namespace UILogic
                     client.DefaultRequestHeaders.Accept.Clear();
                     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-                    HttpRequestMessage request = new HttpRequestMessage(method, url);
+                    HttpRequestMessage request = new HttpRequestMessage(method, $"/api{url}");
 
                     if (body != null)
                     {
@@ -35,13 +36,30 @@ namespace UILogic
                     HttpResponseMessage response = await client.SendAsync(request);
                     var bodyResponse = await response.Content.ReadAsStringAsync();
 
+                    if (response.StatusCode == HttpStatusCode.NoContent)
+                    {
+                        return default(T)!;
+                    }
+
                     if (response.IsSuccessStatusCode)
                     {
                         return JsonConvert.DeserializeObject<T>(bodyResponse)!;
                     }
                     else
                     {
-                        throw new Exception($"Error {response.StatusCode}: {bodyResponse}");
+                        // Intentar extraer el mensaje de error del JSON
+                        string apiMessage;
+                        try
+                        {
+                            var jsonObj = JObject.Parse(bodyResponse);
+                            apiMessage = jsonObj["message"]?.ToString() ?? bodyResponse;
+                        }
+                        catch
+                        {
+                            apiMessage = bodyResponse; // Si no es JSON, devolver el contenido tal cual
+                        }
+
+                        throw new Exception($"Error {response.StatusCode}: {apiMessage}");
                     }
                 }
             }

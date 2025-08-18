@@ -50,7 +50,7 @@ public static class CuentaEndpoints
         })
         .WithName("ActualizarEstadoPago");
 
-        group.MapPost("/{idCuenta:int}/multar", async (int idCuenta, DateOnly fechaPago, ICuentaLogic cuentaLogic) =>
+        group.MapPatch("/{idCuenta:int}/{fechaPago}/multar", async (int idCuenta, DateOnly fechaPago, ICuentaLogic cuentaLogic) =>
         {
             if (idCuenta <= 0)
                 return Results.BadRequest(new { codigo = 400, mensaje = "ID de cuenta inválido." });

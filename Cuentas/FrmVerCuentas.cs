@@ -3,21 +3,24 @@ using DataAccess.Models;
 using Models;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
+using UILogic;
 
 namespace Cuentas
 {
     public partial class FrmVerCuentas : Form
     {
+        private List<CuentaDAO> todasLasCuentas = new List<CuentaDAO>();
+
         public FrmVerCuentas()
         {
             InitializeComponent();
             DgvCuentas.CellClick += DgvCuentas_CellContentClick;
             cmbSemanal.SelectedIndex = 0;
-
         }
-
 
         public void RecargarDatos(IEnumerable<CuentaDAO> cuentas)
         {
@@ -27,94 +30,91 @@ namespace Cuentas
             {
                 DgvCuentas.Rows.Add(
                     item.Cuenta,
-                    item.IdCliente,
+                    item.Cliente.Nombre,
                     item.Monto,
                     item.Cuotas,
                     item.Canceladas,
-                    item.SiguientePago
+                    item.SiguientePago != DateOnly.MinValue
+                        ? item.SiguientePago.ToString("dd-MM-yyyy")
+                        : "Cancelado"
                 );
             }
         }
 
-
-        private void FrmVerCuentas_Load(object sender, EventArgs e)
+        private async void FrmVerCuentas_Load(object sender, EventArgs e)
         {
-            CargarTodasLasCuentas();
-            foreach (DataGridViewColumn column in DgvCuentas.Columns)
+            try
             {
-                column.SortMode = DataGridViewColumnSortMode.Automatic;
-            }
-        }
+                // Traer todos los datos solo una vez
+                var response = await ApiFetch.FetchAsync<ApiResponse<List<CuentaDAO>>>("/cuentas/obtener", HttpMethod.Get, null);
+                todasLasCuentas = response.ObjectResponse;
 
-        private void CargarTodasLasCuentas()
-        {
-            List<CuentaDAO> cuentas = CuentaLogic.ListaCuentas
-                .Select(c => new CuentaDAO
+                RecargarDatos(todasLasCuentas);
+
+                foreach (DataGridViewColumn column in DgvCuentas.Columns)
                 {
-                    Cuenta = c.IdCuenta,
-                    IdCliente = c.IdClienteNavigation.Nombre,
-                    Monto = c.Monto,
-                    Cuotas = c.Cuotas,
-                    Canceladas = c.Canceladas,
-                    SiguientePago = c.SiguientePago != DateOnly.MinValue
-                        ? c.SiguientePago.ToString("dd-MM-yyyy")
-                        : "Cancelado",
-
-                })
-                .ToList();
-
-            RecargarDatos(cuentas);
+                    column.SortMode = DataGridViewColumnSortMode.Automatic;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al cargar cuentas: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private async void DgvCuentas_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
-            var cuenta = DgvCuentas.Rows[e.RowIndex].Cells["Cuenta"].Value?.ToString();
-            var siguientePago = DgvCuentas.Rows[e.RowIndex].Cells["SiguientePago"].Value?.ToString();
 
+            var cuentaStr = DgvCuentas.Rows[e.RowIndex].Cells["Cuenta"].Value?.ToString();
+            var siguientePagoStr = DgvCuentas.Rows[e.RowIndex].Cells["SiguientePago"].Value?.ToString();
+
+            if (!int.TryParse(cuentaStr, out int cuentaId))
+            {
+                MessageBox.Show("No se pudo obtener el ID de la cuenta.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            // MULTA
             if (DgvCuentas.Columns[e.ColumnIndex].Name == "Multa")
             {
-                if (int.TryParse(cuenta, out int cuentaId))
+                if (siguientePagoStr == "Cancelado")
                 {
-                    if (siguientePago == "Cancelado")
-                    {
-                        MessageBox.Show("Cuenta ya ha sido cancelada", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        return;
-                    }
-
-                    DialogResult result = MessageBox.Show(
-                        "¿Está seguro de que desea multar el siguiente pago de esta cuenta?",
-                        "Confirmar multa",
-                        MessageBoxButtons.YesNo,
-                        MessageBoxIcon.Warning);
-                    if (result == DialogResult.Yes)
-                    {
-                        try
-                        {
-                            DateOnly fechaSiguientePago = DateOnly.ParseExact(siguientePago, "dd-MM-yyyy", System.Globalization.CultureInfo.InvariantCulture);
-                            var resultado = await CuentaLogic.MultarCuenta(cuentaId, fechaSiguientePago);
-                            MessageBox.Show(resultado, "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            CargarTodasLasCuentas();
-
-                        }
-                        catch (Exception ex)
-                        {
-                            MessageBox.Show($"Error al multar la cuenta: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            return;
-                        }
-                    }
+                    MessageBox.Show("Cuenta ya ha sido cancelada", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
                 }
-                else
+
+                var result = MessageBox.Show(
+                    "¿Está seguro de que desea multar el siguiente pago de esta cuenta?",
+                    "Confirmar multa",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning);
+
+                if (result == DialogResult.Yes)
                 {
-                    MessageBox.Show("No se pudo obtener el ID de la cuenta.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    try
+                    {
+                        DateOnly fechaSiguientePago = DateOnly.ParseExact(siguientePagoStr, "dd-MM-yyyy", CultureInfo.InvariantCulture);
+                        string fechaStr = fechaSiguientePago.ToString("yyyy-MM-dd");
+
+                        var resultado = await ApiFetch.FetchAsync<string>($"/cuentas/{cuentaStr}/{fechaStr}/multar", HttpMethod.Patch);
+
+                        MessageBox.Show("Cuenta multada con éxito", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        RecargarDatos(todasLasCuentas);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Error al multar la cuenta: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
             }
 
+            // VER PAGOS
             if (DgvCuentas.Columns[e.ColumnIndex].Name == "VerPagos")
             {
-                if (int.TryParse(cuenta, out int cuentaId))
+                try
                 {
-                    var listaPagos = await CuentaLogic.ObtenerCuentasConPagos(cuentaId);
+                    var listaPagos = await ApiFetch.FetchAsync<List<CuentaDAO>>($"/cuentas/{cuentaId}/pagos", HttpMethod.Get, null);
 
                     var frmVerPagos = new FrmVerPagos(listaPagos)
                     {
@@ -122,11 +122,11 @@ namespace Cuentas
                     };
                     frmVerPagos.ShowDialog();
 
-                    CargarTodasLasCuentas();
+                    RecargarDatos(todasLasCuentas);
                 }
-                else
+                catch (Exception ex)
                 {
-                    MessageBox.Show("No se pudo obtener el ID de la cuenta.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"Error al obtener los pagos: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
@@ -134,29 +134,25 @@ namespace Cuentas
         private void txtBuscar_TextChanged(object sender, EventArgs e)
         {
             var searchText = txtBuscar.Text.ToLower();
-            List<CuentaDAO> filteredCuentas = CuentaLogic.ListaCuentas
-                .Where(c => c.IdClienteNavigation.Nombre.ToLower().Contains(searchText) || c.SiguientePago.ToString("dd-MM-yyyy").Contains(searchText))
-                .Select(c => new CuentaDAO
-                {
-                    Cuenta = c.IdCuenta,
-                    IdCliente = c.IdClienteNavigation.Nombre,
-                    Monto = c.Monto,
-                    Cuotas = c.Cuotas,
-                    Canceladas = c.Canceladas,
-                    SiguientePago = c.SiguientePago != DateOnly.MinValue
-                        ? c.SiguientePago.ToString("dd-MM-yyyy")
-                        : "Cancelado"
-                })
+
+            var filteredCuentas = todasLasCuentas
+                .Where(c =>
+                    c.Cliente.Nombre.ToLower().Contains(searchText) ||
+                    (c.SiguientePago != DateOnly.MinValue &&
+                     c.SiguientePago.ToString("dd-MM-yyyy").Contains(searchText)) ||
+                     c.Cliente.Telefono.ToString().Contains(searchText) ||
+                     c.IdCliente.ToLower().Contains(searchText))
                 .ToList();
 
             RecargarDatos(filteredCuentas);
         }
-
-
-        private DateTime ObtenerFechaSemanaSeleccionada()
+        private void cmbSemanal_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cmbSemanal.SelectedItem == null)
-                return DateTime.Today;
+            if (cmbSemanal.SelectedIndex == 0)
+            {
+                RecargarDatos(todasLasCuentas);
+                return;
+            }
 
             var diaSeleccionado = cmbSemanal.SelectedItem.ToString();
             var diaSemana = diaSeleccionado switch
@@ -168,38 +164,16 @@ namespace Cuentas
                 "Viernes" => DayOfWeek.Friday,
                 "Sabado" => DayOfWeek.Saturday,
                 "Domingo" => DayOfWeek.Sunday,
+                _ => DayOfWeek.Monday
             };
 
-
-            var hoy = DateTime.Today;
-            int diasDiferencia = ((int)diaSemana - (int)hoy.DayOfWeek + 7) % 7;
-
-            return hoy.AddDays(diasDiferencia == 0 ? 0 : diasDiferencia);
-        }
-        private void cmbSemanal_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (cmbSemanal.SelectedIndex == 0)
-            {
-                CargarTodasLasCuentas();
-                return;
-            }
-            List<CuentaDAO> filteredCuentas = CuentaLogic.ListaCuentas
-                .Where(c => c.SiguientePago == DateOnly.FromDateTime(ObtenerFechaSemanaSeleccionada()))
-                .Select(c => new CuentaDAO
-                {
-                    Cuenta = c.IdCuenta,
-                   IdCliente = c.IdClienteNavigation.Nombre,
-                    Monto = c.Monto,
-                    Cuotas = c.Cuotas,
-                    Canceladas = c.Canceladas,
-                    SiguientePago = c.SiguientePago != DateOnly.MinValue
-                        ? c.SiguientePago.ToString("dd-MM-yyyy")
-                        : "Cancelado"
-                })
+            var filteredCuentas = todasLasCuentas
+                .Where(c => c.SiguientePago != DateOnly.MinValue &&
+                            c.SiguientePago.ToDateTime(TimeOnly.MinValue).DayOfWeek == diaSemana)
                 .ToList();
 
             RecargarDatos(filteredCuentas);
-
         }
+
     }
 }

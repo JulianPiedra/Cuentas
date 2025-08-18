@@ -36,7 +36,7 @@ namespace BussinessLogic
 
                 await Context.SaveChangesAsync();
 
-                return new BusinessLogicResponse(200, "Cuenta multada con éxito");
+                return new BusinessLogicResponse(204);
             }
             catch (Exception ex)
             {
@@ -95,7 +95,15 @@ namespace BussinessLogic
                     Monto = c.Monto,
                     Cuotas = c.Cuotas,
                     Canceladas = c.Canceladas,
-                    SiguientePago = c.SiguientePago.ToString("yyyy-MM-dd"),
+                    SiguientePago = c.SiguientePago,
+                    Cliente = new ClienteDAO
+                    {
+                        IdCliente = c.IdClienteNavigation.IdCliente,
+                        Correo = c.IdClienteNavigation.Correo,
+                        Telefono = c.IdClienteNavigation.Telefono,
+                        Direccion = c.IdClienteNavigation.Direccion,
+                        Nombre = c.IdClienteNavigation.Nombre
+                    }
                 }).ToList();
 
                 return new BusinessLogicResponse(200, cuentasDAO);
@@ -124,7 +132,7 @@ namespace BussinessLogic
                     Monto = c.Monto,
                     Cuotas = c.Cuotas,
                     Canceladas = c.Canceladas,
-                    SiguientePago = c.SiguientePago.ToString("yyyy-MM-dd"),
+                    SiguientePago = c.SiguientePago,
                     PagosCuenta = c.PagoCuenta.Select(p => new PagoCuentaDAO
                     {
                         IdCuenta = p.IdCuenta,

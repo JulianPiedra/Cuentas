@@ -2,6 +2,7 @@
 using BussinessLogic;
 using DataAccess.Models;
 using Models;
+using UILogic;
 using Timer = System.Windows.Forms.Timer;
 
 namespace Cuentas
@@ -139,7 +140,7 @@ namespace Cuentas
 
             for (int i = 0; i < numCuotas; i++)
             {
-                pagosCuentas.Add(new PagosCuenta
+                pagosCuentas.Add(new PagoCuentaDAO
                 {
                     FechaPago = DateOnly.FromDateTime(fechas[i]),
                     Cancelado = true && fechas[i] <= hoy,
@@ -168,11 +169,15 @@ namespace Cuentas
                 var monto = decimal.Parse(txtMontoCuenta.Text);
                 var cuotas = int.Parse(txtCantCuotas.Text);
 
-                var cuenta = new CuentaDAO(cliente.IdCliente, monto, cuotas, pagosCuentas);
+                var cuenta = new CuentaDAO {
+                    IdCliente = cliente.IdCliente,
+                    Monto = monto, 
+                    Cuotas = cuotas, 
+                    PagosCuenta = pagosCuentas };
                 cuenta.Validate();
 
-                var resultado = await CuentaLogic.AgregarCuenta(cuenta);
-                MessageBox.Show(resultado, "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                var resultado = await ApiFetch.FetchAsync<BusinessLogicResponse>($"/cuentas/agregar", HttpMethod.Post, null);
+                MessageBox.Show(resultado.Message, "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 LimpiarCampos();
             }
             catch (Exception ex)
