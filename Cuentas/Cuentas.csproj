@@ -22,6 +22,7 @@
     <ProjectReference Include="..\BussinessLogic\BussinessLogic.csproj" />
     <ProjectReference Include="..\DataAccess\DataAccess.csproj" />
     <ProjectReference Include="..\Models\Models.csproj" />
+    <ProjectReference Include="..\UILogic\UILogic.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,13 +1,5 @@
-﻿using BussinessLogic;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using UILogic;
+using Models;
 
 namespace Cuentas
 {
@@ -18,24 +10,60 @@ namespace Cuentas
             InitializeComponent();
         }
 
+        private async Task<Estadisticas> ObtenerEstadisticas()
+        {
+            try
+            {
+                // Crear las tareas
+                var taskTotalClientes = ApiFetch.FetchAsync<int>("/estadisticas/total-clientes", HttpMethod.Get);
+                var taskTotalCuentas = ApiFetch.FetchAsync<int>("/estadisticas/total-cuentas", HttpMethod.Get);
+                var taskTotalCuentasActivas = ApiFetch.FetchAsync<int>("/estadisticas/total-cuentas-activas", HttpMethod.Get);
+                var taskMontoTotalCuentas = ApiFetch.FetchAsync<decimal>("/estadisticas/monto-total-cuentas", HttpMethod.Get);
+                var taskMontoTotalCuentasPendientes = ApiFetch.FetchAsync<decimal>("/estadisticas/monto-pendiente-cuentas", HttpMethod.Get);
+
+                // Esperar todas las tareas al mismo tiempo
+                await Task.WhenAll(taskTotalClientes, taskTotalCuentas, taskTotalCuentasActivas, taskMontoTotalCuentas, taskMontoTotalCuentasPendientes);
+
+                // Asignar los resultados
+                var estadisticas = new Estadisticas
+                {
+                    TotalClientes = taskTotalClientes.Result,
+                    TotalCuentas = taskTotalCuentas.Result,
+                    TotalCuentasActivas = taskTotalCuentasActivas.Result,
+                    MontoTotalCuentas = taskMontoTotalCuentas.Result,
+                    MontoTotalCuentasPendientes = taskMontoTotalCuentasPendientes.Result
+                };
+
+                return estadisticas;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al obtener las estadísticas: " + ex.Message);
+                return null;
+            }
+        }
+
+
+
         private async void FrmEstadisticas_Load(object sender, EventArgs e)
         {
             try
             {
-                var estadisticas = await EstadisticasLogic.ObtenerEstadisticas();
+                var estadisticas = await ObtenerEstadisticas();
 
-                lblTotalClientes.Text = "Clientes Totales: \n" + estadisticas.TotalClientes.ToString();
-                lblTotalCuentas.Text = "Cuentas Totales: \n" + estadisticas.TotalCuentas.ToString();
-                lblTotalCuentasActivas.Text = "Total de cuentas activas: \n" + estadisticas.TotalCuentasActivas.ToString();
-                lblMontoTotalCuentas.Text = "Monto total de cuentas: \n" + estadisticas.MontoTotalCuentas.ToString("C2");
-                lblMontoTotalCuentasPendientes.Text = "Plata en la calle: \n" + estadisticas.MontoTotalCuentasPendientes.ToString("C2");
+                if (estadisticas != null)
+                {
+                    lblTotalClientes.Text = $"Clientes Totales: \n{estadisticas.TotalClientes}";
+                    lblTotalCuentas.Text = $"Cuentas Totales: \n{estadisticas.TotalCuentas}";
+                    lblTotalCuentasActivas.Text = $"Cuentas Activas: \n{estadisticas.TotalCuentasActivas}";
+                    lblMontoTotalCuentas.Text = $"Monto Total de Cuentas: \n{estadisticas.MontoTotalCuentas:C2}";
+                    lblMontoTotalCuentasPendientes.Text = $"Plata en la calle: \n{estadisticas.MontoTotalCuentasPendientes:C2}";
+                }
             }
-
             catch (Exception ex)
             {
-                MessageBox.Show("Error al cargar las estadísticas: " + ex.Message);
+                MessageBox.Show("Error al cargar estadísticas: " + ex.Message);
             }
-
         }
     }
 }

@@ -2,6 +2,7 @@
 using BussinessLogic;
 using DataAccess.Models;
 using Models;
+using UILogic;
 using Timer = System.Windows.Forms.Timer;
 
 namespace Cuentas
@@ -9,7 +10,7 @@ namespace Cuentas
     public partial class FrmAgregarCuenta : Form
     {
         private Timer inputDelayTimer;
-        private List<PagosCuenta> pagosCuentas = new();
+        private List<PagoCuentaDAO> pagosCuentas = new();
 
         public FrmAgregarCuenta()
         {
@@ -29,10 +30,10 @@ namespace Cuentas
 
 
 
-        private void RecargarClientes()
+        private async void RecargarClientes()
         {
             cmbCuenta.DataSource = null;
-            cmbCuenta.DataSource = ClientesLogic.ListaClientes;
+            cmbCuenta.DataSource = await ApiFetch.FetchAsync<List<ClienteDAO>>($"/clientes/obtener", HttpMethod.Get, null); ;
             cmbCuenta.DisplayMember = "Nombre";
         }
 
@@ -139,7 +140,7 @@ namespace Cuentas
 
             for (int i = 0; i < numCuotas; i++)
             {
-                pagosCuentas.Add(new PagosCuenta
+                pagosCuentas.Add(new PagoCuentaDAO
                 {
                     FechaPago = DateOnly.FromDateTime(fechas[i]),
                     Cancelado = true && fechas[i] <= hoy,
@@ -159,7 +160,7 @@ namespace Cuentas
         {
             try
             {
-                if (cmbCuenta.SelectedItem is not Cliente cliente)
+                if (cmbCuenta.SelectedItem is not ClienteDAO cliente)
                 {
                     MessageBox.Show("Debe seleccionar un cliente válido.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
@@ -168,10 +169,14 @@ namespace Cuentas
                 var monto = decimal.Parse(txtMontoCuenta.Text);
                 var cuotas = int.Parse(txtCantCuotas.Text);
 
-                var cuenta = new CuentaDAO(cliente.IdCliente, monto, cuotas, pagosCuentas);
+                var cuenta = new CuentaDAO {
+                    IdCliente = cliente.IdCliente,
+                    Monto = monto, 
+                    Cuotas = cuotas, 
+                    PagosCuenta = pagosCuentas };
                 cuenta.Validate();
 
-                var resultado = await CuentaLogic.AgregarCuenta(cuenta);
+                var resultado = await ApiFetch.FetchAsync<string>($"/cuentas/agregar", HttpMethod.Post, cuenta);
                 MessageBox.Show(resultado, "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 LimpiarCampos();
             }

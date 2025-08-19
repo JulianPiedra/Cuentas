@@ -12,12 +12,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using UILogic;
 namespace Cuentas
 {
     public partial class FrmVerDetalleCliente : Form
     {
-        List<Cliente> _cliente;
-        public FrmVerDetalleCliente(List<Cliente> cliente)
+        ClienteDAO _cliente;
+        public FrmVerDetalleCliente(ClienteDAO cliente)
         {
             InitializeComponent();
             _cliente = cliente;
@@ -60,32 +61,42 @@ namespace Cuentas
             try
             {
 
-                lblCedula.Text = "Cédula del cliente: " + _cliente[0].IdCliente;
-                lblTelefono.Text = "Telefono: " + _cliente[0].Telefono;
-                lblCorreo.Text = "Correo: " + (string.IsNullOrEmpty(_cliente[0].Correo) ? "                    " : _cliente[0].Correo);
-                lblDireccion.Text = "Dirección: " + _cliente[0].Direccion;
-                lblNombre.Text = "Nombre: " + _cliente[0].Nombre;
+                lblCedula.Text = "Cédula del cliente: " + _cliente.IdCliente;
+                lblTelefono.Text = "Telefono: " + _cliente.Telefono;
+                lblCorreo.Text = "Correo: " + (string.IsNullOrEmpty(_cliente.Correo) ? "                                          " : _cliente.Correo);
+                lblDireccion.Text = "Dirección: " + _cliente.Direccion;
+                lblNombre.Text = "Nombre: " + _cliente.Nombre;
                 linkLblCuentas.Text = "Cuentas asociadas:\n";
                 linkLblCuentas.Links.Clear(); // Limpia cualquier enlace previo
 
                 int startIndex = linkLblCuentas.Text.Length;
 
-                foreach (var cuenta in _cliente[0].Cuenta)
+                foreach (var cuenta in _cliente.Cuentas)
                 {
                     string textoLink = $"Monto de cuenta: {cuenta.Monto:C}\n";
                     linkLblCuentas.Text += textoLink;
 
-                    linkLblCuentas.Links.Add(startIndex, textoLink.Length, cuenta.IdCuenta);
+                    linkLblCuentas.Links.Add(startIndex, textoLink.Length, cuenta.Cuenta);
                     startIndex += textoLink.Length;
                 }
 
-                foreach (var multimedia in _cliente[0].Multimedia)
+                foreach (var multimedia in _cliente.Files)
                 {
-                    string tempPath = Path.Combine(Path.GetTempPath(), $"{multimedia.IdMultimedia}.{multimedia.Extension}");
+                    string tempPath = Path.Combine(Path.GetTempPath(), multimedia.Key);
+
+                    byte[] fileBytes;
+                    if (multimedia.Value is byte[] bytes)
+                    {
+                        fileBytes = bytes;
+                    }
+                    else
+                    {
+                        continue;
+                    }
 
                     if (!File.Exists(tempPath))
                     {
-                        File.WriteAllBytes(tempPath, multimedia.Multimedia);
+                        File.WriteAllBytes(tempPath, fileBytes);
                     }
 
                     PictureBox thumbnail = new PictureBox
@@ -94,23 +105,25 @@ namespace Cuentas
                         Height = 150,
                         SizeMode = PictureBoxSizeMode.Zoom,
                         Cursor = Cursors.Hand,
-                        Tag = tempPath // Guardar ruta para abrirla después
+                        Tag = tempPath
                     };
 
-                    if (new[] { "jpg", "jpeg", "png", "gif" }.Contains(multimedia.Extension.ToLower()))
+                    string ext = Path.GetExtension(multimedia.Key).ToLower();
+                    if (new[] { ".jpg", ".jpeg", ".png", ".gif" }.Contains(ext))
                     {
-                        var image = ByteArrayToImage(multimedia.Multimedia);
+                        var image = ByteArrayToImage(fileBytes);
                         if (image != null)
                             thumbnail.Image = image;
                     }
-                    else if (new[] { "mp4", "mp3", "wav" }.Contains(multimedia.Extension.ToLower()))
+                    else if (new[] { ".mp4", ".mp3", ".wav" }.Contains(ext))
                     {
-                        thumbnail.Image = Properties.Resources.play_button; // Icono genérico
+                        thumbnail.Image = Properties.Resources.play_button;
                     }
 
                     thumbnail.Click += OpenFile;
                     flpMultimedia.Controls.Add(thumbnail);
                 }
+
 
             }
             catch (Exception ex)
@@ -141,7 +154,7 @@ namespace Cuentas
 
             if (int.TryParse(idCuentaObj?.ToString(), out int cuentaId))
             {
-                var listaPagos = await CuentaLogic.ObtenerCuentasConPagos(cuentaId);
+                var listaPagos = await ApiFetch.FetchAsync<List<CuentaDAO>>($"/cuentas/{cuentaId}/pagos", HttpMethod.Get, null);
 
                 var frmVerPagos = new FrmVerPagos(listaPagos)
                 {

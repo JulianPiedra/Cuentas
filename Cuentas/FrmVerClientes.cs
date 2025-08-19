@@ -3,13 +3,17 @@ using DataAccess.Models;
 using Models;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Windows.Forms;
+using UILogic;
 
 namespace Cuentas
 {
     public partial class FrmVerClientes : Form
     {
+        private List<ClienteDAO> clientesCache = new();
+
         public FrmVerClientes()
         {
             InitializeComponent();
@@ -35,40 +39,37 @@ namespace Cuentas
             CargarTodosLosClientes();
         }
 
-        private void CargarTodosLosClientes()
+        private async void CargarTodosLosClientes()
         {
-            List< ClienteDAO > clientes = ClientesLogic.ListaClientes
-                .Select(c => new ClienteDAO
-                {
-                    IdCliente = c.IdCliente,
-                    Nombre = c.Nombre,
-                    Telefono = c.Telefono,
-                    Correo = c.Correo,
-                })
-                .ToList();
+            try
+            {
+                clientesCache = await ApiFetch.FetchAsync<List<ClienteDAO>>("/clientes/obtener", HttpMethod.Get, null);
+                RecargarDatos(clientesCache);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al cargar clientes: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
 
-            RecargarDatos(clientes);
-        } 
+
+
 
 
 
         private void txtBuscar_TextChanged(object sender, EventArgs e)
         {
             var searchText = txtBuscar.Text.ToLower();
-
-            List<ClienteDAO> clientes = ClientesLogic.ListaClientes
-                .Where(c => c.Nombre.ToLower().Contains(searchText) || c.Telefono.ToString().Contains(searchText) || c.IdCliente.ToLower().Contains(searchText))
-                .Select(c => new ClienteDAO
-                {
-                    IdCliente = c.IdCliente,
-                    Nombre = c.Nombre,
-                    Telefono = c.Telefono,
-                    Correo = c.Correo,
-                })
+            var filtered = clientesCache
+                .Where(c => c.Nombre.ToLower().Contains(searchText)
+                         || c.IdCliente.ToLower().Contains(searchText)
+                         || c.Correo?.ToLower().Contains(searchText) == true
+                         || c.Telefono.ToString().Contains(searchText) == true)
                 .ToList();
 
-            RecargarDatos(clientes);
+            RecargarDatos(filtered);
         }
+
 
         private async void DgvClientes_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -77,8 +78,8 @@ namespace Cuentas
 
             if (DgvClientes.Columns[e.ColumnIndex].Name == "VerCliente")
             {
-                try { 
-                    var listaCliente = await ClientesLogic.ObtenerClienteConMultimedia(cliente);
+                try {
+                    var listaCliente = await ApiFetch.FetchAsync<ClienteDAO>($"/clientes/{cliente}", HttpMethod.Get, null);
 
                     var frmVerPagos = new FrmVerDetalleCliente(listaCliente)
                     {

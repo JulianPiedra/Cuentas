@@ -18,19 +18,9 @@ namespace Models
 
         public string Nombre { get; set; } = null!;
         public Dictionary<string, byte[]>? Files { get; set; }
-        public ClienteDAO()
-        {
-        }
+        public List<CuentaDAO> Cuentas { get; set; }
 
-        public ClienteDAO(string idCliente, string? correo, long telefono, string direccion, string nombre, Dictionary<string, byte[]>? files)
-        {
-            IdCliente = idCliente.Trim();
-            Correo = !string.IsNullOrWhiteSpace(Correo) ? null : correo.Trim();
-            Telefono = telefono;
-            Direccion = direccion;
-            Nombre = nombre;
-            Files = files;
-        }
+        
 
         public void Validate()
         {

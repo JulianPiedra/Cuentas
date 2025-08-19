@@ -2,6 +2,8 @@ using System.Configuration;
 using BussinessLogic;
 using DataAccess;
 using DataAccess.Models;
+using Models;
+using UILogic;
 
 namespace Cuentas
 {
@@ -10,13 +12,6 @@ namespace Cuentas
         [STAThread]
         static void Main()
         {
-             
-            string connStr = ConfigurationManager.ConnectionStrings["Default"].ConnectionString;
-            BdContext.Initialize(connStr);
-            Task.WhenAll(
-                ClientesLogic.ObtenerClientes(),
-                CuentaLogic.ObtenerCuentas()
-            );
             ApplicationConfiguration.Initialize();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

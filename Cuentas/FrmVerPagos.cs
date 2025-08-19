@@ -10,13 +10,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using UILogic;
 
 namespace Cuentas
 {
     public partial class FrmVerPagos : Form
     {
-        List<Cuentum> _cuentum;
-        public FrmVerPagos(List<Cuentum> cuentum)
+        List<CuentaDAO> _cuentum;
+        public FrmVerPagos(List<CuentaDAO> cuentum)
         {
             InitializeComponent();
             _cuentum = cuentum;
@@ -39,11 +40,12 @@ namespace Cuentas
                 {
                     var idPago = Convert.ToInt32(DgvPagos.Rows[e.RowIndex].Cells["IdPago"].Value);
 
-                    await CuentaLogic.ActualizarEstadoPago(_cuentum[0].IdCuenta, idPago);
+                    var resultados = await ApiFetch.FetchAsync<string>($"/cuentas/{_cuentum[0].Cuenta}/pago/{idPago}/estado", HttpMethod.Patch, null);
 
-                    var cuentaActualizada = await CuentaLogic.ObtenerCuentasConPagos(_cuentum[0].IdCuenta);
+                    var cuentaActualizada = await ApiFetch.FetchAsync<List<CuentaDAO>>($"/cuentas/{_cuentum[0].Cuenta}/pagos", HttpMethod.Get, null);
                     _cuentum = cuentaActualizada;
 
+                    MessageBox.Show(resultados, "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     ActualizarVista();
                 }
             }
@@ -60,19 +62,26 @@ namespace Cuentas
                 lblCanceladas.Text = "Cuotas canceladas: " + _cuentum[0].Canceladas.ToString();
                 lblCuotas.Text = "Numero total de cuotas: " + _cuentum[0].Cuotas.ToString();
                 lblMonto.Text = "Monto total: " + _cuentum[0].Monto.ToString("C2");
-                lblSiguientePago.Text = "Siguiente pago: " + _cuentum[0].SiguientePago.ToString("dd/MM/yyyy") ?? "N/A";
-                lblCliente.Text = "Nombre: " + _cuentum[0].IdClienteNavigation.Nombre;
+                lblCliente.Text = "Nombre: " + _cuentum[0].Cliente.Nombre;
+
+                if (_cuentum[0].SiguientePago != DateOnly.MinValue)
+                {
+                    lblSiguientePago.Text = "Siguiente pago: " + _cuentum[0].SiguientePago.ToString("dd/MM/yyyy") ?? "N/A";
+                    lblMontoPendiente.Text = "Monto pendiente: " + (_cuentum[0].Monto - _cuentum[0].PagosCuenta.Where(p => p.Cancelado).Sum(p => p.Monto)).ToString("C2");
+                }
+
+                
 
                 DgvPagos.Rows.Clear();
 
-                foreach (var pago in _cuentum[0].PagoCuenta)
+                foreach (var pago in _cuentum[0].PagosCuenta)
                 {
                     int rowIndex = DgvPagos.Rows.Add(
                         pago.IdPago,
                         $"{pago.FechaPago:dd/MM/yyyy} - ₡{pago.Monto:N2}",
                         pago.Cancelado
                     );
-                    if (pago.Multa)
+                    if (pago.Multa > 0)
                     {
                         DgvPagos.Rows[rowIndex].DefaultCellStyle.BackColor = Color.Red;
                         DgvPagos.Rows[rowIndex].DefaultCellStyle.ForeColor = Color.White;

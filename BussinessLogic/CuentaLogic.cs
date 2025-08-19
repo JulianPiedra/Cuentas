@@ -1,160 +1,210 @@
-﻿using DataAccess.Models;
+﻿using ApiCuentasInjection;
+using DataAccess.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using Models;
 
 namespace BussinessLogic
 {
-    public class CuentaLogic
+    public class CuentaLogic : ICuentaLogic
     {
-        public static List<Cuentum> ListaCuentas { get; set; }
-        public static async Task<string> MultarCuenta(int idCuenta, DateOnly fechaPago)
+        private readonly BdContext Context;
+        public CuentaLogic(BdContext context)
+        {
+            Context = context;
+        }
+
+        public async Task<BusinessLogicResponse> MultarCuenta(int idCuenta, DateOnly fechaPago)
         {
             try
             {
-                var pago = BdContext.Context.PagoCuenta
-                            .FirstOrDefault(p => p.IdCuenta == idCuenta && p.FechaPago == fechaPago);
-                if (pago == null)
-                {
-                    return "No se encontró un pago con la fecha especificada para esta cuenta.";
-                }
+                var pago = await Context.PagoCuenta
+                    .FirstOrDefaultAsync(p => p.IdCuenta == idCuenta && p.FechaPago == fechaPago);
 
-                pago.Multa = true;
+                if (pago == null)
+                    return new BusinessLogicResponse(404, "No se encontró un pago con la fecha especificada.");
+
+                pago.Multa += 1;
                 pago.Monto += 5000;
-                var cuenta = BdContext.Context.Cuenta
-                                .FirstOrDefault(p => p.IdCuenta == idCuenta);
+
+                var cuenta = await Context.Cuenta
+                    .FirstOrDefaultAsync(c => c.IdCuenta == idCuenta);
+
+                if (cuenta == null)
+                    return new BusinessLogicResponse(404, "Cuenta no encontrada.");
+
                 cuenta.Monto += 5000;
 
-                await BdContext.Context.SaveChangesAsync();
-                var cuentaActualizada = await BdContext.Context.Cuenta
-                    .AsNoTracking()
-                    .Include(c => c.IdClienteNavigation)
-                    .FirstAsync(c => c.IdCuenta == idCuenta);
+                await Context.SaveChangesAsync();
 
-                var index = ListaCuentas.FindIndex(c => c.IdCuenta == idCuenta);
-                if (index != -1)
-                {
-                    ListaCuentas[index] = cuentaActualizada;
-                }
-
-                return "Cuenta multada con exito";
-
+                return new BusinessLogicResponse(200, "La cuenta ha sido multada");
             }
             catch (Exception ex)
             {
-                throw new Exception("Error al multar el siguiente pago de esta cuenta");
+                return new BusinessLogicResponse(500, $"Error al multar la cuenta: {ex.Message}");
             }
-
         }
 
-        public static async Task<string> AgregarCuenta(CuentaDAO cuentaDAO)
+        public async Task<BusinessLogicResponse> AgregarCuenta(CuentaDAO cuentaDAO)
         {
             try
             {
-                var pagos = BdContext.Context.PagoCuenta;
-                var cuenta = BdContext.Context.Cuenta;
-                var Addcuenta = new Cuentum
+                var nuevaCuenta = new Cuentum
                 {
                     IdCliente = cuentaDAO.IdCliente,
                     Monto = cuentaDAO.Monto,
-                    Cuotas = cuentaDAO.Cuotas,
+                    Cuotas = cuentaDAO.Cuotas
                 };
 
-                await cuenta.AddAsync(Addcuenta);
-                await BdContext.Context.SaveChangesAsync();
+                await Context.Cuenta.AddAsync(nuevaCuenta);
+                await Context.SaveChangesAsync();
 
                 foreach (var pago in cuentaDAO.PagosCuenta)
                 {
-                    pagos.Add(new PagoCuentum
+                    await Context.PagoCuenta.AddAsync(new PagoCuentum
                     {
-                        IdCuenta = Addcuenta.IdCuenta,
+                        IdCuenta = nuevaCuenta.IdCuenta,
                         FechaPago = pago.FechaPago,
                         Cancelado = pago.Cancelado,
                         Monto = pago.Monto
                     });
-
                 }
+                await Context.SaveChangesAsync();
 
-                await BdContext.Context.SaveChangesAsync();
-                ListaCuentas.Add(await cuenta
-                    .AsNoTracking()
-                    .Include(c => c.IdClienteNavigation)
-                    .FirstAsync(c => c.IdCuenta == Addcuenta.IdCuenta));
-                return "Cuenta creada con exito";
+                nuevaCuenta.SiguientePago = await Context.PagoCuenta
+                    .Where(p => p.IdCuenta == nuevaCuenta.IdCuenta && !p.Cancelado)
+                    .OrderBy(p => p.FechaPago)
+                    .Select(p => p.FechaPago)
+                    .FirstOrDefaultAsync();
+
+                nuevaCuenta.Canceladas = await Context.PagoCuenta
+                    .CountAsync(p => p.IdCuenta == nuevaCuenta.IdCuenta && p.Cancelado);
+
+                await Context.SaveChangesAsync();
+
+                return new BusinessLogicResponse(200, "Cuenta creada con éxito");
             }
             catch (Exception ex)
             {
-                throw new Exception("Error al agregar cuenta");
+                return new BusinessLogicResponse(500, $"Error al agregar cuenta: {ex.Message}");
             }
         }
 
 
-        public async static Task ObtenerCuentas()
+        public async Task<BusinessLogicResponse> ObtenerCuentas()
         {
             try
             {
-                if (!ListaCuentas.IsNullOrEmpty()) ListaCuentas.Clear();
-
-                var cuenta = BdContext.Context.Cuenta;
-                cuenta.Include(c => c.IdClienteNavigation)
-                      .AsNoTracking();
-                ListaCuentas = cuenta.ToList();
-            }
-            catch (Exception)
-            {
-                throw new Exception("Error al obtener los clientes");
-            }
-        }
-        public async static Task<List<Cuentum>> ObtenerCuentasConPagos(int id)
-        {
-            try
-            {
-                var cuenta = BdContext.Context.Cuenta
-                    .Where(c => c.IdCuenta == id)
-                      .Include(c => c.IdClienteNavigation)
-                      .Include(c => c.PagoCuenta)
-                      .AsNoTracking();
-
-                return await cuenta.ToListAsync();
-            }
-            catch (Exception)
-            {
-                throw new Exception("Error al obtener las cuentas con pagos");
-            }
-        }
-        public async static Task ActualizarEstadoPago(int idCuenta, int idPago)
-        {
-            try
-            {
-                var pago = BdContext.Context.PagoCuenta
-                    .FirstOrDefault(p => p.IdCuenta == idCuenta && p.IdPago == idPago);
-
-                if (pago != null)
-                {
-                    pago.Cancelado = !pago.Cancelado;
-                    await BdContext.Context.SaveChangesAsync(); 
-                }
-
-                var cuentaActualizada = await BdContext.Context.Cuenta
-                    .AsNoTracking()
+                var cuentas = await Context.Cuenta
                     .Include(c => c.IdClienteNavigation)
-                    .FirstAsync(c => c.IdCuenta == idCuenta);
+                    .AsNoTracking()
+                    .ToListAsync();
 
-                var index = ListaCuentas.FindIndex(c => c.IdCuenta == idCuenta);
-                if (index != -1)
+                var cuentasDAO = cuentas.Select(c => new CuentaDAO
                 {
-                    ListaCuentas[index] = cuentaActualizada;
-                }
-            }
-            catch (Exception)
-            {
-                throw new Exception("Error al actualizar el estado del pago");
-            }
+                    Cuenta = c.IdCuenta,
+                    IdCliente = c.IdCliente,
+                    Monto = c.Monto,
+                    Cuotas = c.Cuotas,
+                    Canceladas = c.Canceladas,
+                    SiguientePago = c.SiguientePago,
+                    Cliente = new ClienteDAO
+                    {
+                        IdCliente = c.IdClienteNavigation.IdCliente,
+                        Correo = c.IdClienteNavigation.Correo,
+                        Telefono = c.IdClienteNavigation.Telefono,
+                        Direccion = c.IdClienteNavigation.Direccion,
+                        Nombre = c.IdClienteNavigation.Nombre
+                    }
+                }).ToList();
 
+                return new BusinessLogicResponse(200, cuentasDAO);
+            }
+            catch (Exception ex)
+            {
+                return new BusinessLogicResponse(500, $"Error al obtener cuentas: {ex.Message}");
+            }
         }
 
+        public async Task<BusinessLogicResponse> ObtenerCuentasConPagos(int id)
+        {
+            try
+            {
+                var cuentas = await Context.Cuenta
+                    .Where(c => c.IdCuenta == id)
+                    .Include(c => c.IdClienteNavigation)
+                    .Include(c => c.PagoCuenta)
+                    .AsNoTracking()
+                    .ToListAsync();
 
+                var cuentasDAO = cuentas.Select(c => new CuentaDAO
+                {
+                    Cuenta = c.IdCuenta,
+                    IdCliente = c.IdCliente,
+                    Monto = c.Monto,
+                    Cuotas = c.Cuotas,
+                    Canceladas = c.Canceladas,
+                    SiguientePago = c.SiguientePago,
+                    Cliente = new ClienteDAO
+                    {
+                        IdCliente = c.IdClienteNavigation.IdCliente,
+                        Correo = c.IdClienteNavigation.Correo,
+                        Telefono = c.IdClienteNavigation.Telefono,
+                        Direccion = c.IdClienteNavigation.Direccion,
+                        Nombre = c.IdClienteNavigation.Nombre
+                    },
+                    PagosCuenta = c.PagoCuenta.Select(p => new PagoCuentaDAO
+                    {
+                        IdCuenta = p.IdCuenta,
+                        IdPago = p.IdPago,
+                        FechaPago = p.FechaPago,
+                        Cancelado = p.Cancelado,
+                        Monto = p.Monto,
+                        Multa = p.Multa
+                    }).ToList()
+                }).ToList();
+
+                return new BusinessLogicResponse(200, cuentasDAO);
+            }
+            catch (Exception ex)
+            {
+                return new BusinessLogicResponse(500, $"Error al obtener cuentas con pagos: {ex.Message}");
+            }
+        }
+
+        public async Task<BusinessLogicResponse> ActualizarEstadoPago(int idCuenta, int idPago)
+        {
+            try
+            {
+                var pago = await Context.PagoCuenta
+                    .FirstOrDefaultAsync(p => p.IdCuenta == idCuenta && p.IdPago == idPago);
+                var cuenta = await Context.Cuenta
+                    .FirstOrDefaultAsync(p => p.IdCuenta == idCuenta);
+
+                if (pago == null)
+                    return new BusinessLogicResponse(404, "Pago no encontrado.");
+
+                pago.Cancelado = !pago.Cancelado;
+                await Context.SaveChangesAsync();
+
+                cuenta.SiguientePago = await Context.PagoCuenta
+                    .Where(p => p.IdCuenta == idCuenta && !p.Cancelado)
+                    .OrderBy(p => p.FechaPago)
+                    .Select(p => p.FechaPago)
+                    .FirstOrDefaultAsync();
+                cuenta.Canceladas += 1;
+                await Context.SaveChangesAsync();
+                
+                return new BusinessLogicResponse(200, "Estado del pago actualizado");
+            }
+            catch (Exception ex)
+            {
+                return new BusinessLogicResponse(500, $"Error al actualizar el estado del pago: {ex.Message}");
+            }
+        }
+
+        public Task<BusinessLogicResponse> EditarCuenta(CuentaDAO cuentaDAO)
+        {
+            return Task.FromResult(new BusinessLogicResponse(501, "Método aún no implementado"));
+        }
     }
-
 }
-
