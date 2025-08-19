@@ -12,6 +12,8 @@ namespace Cuentas
 {
     public partial class FrmVerClientes : Form
     {
+        private List<ClienteDAO> clientesCache = new();
+
         public FrmVerClientes()
         {
             InitializeComponent();
@@ -39,17 +41,35 @@ namespace Cuentas
 
         private async void CargarTodosLosClientes()
         {
-            var clientes= await ApiFetch.FetchAsync<List<ClienteDAO>>("/clientes/obtener", HttpMethod.Get, null);
-            RecargarDatos(clientes);
-        } 
+            try
+            {
+                clientesCache = await ApiFetch.FetchAsync<List<ClienteDAO>>("/clientes/obtener", HttpMethod.Get, null);
+                RecargarDatos(clientesCache);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al cargar clientes: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+
+
 
 
 
         private void txtBuscar_TextChanged(object sender, EventArgs e)
         {
             var searchText = txtBuscar.Text.ToLower();
-            (DgvClientes.DataSource as DataTable).DefaultView.RowFilter = $"Field LIKE '%{searchText}%'";
+            var filtered = clientesCache
+                .Where(c => c.Nombre.ToLower().Contains(searchText)
+                         || c.IdCliente.ToLower().Contains(searchText)
+                         || c.Correo?.ToLower().Contains(searchText) == true
+                         || c.Telefono.ToString().Contains(searchText) == true)
+                .ToList();
+
+            RecargarDatos(filtered);
         }
+
 
         private async void DgvClientes_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -59,7 +79,7 @@ namespace Cuentas
             if (DgvClientes.Columns[e.ColumnIndex].Name == "VerCliente")
             {
                 try {
-                    var listaCliente = await ApiFetch.FetchAsync<List<ClienteDAO>>("/clientes/obtener", HttpMethod.Get, null);
+                    var listaCliente = await ApiFetch.FetchAsync<ClienteDAO>($"/clientes/{cliente}", HttpMethod.Get, null);
 
                     var frmVerPagos = new FrmVerDetalleCliente(listaCliente)
                     {

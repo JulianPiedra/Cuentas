@@ -36,7 +36,7 @@ namespace BussinessLogic
 
                 await Context.SaveChangesAsync();
 
-                return new BusinessLogicResponse(204);
+                return new BusinessLogicResponse(200, "La cuenta ha sido multada");
             }
             catch (Exception ex)
             {
@@ -68,6 +68,16 @@ namespace BussinessLogic
                         Monto = pago.Monto
                     });
                 }
+                await Context.SaveChangesAsync();
+
+                nuevaCuenta.SiguientePago = await Context.PagoCuenta
+                    .Where(p => p.IdCuenta == nuevaCuenta.IdCuenta && !p.Cancelado)
+                    .OrderBy(p => p.FechaPago)
+                    .Select(p => p.FechaPago)
+                    .FirstOrDefaultAsync();
+
+                nuevaCuenta.Canceladas = await Context.PagoCuenta
+                    .CountAsync(p => p.IdCuenta == nuevaCuenta.IdCuenta && p.Cancelado);
 
                 await Context.SaveChangesAsync();
 
@@ -78,6 +88,7 @@ namespace BussinessLogic
                 return new BusinessLogicResponse(500, $"Error al agregar cuenta: {ex.Message}");
             }
         }
+
 
         public async Task<BusinessLogicResponse> ObtenerCuentas()
         {
@@ -133,6 +144,14 @@ namespace BussinessLogic
                     Cuotas = c.Cuotas,
                     Canceladas = c.Canceladas,
                     SiguientePago = c.SiguientePago,
+                    Cliente = new ClienteDAO
+                    {
+                        IdCliente = c.IdClienteNavigation.IdCliente,
+                        Correo = c.IdClienteNavigation.Correo,
+                        Telefono = c.IdClienteNavigation.Telefono,
+                        Direccion = c.IdClienteNavigation.Direccion,
+                        Nombre = c.IdClienteNavigation.Nombre
+                    },
                     PagosCuenta = c.PagoCuenta.Select(p => new PagoCuentaDAO
                     {
                         IdCuenta = p.IdCuenta,
@@ -158,6 +177,8 @@ namespace BussinessLogic
             {
                 var pago = await Context.PagoCuenta
                     .FirstOrDefaultAsync(p => p.IdCuenta == idCuenta && p.IdPago == idPago);
+                var cuenta = await Context.Cuenta
+                    .FirstOrDefaultAsync(p => p.IdCuenta == idCuenta);
 
                 if (pago == null)
                     return new BusinessLogicResponse(404, "Pago no encontrado.");
@@ -165,6 +186,14 @@ namespace BussinessLogic
                 pago.Cancelado = !pago.Cancelado;
                 await Context.SaveChangesAsync();
 
+                cuenta.SiguientePago = await Context.PagoCuenta
+                    .Where(p => p.IdCuenta == idCuenta && !p.Cancelado)
+                    .OrderBy(p => p.FechaPago)
+                    .Select(p => p.FechaPago)
+                    .FirstOrDefaultAsync();
+                cuenta.Canceladas += 1;
+                await Context.SaveChangesAsync();
+                
                 return new BusinessLogicResponse(200, "Estado del pago actualizado");
             }
             catch (Exception ex)

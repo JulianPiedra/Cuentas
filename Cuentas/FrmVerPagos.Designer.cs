@@ -35,6 +35,7 @@
             lblCuotas = new Label();
             lblCanceladas = new Label();
             lblSiguientePago = new Label();
+            lblMontoPendiente = new Label();
             DgvPagos = new DataGridView();
             IdPago = new DataGridViewTextBoxColumn();
             Pagos = new DataGridViewTextBoxColumn();
@@ -47,6 +48,7 @@
             // 
             flowLayoutPanel1.Controls.Add(lblCliente);
             flowLayoutPanel1.Controls.Add(lblMonto);
+            flowLayoutPanel1.Controls.Add(lblMontoPendiente);
             flowLayoutPanel1.Controls.Add(lblCuotas);
             flowLayoutPanel1.Controls.Add(lblCanceladas);
             flowLayoutPanel1.Controls.Add(lblSiguientePago);
@@ -82,7 +84,7 @@
             // 
             lblCuotas.AutoSize = true;
             lblCuotas.Font = new Font("Segoe UI", 12F);
-            lblCuotas.Location = new Point(5, 217);
+            lblCuotas.Location = new Point(5, 308);
             lblCuotas.Margin = new Padding(5, 35, 5, 35);
             lblCuotas.Name = "lblCuotas";
             lblCuotas.Size = new Size(0, 21);
@@ -92,7 +94,7 @@
             // 
             lblCanceladas.AutoSize = true;
             lblCanceladas.Font = new Font("Segoe UI", 12F);
-            lblCanceladas.Location = new Point(5, 308);
+            lblCanceladas.Location = new Point(5, 399);
             lblCanceladas.Margin = new Padding(5, 35, 5, 35);
             lblCanceladas.Name = "lblCanceladas";
             lblCanceladas.Size = new Size(0, 21);
@@ -101,11 +103,20 @@
             // lblSiguientePago
             // 
             lblSiguientePago.AutoSize = true;
-            lblSiguientePago.Location = new Point(5, 399);
+            lblSiguientePago.Location = new Point(5, 490);
             lblSiguientePago.Margin = new Padding(5, 35, 5, 35);
             lblSiguientePago.Name = "lblSiguientePago";
             lblSiguientePago.Size = new Size(0, 21);
             lblSiguientePago.TabIndex = 5;
+            // 
+            // lblMontoPendiente
+            // 
+            lblMontoPendiente.AutoSize = true;
+            lblMontoPendiente.Location = new Point(5, 217);
+            lblMontoPendiente.Margin = new Padding(5, 35, 5, 35);
+            lblMontoPendiente.Name = "lblMontoPendiente";
+            lblMontoPendiente.Size = new Size(0, 21);
+            lblMontoPendiente.TabIndex = 10;
             // 
             // DgvPagos
             // 
@@ -177,5 +188,6 @@
         private DataGridViewTextBoxColumn IdPago;
         private DataGridViewTextBoxColumn Pagos;
         private DataGridViewCheckBoxColumn Pagado;
+        private Label lblMontoPendiente;
     }
 }

@@ -11,7 +11,6 @@ namespace UILogic
     {
         private static readonly string baseUrl = ConfigurationManager.AppSettings["ApiBaseUrl"];
 
-
         public static async Task<T> FetchAsync<T>(
             string url,
             HttpMethod method,
@@ -30,20 +29,21 @@ namespace UILogic
                     if (body != null)
                     {
                         var json = JsonConvert.SerializeObject(body);
-                        request.Content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
+                        request.Content = new StringContent(json,  System.Text.Encoding.UTF8, "application/json");
                     }
 
                     HttpResponseMessage response = await client.SendAsync(request);
                     var bodyResponse = await response.Content.ReadAsStringAsync();
+                    var jsonObj = JObject.Parse(bodyResponse);
 
-                    if (response.StatusCode == HttpStatusCode.NoContent)
-                    {
-                        return default(T)!;
-                    }
 
                     if (response.IsSuccessStatusCode)
                     {
-                        return JsonConvert.DeserializeObject<T>(bodyResponse)!;
+                        if (jsonObj["message"] != null)
+                        {
+                            return (T)(object)jsonObj["message"]!.ToString();
+                        }
+                        return JsonConvert.DeserializeObject<T>(jsonObj["objectResponse"].ToString())!;
                     }
                     else
                     {
@@ -51,7 +51,6 @@ namespace UILogic
                         string apiMessage;
                         try
                         {
-                            var jsonObj = JObject.Parse(bodyResponse);
                             apiMessage = jsonObj["message"]?.ToString() ?? bodyResponse;
                         }
                         catch

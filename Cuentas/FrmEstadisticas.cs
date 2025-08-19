@@ -15,11 +15,11 @@ namespace Cuentas
             try
             {
                 // Crear las tareas
-                var taskTotalClientes = ApiFetch.FetchAsync<ApiResponse<int>>("/estadisticas/total-clientes", HttpMethod.Get);
-                var taskTotalCuentas = ApiFetch.FetchAsync<ApiResponse<int>>("/estadisticas/total-cuentas", HttpMethod.Get);
-                var taskTotalCuentasActivas = ApiFetch.FetchAsync<ApiResponse<int>>("/estadisticas/total-cuentas-activas", HttpMethod.Get);
-                var taskMontoTotalCuentas = ApiFetch.FetchAsync<ApiResponse<decimal>>("/estadisticas/monto-total-cuentas", HttpMethod.Get);
-                var taskMontoTotalCuentasPendientes = ApiFetch.FetchAsync<ApiResponse<decimal>>("/estadisticas/monto-pendiente-cuentas", HttpMethod.Get);
+                var taskTotalClientes = ApiFetch.FetchAsync<int>("/estadisticas/total-clientes", HttpMethod.Get);
+                var taskTotalCuentas = ApiFetch.FetchAsync<int>("/estadisticas/total-cuentas", HttpMethod.Get);
+                var taskTotalCuentasActivas = ApiFetch.FetchAsync<int>("/estadisticas/total-cuentas-activas", HttpMethod.Get);
+                var taskMontoTotalCuentas = ApiFetch.FetchAsync<decimal>("/estadisticas/monto-total-cuentas", HttpMethod.Get);
+                var taskMontoTotalCuentasPendientes = ApiFetch.FetchAsync<decimal>("/estadisticas/monto-pendiente-cuentas", HttpMethod.Get);
 
                 // Esperar todas las tareas al mismo tiempo
                 await Task.WhenAll(taskTotalClientes, taskTotalCuentas, taskTotalCuentasActivas, taskMontoTotalCuentas, taskMontoTotalCuentasPendientes);
@@ -27,11 +27,11 @@ namespace Cuentas
                 // Asignar los resultados
                 var estadisticas = new Estadisticas
                 {
-                    TotalClientes = taskTotalClientes.Result.ObjectResponse,
-                    TotalCuentas = taskTotalCuentas.Result.ObjectResponse,
-                    TotalCuentasActivas = taskTotalCuentasActivas.Result.ObjectResponse,
-                    MontoTotalCuentas = taskMontoTotalCuentas.Result.ObjectResponse,
-                    MontoTotalCuentasPendientes = taskMontoTotalCuentasPendientes.Result.ObjectResponse
+                    TotalClientes = taskTotalClientes.Result,
+                    TotalCuentas = taskTotalCuentas.Result,
+                    TotalCuentasActivas = taskTotalCuentasActivas.Result,
+                    MontoTotalCuentas = taskMontoTotalCuentas.Result,
+                    MontoTotalCuentasPendientes = taskMontoTotalCuentasPendientes.Result
                 };
 
                 return estadisticas;

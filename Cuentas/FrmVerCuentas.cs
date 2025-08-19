@@ -46,8 +46,8 @@ namespace Cuentas
             try
             {
                 // Traer todos los datos solo una vez
-                var response = await ApiFetch.FetchAsync<ApiResponse<List<CuentaDAO>>>("/cuentas/obtener", HttpMethod.Get, null);
-                todasLasCuentas = response.ObjectResponse;
+                var response = await ApiFetch.FetchAsync<List<CuentaDAO>>("/cuentas/obtener", HttpMethod.Get, null);
+                todasLasCuentas = response;
 
                 RecargarDatos(todasLasCuentas);
 
@@ -99,7 +99,7 @@ namespace Cuentas
 
                         var resultado = await ApiFetch.FetchAsync<string>($"/cuentas/{cuentaStr}/{fechaStr}/multar", HttpMethod.Patch);
 
-                        MessageBox.Show("Cuenta multada con éxito", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show(resultado, "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         RecargarDatos(todasLasCuentas);
                     }
                     catch (Exception ex)
@@ -115,13 +115,13 @@ namespace Cuentas
                 try
                 {
                     var listaPagos = await ApiFetch.FetchAsync<List<CuentaDAO>>($"/cuentas/{cuentaId}/pagos", HttpMethod.Get, null);
-
                     var frmVerPagos = new FrmVerPagos(listaPagos)
                     {
                         Owner = this
                     };
                     frmVerPagos.ShowDialog();
-
+                    var response = await ApiFetch.FetchAsync<List<CuentaDAO>>("/cuentas/obtener", HttpMethod.Get, null);
+                    todasLasCuentas = response;
                     RecargarDatos(todasLasCuentas);
                 }
                 catch (Exception ex)

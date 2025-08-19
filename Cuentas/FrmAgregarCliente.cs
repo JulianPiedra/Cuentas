@@ -176,9 +176,9 @@ namespace Cuentas
                 cliente.Validate();
 
 
-                var result = await ApiFetch.FetchAsync<BusinessLogicResponse>($"/clientes/agregar", HttpMethod.Post, null);
-
-                MessageBox.Show(result.Message, "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                var result = await ApiFetch.FetchAsync<string>($"/clientes/agregar", HttpMethod.Post, cliente);
+                ApiFetch.FetchAsync<string>($"/clientes/{cliente.IdCliente}/multimedia", HttpMethod.Post, files);
+                MessageBox.Show(result, "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 LimpiarCampos();
             }
             catch (Exception ex)

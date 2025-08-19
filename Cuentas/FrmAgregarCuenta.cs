@@ -30,10 +30,10 @@ namespace Cuentas
 
 
 
-        private void RecargarClientes()
+        private async void RecargarClientes()
         {
             cmbCuenta.DataSource = null;
-            cmbCuenta.DataSource = "ASD";
+            cmbCuenta.DataSource = await ApiFetch.FetchAsync<List<ClienteDAO>>($"/clientes/obtener", HttpMethod.Get, null); ;
             cmbCuenta.DisplayMember = "Nombre";
         }
 
@@ -160,7 +160,7 @@ namespace Cuentas
         {
             try
             {
-                if (cmbCuenta.SelectedItem is not Cliente cliente)
+                if (cmbCuenta.SelectedItem is not ClienteDAO cliente)
                 {
                     MessageBox.Show("Debe seleccionar un cliente válido.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
@@ -176,8 +176,8 @@ namespace Cuentas
                     PagosCuenta = pagosCuentas };
                 cuenta.Validate();
 
-                var resultado = await ApiFetch.FetchAsync<BusinessLogicResponse>($"/cuentas/agregar", HttpMethod.Post, null);
-                MessageBox.Show(resultado.Message, "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                var resultado = await ApiFetch.FetchAsync<string>($"/cuentas/agregar", HttpMethod.Post, cuenta);
+                MessageBox.Show(resultado, "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 LimpiarCampos();
             }
             catch (Exception ex)
