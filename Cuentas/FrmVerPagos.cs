@@ -63,6 +63,8 @@ namespace Cuentas
                 lblCuotas.Text = "Numero total de cuotas: " + _cuentum[0].Cuotas.ToString();
                 lblMonto.Text = "Monto total: " + _cuentum[0].Monto.ToString("C2");
                 lblCliente.Text = "Nombre: " + _cuentum[0].Cliente.Nombre;
+                lblTipoPago.Text = "Tipo de pago: " + _cuentum[0].TipoPago.Nombre;
+                lblTipoCuenta.Text = "Tipo de cuenta: " + _cuentum[0].TipoCuenta.Nombre;
 
                 if (_cuentum[0].SiguientePago != DateOnly.MinValue)
                 {

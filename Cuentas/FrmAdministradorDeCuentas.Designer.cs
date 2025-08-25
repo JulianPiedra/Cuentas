@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmAdministradorDeCuentas));
             menuStrip = new MenuStrip();
             FrmVerCuentas = new ToolStripMenuItem();
             FrmVerClientes = new ToolStripMenuItem();
@@ -43,7 +44,8 @@
             menuStrip.Items.AddRange(new ToolStripItem[] { FrmVerCuentas, FrmVerClientes, FrmAgregarCuenta, FrmAgregarCliente, FrmEstadisticas });
             menuStrip.Location = new Point(0, 0);
             menuStrip.Name = "menuStrip";
-            menuStrip.Size = new Size(995, 29);
+            menuStrip.Padding = new Padding(8, 3, 0, 3);
+            menuStrip.Size = new Size(1279, 31);
             menuStrip.TabIndex = 0;
             menuStrip.Text = "menu_bar";
             // 
@@ -88,13 +90,17 @@
             // 
             // FrmAdministradorDeCuentas
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(9F, 21F);
             AutoScaleMode = AutoScaleMode.Font;
             AutoSize = true;
-            ClientSize = new Size(995, 519);
+            BackColor = Color.White;
+            ClientSize = new Size(1279, 727);
             Controls.Add(menuStrip);
+            Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             IsMdiContainer = true;
             MainMenuStrip = menuStrip;
+            Margin = new Padding(4);
             Name = "FrmAdministradorDeCuentas";
             Text = "Cuentas";
             WindowState = FormWindowState.Maximized;

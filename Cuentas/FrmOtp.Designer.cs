@@ -44,6 +44,7 @@
             // 
             // txtOTP
             // 
+            txtOTP.BackColor = SystemColors.Control;
             txtOTP.Location = new Point(260, 157);
             txtOTP.Name = "txtOTP";
             txtOTP.Size = new Size(300, 29);
@@ -51,18 +52,22 @@
             // 
             // btnVerify
             // 
+            btnVerify.BackColor = Color.FromArgb(8, 138, 100);
+            btnVerify.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnVerify.ForeColor = Color.White;
             btnVerify.Location = new Point(295, 236);
             btnVerify.Name = "btnVerify";
             btnVerify.Size = new Size(230, 80);
             btnVerify.TabIndex = 2;
             btnVerify.Text = "Verificar contraseña";
-            btnVerify.UseVisualStyleBackColor = true;
+            btnVerify.UseVisualStyleBackColor = false;
             btnVerify.Click += btnVerify_Click;
             // 
-            // OtpForm
+            // FrmOtp
             // 
             AutoScaleDimensions = new SizeF(9F, 21F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.White;
             ClientSize = new Size(804, 401);
             Controls.Add(btnVerify);
             Controls.Add(txtOTP);
@@ -72,8 +77,8 @@
             Margin = new Padding(4);
             MaximumSize = new Size(820, 440);
             MinimumSize = new Size(820, 440);
-            Name = "OtpForm";
-            Text = "OtpForm";
+            Name = "FrmOtp";
+            Text = "Log In";
             ResumeLayout(false);
             PerformLayout();
         }

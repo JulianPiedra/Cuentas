@@ -56,98 +56,105 @@
             flowLayoutPanel1.Dock = DockStyle.Left;
             flowLayoutPanel1.Font = new Font("Segoe UI", 12F);
             flowLayoutPanel1.Location = new Point(0, 0);
+            flowLayoutPanel1.Margin = new Padding(4, 4, 4, 4);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
-            flowLayoutPanel1.Size = new Size(430, 650);
+            flowLayoutPanel1.Size = new Size(553, 910);
             flowLayoutPanel1.TabIndex = 6;
             // 
             // lblCedula
             // 
             lblCedula.AutoSize = true;
             lblCedula.Font = new Font("Segoe UI", 12F);
-            lblCedula.Location = new Point(5, 35);
-            lblCedula.Margin = new Padding(5, 35, 50, 35);
+            lblCedula.Location = new Point(6, 49);
+            lblCedula.Margin = new Padding(6, 49, 64, 49);
             lblCedula.Name = "lblCedula";
-            lblCedula.Size = new Size(0, 21);
+            lblCedula.Size = new Size(0, 29);
             lblCedula.TabIndex = 9;
             // 
             // lblNombre
             // 
             lblNombre.AutoSize = true;
             lblNombre.Font = new Font("Segoe UI", 12F);
-            lblNombre.Location = new Point(60, 35);
-            lblNombre.Margin = new Padding(5, 35, 50, 35);
+            lblNombre.Location = new Point(77, 49);
+            lblNombre.Margin = new Padding(6, 49, 64, 49);
             lblNombre.Name = "lblNombre";
-            lblNombre.Size = new Size(0, 21);
+            lblNombre.Size = new Size(0, 29);
             lblNombre.TabIndex = 8;
             // 
             // lblTelefono
             // 
             lblTelefono.AutoSize = true;
             lblTelefono.Font = new Font("Segoe UI", 12F);
-            lblTelefono.Location = new Point(115, 35);
-            lblTelefono.Margin = new Padding(5, 35, 50, 35);
+            lblTelefono.Location = new Point(148, 49);
+            lblTelefono.Margin = new Padding(6, 49, 64, 49);
             lblTelefono.Name = "lblTelefono";
-            lblTelefono.Size = new Size(0, 21);
+            lblTelefono.Size = new Size(0, 29);
             lblTelefono.TabIndex = 6;
             // 
             // lblDireccion
             // 
             lblDireccion.AutoSize = true;
             lblDireccion.Font = new Font("Segoe UI", 12F);
-            lblDireccion.Location = new Point(170, 35);
-            lblDireccion.Margin = new Padding(5, 35, 50, 35);
+            lblDireccion.Location = new Point(219, 49);
+            lblDireccion.Margin = new Padding(6, 49, 64, 49);
             lblDireccion.Name = "lblDireccion";
-            lblDireccion.Size = new Size(0, 21);
+            lblDireccion.Size = new Size(0, 29);
             lblDireccion.TabIndex = 7;
             // 
             // lblCorreo
             // 
             lblCorreo.AutoSize = true;
             lblCorreo.Font = new Font("Segoe UI", 12F);
-            lblCorreo.Location = new Point(225, 35);
-            lblCorreo.Margin = new Padding(5, 35, 50, 35);
+            lblCorreo.Location = new Point(289, 49);
+            lblCorreo.Margin = new Padding(6, 49, 64, 49);
             lblCorreo.Name = "lblCorreo";
-            lblCorreo.Size = new Size(0, 21);
+            lblCorreo.Size = new Size(0, 29);
             lblCorreo.TabIndex = 10;
             // 
             // lblApuntes
             // 
             lblApuntes.AutoSize = true;
             lblApuntes.Font = new Font("Segoe UI", 12F);
-            lblApuntes.Location = new Point(280, 35);
-            lblApuntes.Margin = new Padding(5, 35, 50, 35);
+            lblApuntes.Location = new Point(360, 49);
+            lblApuntes.Margin = new Padding(6, 49, 64, 49);
             lblApuntes.Name = "lblApuntes";
-            lblApuntes.Size = new Size(0, 21);
+            lblApuntes.Size = new Size(0, 29);
             lblApuntes.TabIndex = 13;
             // 
             // linkLblCuentas
             // 
             linkLblCuentas.AutoSize = true;
-            linkLblCuentas.Location = new Point(335, 35);
-            linkLblCuentas.Margin = new Padding(5, 35, 50, 35);
+            linkLblCuentas.Location = new Point(431, 49);
+            linkLblCuentas.Margin = new Padding(6, 49, 64, 49);
             linkLblCuentas.Name = "linkLblCuentas";
-            linkLblCuentas.Size = new Size(0, 21);
+            linkLblCuentas.Size = new Size(0, 29);
             linkLblCuentas.TabIndex = 12;
             linkLblCuentas.LinkClicked += linkLblCuentas_LinkClicked;
             // 
             // btnEditar
             // 
+            btnEditar.AutoSize = true;
+            btnEditar.BackColor = Color.FromArgb(8, 138, 100);
             btnEditar.Dock = DockStyle.Top;
-            btnEditar.Location = new Point(3, 94);
+            btnEditar.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnEditar.ForeColor = Color.White;
+            btnEditar.Location = new Point(4, 132);
+            btnEditar.Margin = new Padding(4, 4, 4, 4);
             btnEditar.Name = "btnEditar";
-            btnEditar.Size = new Size(400, 39);
+            btnEditar.Size = new Size(514, 55);
             btnEditar.TabIndex = 8;
             btnEditar.Text = "Editar Cliente";
-            btnEditar.UseVisualStyleBackColor = true;
+            btnEditar.UseVisualStyleBackColor = false;
             btnEditar.Click += btnEditar_Click;
             // 
             // flpMultimedia
             // 
             flpMultimedia.AutoScroll = true;
             flpMultimedia.Dock = DockStyle.Fill;
-            flpMultimedia.Location = new Point(430, 28);
+            flpMultimedia.Location = new Point(553, 28);
+            flpMultimedia.Margin = new Padding(4, 4, 4, 4);
             flpMultimedia.Name = "flpMultimedia";
-            flpMultimedia.Size = new Size(570, 622);
+            flpMultimedia.Size = new Size(733, 882);
             flpMultimedia.TabIndex = 7;
             // 
             // label1
@@ -155,7 +162,8 @@
             label1.AutoSize = true;
             label1.Dock = DockStyle.Top;
             label1.Font = new Font("Segoe UI", 15F);
-            label1.Location = new Point(430, 0);
+            label1.Location = new Point(553, 0);
+            label1.Margin = new Padding(4, 0, 4, 0);
             label1.Name = "label1";
             label1.Size = new Size(289, 28);
             label1.TabIndex = 0;
@@ -163,13 +171,17 @@
             // 
             // FrmVerDetalleCliente
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(9F, 21F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1000, 650);
+            BackColor = Color.White;
+            ClientSize = new Size(1286, 910);
             Controls.Add(flpMultimedia);
             Controls.Add(label1);
             Controls.Add(flowLayoutPanel1);
+            Font = new Font("Segoe UI", 12F);
+            Margin = new Padding(4, 4, 4, 4);
             Name = "FrmVerDetalleCliente";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "FrmVerPagos";
             Load += FrmVerClientes_Load;
             flowLayoutPanel1.ResumeLayout(false);

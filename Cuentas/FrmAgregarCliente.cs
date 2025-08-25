@@ -155,17 +155,14 @@ namespace Cuentas
 
         private void LimpiarCampos()
         {
-            foreach (Control control in this.Controls)
+            foreach (Control control in pnlControles.Controls)
             {
                 if (control is TextBox textBox)
                 {
                     textBox.Clear();
-                }
-                else if (control == flpMultimedia)
-                {
-                    control.Controls.Clear();
-                }
+                }                
             }
+            flpMultimedia.Controls.Clear();
             files.Clear();
         }
 

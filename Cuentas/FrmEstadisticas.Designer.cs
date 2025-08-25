@@ -59,6 +59,7 @@
             // 
             // panel2
             // 
+            panel2.BackColor = Color.White;
             panel2.Controls.Add(lblTotalCuentas);
             panel2.Controls.Add(pbTotalCuentas);
             panel2.Dock = DockStyle.Fill;
@@ -69,6 +70,7 @@
             // 
             // lblTotalCuentas
             // 
+            lblTotalCuentas.BackColor = Color.White;
             lblTotalCuentas.Dock = DockStyle.Fill;
             lblTotalCuentas.Font = new Font("Arial Narrow", 18F, FontStyle.Bold);
             lblTotalCuentas.Location = new Point(0, 349);
@@ -79,6 +81,7 @@
             // 
             // pbTotalCuentas
             // 
+            pbTotalCuentas.BackColor = Color.White;
             pbTotalCuentas.Dock = DockStyle.Top;
             pbTotalCuentas.Image = Properties.Resources.accounting;
             pbTotalCuentas.Location = new Point(0, 0);
@@ -90,6 +93,7 @@
             // 
             // panel3
             // 
+            panel3.BackColor = Color.White;
             panel3.Controls.Add(lblTotalCuentasActivas);
             panel3.Controls.Add(pbTotalCuentasActivas);
             panel3.Dock = DockStyle.Fill;
@@ -100,6 +104,7 @@
             // 
             // lblTotalCuentasActivas
             // 
+            lblTotalCuentasActivas.BackColor = Color.White;
             lblTotalCuentasActivas.Dock = DockStyle.Fill;
             lblTotalCuentasActivas.Font = new Font("Arial Narrow", 18F, FontStyle.Bold);
             lblTotalCuentasActivas.Location = new Point(0, 349);
@@ -110,6 +115,7 @@
             // 
             // pbTotalCuentasActivas
             // 
+            pbTotalCuentasActivas.BackColor = Color.White;
             pbTotalCuentasActivas.Dock = DockStyle.Top;
             pbTotalCuentasActivas.Image = Properties.Resources.bank;
             pbTotalCuentasActivas.Location = new Point(0, 0);
@@ -121,6 +127,7 @@
             // 
             // panel1
             // 
+            panel1.BackColor = Color.White;
             panel1.Controls.Add(lblTotalClientes);
             panel1.Controls.Add(pbTotalClientes);
             panel1.Dock = DockStyle.Fill;
@@ -131,6 +138,7 @@
             // 
             // lblTotalClientes
             // 
+            lblTotalClientes.BackColor = Color.White;
             lblTotalClientes.Dock = DockStyle.Fill;
             lblTotalClientes.Font = new Font("Arial Narrow", 18F, FontStyle.Bold);
             lblTotalClientes.Location = new Point(0, 349);
@@ -141,6 +149,7 @@
             // 
             // pbTotalClientes
             // 
+            pbTotalClientes.BackColor = Color.White;
             pbTotalClientes.Dock = DockStyle.Top;
             pbTotalClientes.Image = Properties.Resources.customer;
             pbTotalClientes.Location = new Point(0, 0);
@@ -152,6 +161,7 @@
             // 
             // tableLayoutPanel1
             // 
+            tableLayoutPanel1.BackColor = Color.White;
             tableLayoutPanel1.ColumnCount = 5;
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
@@ -174,6 +184,7 @@
             // 
             // panel5
             // 
+            panel5.BackColor = Color.White;
             panel5.Controls.Add(lblMontoTotalCuentasPendientes);
             panel5.Controls.Add(pbMontoTotalPendientes);
             panel5.Dock = DockStyle.Fill;
@@ -185,6 +196,7 @@
             // 
             // lblMontoTotalCuentasPendientes
             // 
+            lblMontoTotalCuentasPendientes.BackColor = Color.White;
             lblMontoTotalCuentasPendientes.Dock = DockStyle.Fill;
             lblMontoTotalCuentasPendientes.Font = new Font("Arial Narrow", 18F, FontStyle.Bold);
             lblMontoTotalCuentasPendientes.Location = new Point(0, 349);
@@ -195,6 +207,7 @@
             // 
             // pbMontoTotalPendientes
             // 
+            pbMontoTotalPendientes.BackColor = Color.White;
             pbMontoTotalPendientes.Dock = DockStyle.Top;
             pbMontoTotalPendientes.Image = Properties.Resources.time;
             pbMontoTotalPendientes.Location = new Point(0, 0);
@@ -206,6 +219,7 @@
             // 
             // panel4
             // 
+            panel4.BackColor = Color.White;
             panel4.Controls.Add(lblMontoTotalCuentas);
             panel4.Controls.Add(pbMontoTotalCuentas);
             panel4.Dock = DockStyle.Fill;
@@ -216,6 +230,7 @@
             // 
             // lblMontoTotalCuentas
             // 
+            lblMontoTotalCuentas.BackColor = Color.White;
             lblMontoTotalCuentas.Dock = DockStyle.Fill;
             lblMontoTotalCuentas.Font = new Font("Arial Narrow", 18F, FontStyle.Bold);
             lblMontoTotalCuentas.Location = new Point(0, 349);
@@ -226,6 +241,7 @@
             // 
             // pbMontoTotalCuentas
             // 
+            pbMontoTotalCuentas.BackColor = Color.White;
             pbMontoTotalCuentas.Dock = DockStyle.Top;
             pbMontoTotalCuentas.Image = Properties.Resources.profit;
             pbMontoTotalCuentas.Location = new Point(0, 0);

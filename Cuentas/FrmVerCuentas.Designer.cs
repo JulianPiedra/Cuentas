@@ -31,6 +31,7 @@
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
             DgvCuentas = new DataGridView();
             Cuenta = new DataGridViewTextBoxColumn();
             Cliente = new DataGridViewTextBoxColumn();
@@ -52,39 +53,44 @@
             // 
             DgvCuentas.AllowUserToAddRows = false;
             DgvCuentas.AllowUserToDeleteRows = false;
+            DgvCuentas.AllowUserToResizeRows = false;
+            dataGridViewCellStyle1.BackColor = Color.WhiteSmoke;
+            DgvCuentas.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             DgvCuentas.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             DgvCuentas.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
-            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = SystemColors.Control;
-            dataGridViewCellStyle1.Font = new Font("Segoe UI", 12F);
-            dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
-            DgvCuentas.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
-            DgvCuentas.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            DgvCuentas.Columns.AddRange(new DataGridViewColumn[] { Cuenta, Cliente, Monto, Cuotas, Canceladas, SiguientePago, Multa, VerPagos });
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = SystemColors.Window;
+            DgvCuentas.BackgroundColor = SystemColors.InactiveCaption;
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = SystemColors.Control;
             dataGridViewCellStyle2.Font = new Font("Segoe UI", 12F);
-            dataGridViewCellStyle2.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle2.ForeColor = SystemColors.WindowText;
             dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
             dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
-            DgvCuentas.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
+            DgvCuentas.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            DgvCuentas.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            DgvCuentas.Columns.AddRange(new DataGridViewColumn[] { Cuenta, Cliente, Monto, Cuotas, Canceladas, SiguientePago, Multa, VerPagos });
+            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle3.BackColor = SystemColors.Window;
+            dataGridViewCellStyle3.Font = new Font("Segoe UI", 12F);
+            dataGridViewCellStyle3.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.False;
+            DgvCuentas.DefaultCellStyle = dataGridViewCellStyle3;
             DgvCuentas.Dock = DockStyle.Fill;
             DgvCuentas.EditMode = DataGridViewEditMode.EditOnEnter;
             DgvCuentas.Location = new Point(0, 66);
             DgvCuentas.Name = "DgvCuentas";
             DgvCuentas.ReadOnly = true;
-            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = SystemColors.Control;
-            dataGridViewCellStyle3.Font = new Font("Segoe UI", 12F);
-            dataGridViewCellStyle3.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
-            DgvCuentas.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle4.BackColor = SystemColors.Control;
+            dataGridViewCellStyle4.Font = new Font("Segoe UI", 12F);
+            dataGridViewCellStyle4.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle4.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = DataGridViewTriState.True;
+            DgvCuentas.RowHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            DgvCuentas.RowHeadersVisible = false;
             DgvCuentas.Size = new Size(800, 384);
             DgvCuentas.TabIndex = 0;
             DgvCuentas.CellContentClick += DgvCuentas_CellContentClick;
@@ -147,6 +153,7 @@
             // 
             // txtBuscar
             // 
+            txtBuscar.BackColor = SystemColors.Control;
             txtBuscar.Dock = DockStyle.Fill;
             txtBuscar.Font = new Font("Segoe UI", 12F);
             txtBuscar.Location = new Point(0, 21);
@@ -180,6 +187,7 @@
             // 
             // cmbSemanal
             // 
+            cmbSemanal.BackColor = SystemColors.Control;
             cmbSemanal.Dock = DockStyle.Right;
             cmbSemanal.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbSemanal.Font = new Font("Segoe UI", 12F);
@@ -196,6 +204,7 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             AutoSize = true;
+            BackColor = Color.White;
             ClientSize = new Size(800, 450);
             ControlBox = false;
             Controls.Add(DgvCuentas);

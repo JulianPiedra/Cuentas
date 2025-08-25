@@ -196,16 +196,15 @@ namespace Cuentas
 
         private void LimpiarCampos()
         {
-            foreach (Control control in Controls)
+            foreach (Control control in pnlControles.Controls)
             {
                 switch (control)
                 {
                     case TextBox txt: txt.Clear(); break;
-                    case ComboBox cmb: cmb.SelectedIndex = -1; break;
                     case CheckBox chk: chk.Checked = false; break;
-                    case DataGridView dgv: dgv.Rows.Clear(); break;
                 }
             }
+            DgvPagos.Rows.Clear();
 
         }
 
@@ -306,14 +305,25 @@ namespace Cuentas
                     return;
                 }
 
-                var monto = decimal.Parse(txtMontoCuenta.Text);
-                var cuotas = int.Parse(txtCantCuotas.Text);
+                // Validar monto
+                if (!decimal.TryParse(txtMontoCuenta.Text, out var monto))
+                {
+                    MessageBox.Show("Debe ingresar un monto válido.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                // Validar cuotas
+                if (!int.TryParse(txtCantCuotas.Text, out var cuotas))
+                {
+                    MessageBox.Show("Debe ingresar la cantidad de cuotas en números válidos.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
 
                 var cuenta = new CuentaDAO
                 {
-                    IdCliente = cliente.IdCliente,
+                    IdCliente = cliente.IdCliente ?? "",
                     Monto = monto,
-                    Cuotas = cuotas,
+                    Cuotas = cuotas ,
                     Canceladas = pagosCuentas.Where(p => p.Cancelado == true).Count(),
                     PagosCuenta = pagosCuentas,
                     TipoCuenta = cmbTipoCuenta.SelectedItem as TipoCuentaDAO,

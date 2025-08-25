@@ -96,6 +96,8 @@ namespace BussinessLogic
             {
                 var cuentas = await Context.Cuenta
                     .Include(c => c.IdClienteNavigation)
+                    .Include(c => c.IdTipoCuentaNavigation)
+                    .Include(c => c.IdTipoPagoNavigation)
                     .AsNoTracking()
                     .ToListAsync();
 
@@ -143,6 +145,8 @@ namespace BussinessLogic
                 var cuentas = await Context.Cuenta
                     .Where(c => c.IdCuenta == id)
                     .Include(c => c.IdClienteNavigation)
+                    .Include(c => c.IdTipoCuentaNavigation)
+                    .Include(c => c.IdTipoPagoNavigation)
                     .Include(c => c.PagoCuenta)
                     .AsNoTracking()
                     .ToListAsync();

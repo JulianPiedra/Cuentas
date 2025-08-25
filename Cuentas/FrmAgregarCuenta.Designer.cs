@@ -38,7 +38,7 @@ namespace Cuentas
             DgvPagos = new DataGridView();
             Pagos = new DataGridViewTextBoxColumn();
             Pagado = new DataGridViewCheckBoxColumn();
-            panel1 = new Panel();
+            pnlControles = new Panel();
             pnlTipos = new Panel();
             cmbTipoCuenta = new ComboBox();
             cmbTipoPago = new ComboBox();
@@ -64,7 +64,7 @@ namespace Cuentas
             cmbCuenta = new ComboBox();
             lblCuenta = new Label();
             ((System.ComponentModel.ISupportInitialize)DgvPagos).BeginInit();
-            panel1.SuspendLayout();
+            pnlControles.SuspendLayout();
             pnlTipos.SuspendLayout();
             panel2.SuspendLayout();
             pnlFrecuencia.SuspendLayout();
@@ -92,9 +92,11 @@ namespace Cuentas
             DgvPagos.AllowUserToAddRows = false;
             DgvPagos.AllowUserToDeleteRows = false;
             DgvPagos.AllowUserToResizeRows = false;
-            dataGridViewCellStyle1.BackColor = Color.FromArgb(161, 212, 197);
+            dataGridViewCellStyle1.BackColor = Color.WhiteSmoke;
             DgvPagos.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             DgvPagos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            DgvPagos.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            DgvPagos.BackgroundColor = SystemColors.InactiveCaption;
             dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle2.BackColor = Color.White;
             dataGridViewCellStyle2.Font = new Font("Segoe UI", 12F);
@@ -115,7 +117,6 @@ namespace Cuentas
             DgvPagos.DefaultCellStyle = dataGridViewCellStyle3;
             DgvPagos.Dock = DockStyle.Right;
             DgvPagos.EditMode = DataGridViewEditMode.EditOnEnter;
-            DgvPagos.EnableHeadersVisualStyles = false;
             DgvPagos.Location = new Point(610, 0);
             DgvPagos.Name = "DgvPagos";
             dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -145,28 +146,29 @@ namespace Cuentas
             Pagado.Name = "Pagado";
             Pagado.Resizable = DataGridViewTriState.True;
             // 
-            // panel1
+            // pnlControles
             // 
-            panel1.Controls.Add(pnlTipos);
-            panel1.Controls.Add(panel2);
-            panel1.Controls.Add(txtMontoCuotas);
-            panel1.Controls.Add(lblMontoCuotas);
-            panel1.Controls.Add(txtCantCuotas);
-            panel1.Controls.Add(lblNumCuotas);
-            panel1.Controls.Add(pnlFrecuencia);
-            panel1.Controls.Add(lblFecha);
-            panel1.Controls.Add(pnlRadios);
-            panel1.Controls.Add(lblFrecuencia);
-            panel1.Controls.Add(txtMontoCuenta);
-            panel1.Controls.Add(lblMonto);
-            panel1.Controls.Add(cmbCuenta);
-            panel1.Controls.Add(lblCuenta);
-            panel1.Dock = DockStyle.Fill;
-            panel1.Location = new Point(0, 0);
-            panel1.Name = "panel1";
-            panel1.Padding = new Padding(20, 20, 50, 0);
-            panel1.Size = new Size(610, 542);
-            panel1.TabIndex = 16;
+            pnlControles.BackColor = Color.White;
+            pnlControles.Controls.Add(pnlTipos);
+            pnlControles.Controls.Add(panel2);
+            pnlControles.Controls.Add(txtMontoCuotas);
+            pnlControles.Controls.Add(lblMontoCuotas);
+            pnlControles.Controls.Add(txtCantCuotas);
+            pnlControles.Controls.Add(lblNumCuotas);
+            pnlControles.Controls.Add(pnlFrecuencia);
+            pnlControles.Controls.Add(lblFecha);
+            pnlControles.Controls.Add(pnlRadios);
+            pnlControles.Controls.Add(lblFrecuencia);
+            pnlControles.Controls.Add(txtMontoCuenta);
+            pnlControles.Controls.Add(lblMonto);
+            pnlControles.Controls.Add(cmbCuenta);
+            pnlControles.Controls.Add(lblCuenta);
+            pnlControles.Dock = DockStyle.Fill;
+            pnlControles.Location = new Point(0, 0);
+            pnlControles.Name = "pnlControles";
+            pnlControles.Padding = new Padding(20, 20, 50, 0);
+            pnlControles.Size = new Size(610, 542);
+            pnlControles.TabIndex = 16;
             // 
             // pnlTipos
             // 
@@ -180,9 +182,9 @@ namespace Cuentas
             // 
             // cmbTipoCuenta
             // 
-            cmbTipoCuenta.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
-            cmbTipoCuenta.AutoCompleteSource = AutoCompleteSource.ListItems;
+            cmbTipoCuenta.BackColor = SystemColors.Control;
             cmbTipoCuenta.Dock = DockStyle.Right;
+            cmbTipoCuenta.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbTipoCuenta.Font = new Font("Segoe UI", 12F);
             cmbTipoCuenta.FormattingEnabled = true;
             cmbTipoCuenta.Location = new Point(260, 0);
@@ -194,7 +196,9 @@ namespace Cuentas
             // 
             cmbTipoPago.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
             cmbTipoPago.AutoCompleteSource = AutoCompleteSource.ListItems;
+            cmbTipoPago.BackColor = SystemColors.Control;
             cmbTipoPago.Dock = DockStyle.Left;
+            cmbTipoPago.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbTipoPago.Font = new Font("Segoe UI", 12F);
             cmbTipoPago.FormattingEnabled = true;
             cmbTipoPago.Location = new Point(0, 0);
@@ -241,11 +245,13 @@ namespace Cuentas
             // 
             // txtMontoCuotas
             // 
+            txtMontoCuotas.BackColor = SystemColors.ControlLight;
             txtMontoCuotas.Dock = DockStyle.Top;
-            txtMontoCuotas.Enabled = false;
             txtMontoCuotas.Font = new Font("Segoe UI", 12F);
+            txtMontoCuotas.ForeColor = SystemColors.WindowText;
             txtMontoCuotas.Location = new Point(20, 297);
             txtMontoCuotas.Name = "txtMontoCuotas";
+            txtMontoCuotas.ReadOnly = true;
             txtMontoCuotas.Size = new Size(540, 29);
             txtMontoCuotas.TabIndex = 24;
             txtMontoCuotas.TextChanged += Control_ValueChanged;
@@ -263,6 +269,7 @@ namespace Cuentas
             // 
             // txtCantCuotas
             // 
+            txtCantCuotas.BackColor = SystemColors.Control;
             txtCantCuotas.Dock = DockStyle.Top;
             txtCantCuotas.Font = new Font("Segoe UI", 12F);
             txtCantCuotas.Location = new Point(20, 247);
@@ -311,6 +318,7 @@ namespace Cuentas
             // 
             // cmbSemanal
             // 
+            cmbSemanal.BackColor = SystemColors.Control;
             cmbSemanal.Dock = DockStyle.Top;
             cmbSemanal.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbSemanal.Font = new Font("Segoe UI", 12F);
@@ -415,6 +423,7 @@ namespace Cuentas
             // 
             // txtMontoCuenta
             // 
+            txtMontoCuenta.BackColor = SystemColors.Control;
             txtMontoCuenta.Dock = DockStyle.Top;
             txtMontoCuenta.Font = new Font("Segoe UI", 12F);
             txtMontoCuenta.Location = new Point(20, 91);
@@ -439,6 +448,7 @@ namespace Cuentas
             // 
             cmbCuenta.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
             cmbCuenta.AutoCompleteSource = AutoCompleteSource.ListItems;
+            cmbCuenta.BackColor = SystemColors.Control;
             cmbCuenta.Dock = DockStyle.Top;
             cmbCuenta.Font = new Font("Segoe UI", 12F);
             cmbCuenta.FormattingEnabled = true;
@@ -465,7 +475,7 @@ namespace Cuentas
             AutoSize = true;
             ClientSize = new Size(1029, 630);
             ControlBox = false;
-            Controls.Add(panel1);
+            Controls.Add(pnlControles);
             Controls.Add(DgvPagos);
             Controls.Add(btnCrearCuenta);
             DoubleBuffered = true;
@@ -478,8 +488,8 @@ namespace Cuentas
             WindowState = FormWindowState.Maximized;
             Load += FrmAgregarCuenta_Load;
             ((System.ComponentModel.ISupportInitialize)DgvPagos).EndInit();
-            panel1.ResumeLayout(false);
-            panel1.PerformLayout();
+            pnlControles.ResumeLayout(false);
+            pnlControles.PerformLayout();
             pnlTipos.ResumeLayout(false);
             panel2.ResumeLayout(false);
             panel2.PerformLayout();
@@ -494,7 +504,7 @@ namespace Cuentas
         private DataGridView DgvPagos;
         private DataGridViewTextBoxColumn Pagos;
         private DataGridViewCheckBoxColumn Pagado;
-        private Panel panel1;
+        private Panel pnlControles;
         private TextBox txtMontoCuotas;
         private Label lblMontoCuotas;
         private TextBox txtCantCuotas;
