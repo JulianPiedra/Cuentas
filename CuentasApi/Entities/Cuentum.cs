@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace DataAccess.Models;
+namespace CuentasApi.Entities;
 
 public partial class Cuentum
 {
@@ -17,15 +17,7 @@ public partial class Cuentum
 
     public DateOnly SiguientePago { get; set; }
 
-    public int? IdTipoPago { get; set; }
-
-    public int? IdTipoCuenta { get; set; }
-
     public virtual Cliente IdClienteNavigation { get; set; } = null!;
-
-    public virtual TipoCuentum? IdTipoCuentaNavigation { get; set; }
-
-    public virtual TipoPago? IdTipoPagoNavigation { get; set; }
 
     public virtual ICollection<PagoCuentum> PagoCuenta { get; set; } = new List<PagoCuentum>();
 }

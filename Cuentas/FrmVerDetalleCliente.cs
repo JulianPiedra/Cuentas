@@ -66,18 +66,29 @@ namespace Cuentas
                 lblCorreo.Text = "Correo: " + (string.IsNullOrEmpty(_cliente.Correo) ? "                                          " : _cliente.Correo);
                 lblDireccion.Text = "Dirección: " + _cliente.Direccion;
                 lblNombre.Text = "Nombre: " + _cliente.Nombre;
+                lblApuntes.Text = "Apuntes: " + (string.IsNullOrEmpty(_cliente.Apuntes) ? "                                          " : _cliente.Apuntes);
                 linkLblCuentas.Text = "Cuentas asociadas:\n";
                 linkLblCuentas.Links.Clear(); // Limpia cualquier enlace previo
 
                 int startIndex = linkLblCuentas.Text.Length;
-
-                foreach (var cuenta in _cliente.Cuentas)
+                string textoLink = "";
+                if (_cliente.Cuentas.Count <= 0)
                 {
-                    string textoLink = $"Monto de cuenta: {cuenta.Monto:C}\n";
+                    textoLink = $"Crear cuenta";
                     linkLblCuentas.Text += textoLink;
+                    linkLblCuentas.Links.Add(startIndex, textoLink.Length, 0);
+                }
+                else
+                {
+                    foreach (var cuenta in _cliente.Cuentas)
+                    {
 
-                    linkLblCuentas.Links.Add(startIndex, textoLink.Length, cuenta.Cuenta);
-                    startIndex += textoLink.Length;
+                        textoLink = $"Monto de cuenta: {cuenta.Monto:C}\n";
+                        linkLblCuentas.Text += textoLink;
+
+                        linkLblCuentas.Links.Add(startIndex, textoLink.Length, cuenta.Cuenta);
+                        startIndex += textoLink.Length;
+                    }
                 }
 
                 foreach (var multimedia in _cliente.Files)
@@ -152,8 +163,21 @@ namespace Cuentas
         {
             var idCuentaObj = e.Link.LinkData;
 
+
             if (int.TryParse(idCuentaObj?.ToString(), out int cuentaId))
             {
+                if (cuentaId == 0)
+                {
+                    FrmAdministradorDeCuentas mdiParent = (FrmAdministradorDeCuentas)Application.OpenForms["FrmAdministradorDeCuentas"];
+                    if (mdiParent != null)
+                    {
+                        FrmAgregarCuenta frmAgregarCuenta = new FrmAgregarCuenta(_cliente.IdCliente);
+                        frmAgregarCuenta.MdiParent = mdiParent;
+                        frmAgregarCuenta.Show();
+                        this.Dispose();
+                    }
+                    return;
+                }
                 var listaPagos = await ApiFetch.FetchAsync<List<CuentaDAO>>($"/cuentas/{cuentaId}/pagos", HttpMethod.Get, null);
 
                 var frmVerPagos = new FrmVerPagos(listaPagos)
@@ -168,5 +192,18 @@ namespace Cuentas
             }
         }
 
+        private void btnEditar_Click(object sender, EventArgs e)
+        {
+            FrmAdministradorDeCuentas mdiParent = (FrmAdministradorDeCuentas)Application.OpenForms["FrmAdministradorDeCuentas"];
+            if (mdiParent != null)
+            {
+
+
+                FrmAgregarCliente frmAgregarCliente = new FrmAgregarCliente(_cliente);
+                frmAgregarCliente.MdiParent = mdiParent;
+                frmAgregarCliente.Show();
+                this.Dispose();
+            }
+        }
     }
 }

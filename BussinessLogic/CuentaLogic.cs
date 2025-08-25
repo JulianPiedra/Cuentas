@@ -52,7 +52,10 @@ namespace BussinessLogic
                 {
                     IdCliente = cuentaDAO.IdCliente,
                     Monto = cuentaDAO.Monto,
-                    Cuotas = cuentaDAO.Cuotas
+                    Cuotas = cuentaDAO.Cuotas,
+                    Canceladas = cuentaDAO.Canceladas,
+                    IdTipoCuenta = cuentaDAO.TipoCuenta.IdTipoCuenta,
+                    IdTipoPago = cuentaDAO.TipoPago.IdTipoPago,
                 };
 
                 await Context.Cuenta.AddAsync(nuevaCuenta);
@@ -75,9 +78,6 @@ namespace BussinessLogic
                     .OrderBy(p => p.FechaPago)
                     .Select(p => p.FechaPago)
                     .FirstOrDefaultAsync();
-
-                nuevaCuenta.Canceladas = await Context.PagoCuenta
-                    .CountAsync(p => p.IdCuenta == nuevaCuenta.IdCuenta && p.Cancelado);
 
                 await Context.SaveChangesAsync();
 
@@ -114,7 +114,18 @@ namespace BussinessLogic
                         Telefono = c.IdClienteNavigation.Telefono,
                         Direccion = c.IdClienteNavigation.Direccion,
                         Nombre = c.IdClienteNavigation.Nombre
+                    },
+                    TipoCuenta = new TipoCuentaDAO
+                    {
+                        IdTipoCuenta = c.IdTipoCuentaNavigation?.IdTipoCuenta,
+                        Nombre = c.IdTipoCuentaNavigation?.Nombre
+                    },
+                    TipoPago = new TipoPagoDAO
+                    {
+                        IdTipoPago = c.IdTipoPagoNavigation?.IdTipoPago,
+                        Nombre = c.IdTipoPagoNavigation?.Nombre
                     }
+
                 }).ToList();
 
                 return new BusinessLogicResponse(200, cuentasDAO);
@@ -160,7 +171,17 @@ namespace BussinessLogic
                         Cancelado = p.Cancelado,
                         Monto = p.Monto,
                         Multa = p.Multa
-                    }).ToList()
+                    }).ToList(),
+                    TipoCuenta = new TipoCuentaDAO
+                    {
+                        IdTipoCuenta = c.IdTipoCuentaNavigation?.IdTipoCuenta,
+                        Nombre = c.IdTipoCuentaNavigation?.Nombre
+                    },
+                    TipoPago = new TipoPagoDAO
+                    {
+                        IdTipoPago = c.IdTipoPagoNavigation?.IdTipoPago,
+                        Nombre = c.IdTipoPagoNavigation?.Nombre
+                    }
                 }).ToList();
 
                 return new BusinessLogicResponse(200, cuentasDAO);
@@ -202,9 +223,129 @@ namespace BussinessLogic
             }
         }
 
-        public Task<BusinessLogicResponse> EditarCuenta(CuentaDAO cuentaDAO)
+        public async Task<BusinessLogicResponse> EditarCuenta(CuentaDAO cuentaDAO)
         {
-            return Task.FromResult(new BusinessLogicResponse(501, "Método aún no implementado"));
+            // Obtener todos los pagos existentes de la cuenta
+            var pagosExistentes = await Context.PagoCuenta
+                .Where(p => p.IdCuenta == cuentaDAO.Cuenta)
+                .ToListAsync();
+
+            if (pagosExistentes.Count == 0)
+            {
+                return new BusinessLogicResponse(404, "No se encontraron pagos para la cuenta especificada.");
+            }
+
+            try
+            {
+                var cuenta = await Context.Cuenta
+                    .FirstOrDefaultAsync(c => c.IdCuenta == cuentaDAO.Cuenta);
+
+               
+
+                if (cuenta == null)
+                {
+                    return new BusinessLogicResponse(404, "Cuenta no encontrada.");
+                }
+
+
+
+                // Actualizar los datos de la cuenta
+                cuenta.IdCliente = cuentaDAO.IdCliente;
+                cuenta.Cuotas = cuentaDAO.Cuotas;
+                cuenta.Canceladas = cuentaDAO.Canceladas;
+                cuenta.IdTipoCuenta = cuentaDAO.TipoCuenta.IdTipoCuenta;
+                cuenta.IdTipoPago = cuentaDAO.TipoPago.IdTipoPago;
+
+                // Borrar todos los pagos existentes
+                Context.PagoCuenta.RemoveRange(pagosExistentes);
+
+                // Agregar los pagos nuevos
+                if (cuentaDAO.PagosCuenta != null && cuentaDAO.PagosCuenta.Any())
+                {
+                    foreach (var pagoDAO in cuentaDAO.PagosCuenta)
+                    {
+                        decimal Monto;
+                        if (pagoDAO.Multa > 0)
+                        {
+                            Monto = pagoDAO.Monto+ ( 5000 * pagoDAO.Multa);
+                        }
+                        else
+                        {
+                            Monto = pagoDAO.Monto;
+                        }
+                        var nuevoPago = new PagoCuentum
+                        {
+                            IdCuenta = cuenta.IdCuenta,
+                            FechaPago = pagoDAO.FechaPago,
+                            Cancelado = pagoDAO.Cancelado,
+                            Monto = Monto,
+                            Multa = pagoDAO.Multa
+                        };
+                        await Context.PagoCuenta.AddAsync(nuevoPago);
+                    }
+                }
+                cuenta.Monto = cuentaDAO.PagosCuenta.Sum(p => p.Monto + (p.Multa > 0 ? 5000 * p.Multa : 0));
+
+                ;
+
+                cuenta.SiguientePago = await Context.PagoCuenta
+                    .Where(p => p.IdCuenta == cuenta.IdCuenta && !p.Cancelado)
+                    .OrderBy(p => p.FechaPago)
+                    .Select(p => p.FechaPago)
+                    .FirstOrDefaultAsync();
+
+                await Context.SaveChangesAsync();
+
+                return new BusinessLogicResponse(200, "Cuenta editada con éxito");
+            }
+            catch (Exception ex)
+            {
+                return new BusinessLogicResponse(500, $"Error al editar la cuenta: {ex.Message}");
+            }
+        }
+
+        public async Task<BusinessLogicResponse> ObtenerTipoCuentas()
+        {
+            try
+            {
+                var tipoCuenta = await Context.TipoCuenta
+                    .AsNoTracking()
+                    .ToListAsync();
+
+                var cuentasDAO = tipoCuenta.Select(c => new TipoCuentaDAO
+                {
+                    IdTipoCuenta = c.IdTipoCuenta,
+                    Nombre = c.Nombre
+                }).ToList();
+
+                return new BusinessLogicResponse(200, cuentasDAO);
+            }
+            catch (Exception ex)
+            {
+                return new BusinessLogicResponse(500, $"Error al obtener tipos de cuenta: {ex.Message}");
+            }
+        }
+
+        public async Task<BusinessLogicResponse> ObtenerTipoPagoCuentas()
+        {
+            try
+            {
+                var tipoPago = await Context.TipoPagos
+                    .AsNoTracking()
+                    .ToListAsync();
+
+                var cuentasDAO = tipoPago.Select(c => new TipoPagoDAO
+                {
+                    IdTipoPago = c.IdTipoPago,
+                    Nombre = c.Nombre
+                }).ToList();
+
+                return new BusinessLogicResponse(200, cuentasDAO);
+            }
+            catch (Exception ex)
+            {
+                return new BusinessLogicResponse(500, $"Error al obtener tipos de pagos: {ex.Message}");
+            }
         }
     }
 }

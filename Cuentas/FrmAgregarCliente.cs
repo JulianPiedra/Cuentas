@@ -15,12 +15,27 @@ namespace Cuentas
     public partial class FrmAgregarCliente : Form
     {
         private Dictionary<string, byte[]> files = new Dictionary<string, byte[]>();
+        ClienteDAO _cliente;
 
         public FrmAgregarCliente()
         {
             InitializeComponent();
             flpMultimedia.AutoScroll = true;
             FileDialog.FileOk += FileDialog_FileOk;
+        }
+        public FrmAgregarCliente(ClienteDAO cliente)
+        {
+            InitializeComponent();
+            flpMultimedia.AutoScroll = true;
+            FileDialog.FileOk += FileDialog_FileOk;
+            _cliente = cliente;
+            txtApuntes.Text = _cliente.Apuntes;
+            txtCedula.Text = _cliente.IdCliente;
+            txtCorreo.Text = _cliente.Correo;
+            txtDireccion.Text = _cliente.Direccion;
+            txtNombre.Text = _cliente.Nombre;
+            txtTelefono.Text = _cliente.Telefono.ToString();
+            txtCedula.Enabled = false;
         }
 
 
@@ -171,12 +186,16 @@ namespace Cuentas
                     Telefono =telefono,
                     Direccion=  txtDireccion.Text,
                     Nombre = txtNombre.Text,
+                    Apuntes = txtApuntes.Text,
                 };
 
                 cliente.Validate();
 
 
-                var result = await ApiFetch.FetchAsync<string>($"/clientes/agregar", HttpMethod.Post, cliente);
+                string endpoint = _cliente == null ? "/clientes/agregar" : "/clientes/editar";
+                var method = _cliente == null ? HttpMethod.Post : HttpMethod.Put; 
+
+                var result = await ApiFetch.FetchAsync<string>(endpoint, method, cliente);
                 ApiFetch.FetchAsync<string>($"/clientes/{cliente.IdCliente}/multimedia", HttpMethod.Post, files);
                 MessageBox.Show(result, "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 LimpiarCampos();
@@ -187,7 +206,6 @@ namespace Cuentas
             }
             finally
             {
-                progressBar1.Style = ProgressBarStyle.Blocks;
                 foreach (Control ctrl in this.Controls)
                     ctrl.Enabled = true;
             }

@@ -17,10 +17,11 @@ namespace Models
         public string Direccion { get; set; }
 
         public string Nombre { get; set; } = null!;
+        public string? Apuntes { get; set; }
         public Dictionary<string, byte[]>? Files { get; set; }
         public List<CuentaDAO> Cuentas { get; set; }
 
-        
+
 
         public void Validate()
         {

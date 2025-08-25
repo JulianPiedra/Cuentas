@@ -9,7 +9,7 @@ namespace UILogic
 {
     public static class ApiFetch
     {
-        private static readonly string baseUrl = ConfigurationManager.AppSettings["ApiBaseUrl"];
+        private static readonly string baseUrl = Cifrado.Desencriptar(ConfigurationManager.AppSettings["ApiBaseUrl"]);
 
         public static async Task<T> FetchAsync<T>(
             string url,

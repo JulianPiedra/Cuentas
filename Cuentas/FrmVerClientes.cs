@@ -19,6 +19,16 @@ namespace Cuentas
             InitializeComponent();
         }
 
+        private void DgvClientess_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (DgvClientes.Columns[e.ColumnIndex].Name != "IdCliente" || e.RowIndex < 0)
+                return;
+            var valorCelda = DgvClientes.Rows[e.RowIndex].Cells[e.ColumnIndex].Value?.ToString();
+            if (!clientesCache.Any(p => p.IdCliente == valorCelda && p.Cuentas.Count() > 0))
+                e.CellStyle.BackColor = System.Drawing.Color.LightBlue;
+
+        }
+
         public void RecargarDatos(IEnumerable<ClienteDAO> clientes)
         {
             DgvClientes.Rows.Clear();

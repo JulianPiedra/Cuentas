@@ -32,10 +32,11 @@
             flowLayoutPanel1 = new FlowLayoutPanel();
             lblCliente = new Label();
             lblMonto = new Label();
+            lblMontoPendiente = new Label();
             lblCuotas = new Label();
             lblCanceladas = new Label();
             lblSiguientePago = new Label();
-            lblMontoPendiente = new Label();
+            btnEditar = new Button();
             DgvPagos = new DataGridView();
             IdPago = new DataGridViewTextBoxColumn();
             Pagos = new DataGridViewTextBoxColumn();
@@ -52,6 +53,7 @@
             flowLayoutPanel1.Controls.Add(lblCuotas);
             flowLayoutPanel1.Controls.Add(lblCanceladas);
             flowLayoutPanel1.Controls.Add(lblSiguientePago);
+            flowLayoutPanel1.Controls.Add(btnEditar);
             flowLayoutPanel1.Dock = DockStyle.Left;
             flowLayoutPanel1.FlowDirection = FlowDirection.TopDown;
             flowLayoutPanel1.Font = new Font("Segoe UI", 12F);
@@ -79,6 +81,15 @@
             lblMonto.Name = "lblMonto";
             lblMonto.Size = new Size(0, 21);
             lblMonto.TabIndex = 8;
+            // 
+            // lblMontoPendiente
+            // 
+            lblMontoPendiente.AutoSize = true;
+            lblMontoPendiente.Location = new Point(5, 217);
+            lblMontoPendiente.Margin = new Padding(5, 35, 5, 35);
+            lblMontoPendiente.Name = "lblMontoPendiente";
+            lblMontoPendiente.Size = new Size(0, 21);
+            lblMontoPendiente.TabIndex = 10;
             // 
             // lblCuotas
             // 
@@ -109,14 +120,15 @@
             lblSiguientePago.Size = new Size(0, 21);
             lblSiguientePago.TabIndex = 5;
             // 
-            // lblMontoPendiente
+            // btnEditar
             // 
-            lblMontoPendiente.AutoSize = true;
-            lblMontoPendiente.Location = new Point(5, 217);
-            lblMontoPendiente.Margin = new Padding(5, 35, 5, 35);
-            lblMontoPendiente.Name = "lblMontoPendiente";
-            lblMontoPendiente.Size = new Size(0, 21);
-            lblMontoPendiente.TabIndex = 10;
+            btnEditar.Location = new Point(3, 549);
+            btnEditar.Name = "btnEditar";
+            btnEditar.Size = new Size(318, 37);
+            btnEditar.TabIndex = 17;
+            btnEditar.Text = "Editar cuenta";
+            btnEditar.UseVisualStyleBackColor = true;
+            btnEditar.Click += btnEditar_Click;
             // 
             // DgvPagos
             // 
@@ -189,5 +201,6 @@
         private DataGridViewTextBoxColumn Pagos;
         private DataGridViewCheckBoxColumn Pagado;
         private Label lblMontoPendiente;
+        private Button btnEditar;
     }
 }

@@ -87,6 +87,8 @@
             DgvCuentas.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
             DgvCuentas.Size = new Size(800, 384);
             DgvCuentas.TabIndex = 0;
+            DgvCuentas.CellContentClick += DgvCuentas_CellContentClick;
+            DgvCuentas.CellFormatting += DgvCuentas_CellFormatting;
             // 
             // Cuenta
             // 

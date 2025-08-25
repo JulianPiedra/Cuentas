@@ -84,6 +84,7 @@
             DgvClientes.Size = new Size(800, 398);
             DgvClientes.TabIndex = 0;
             DgvClientes.CellContentClick += DgvClientes_CellContentClick;
+            DgvClientes.CellFormatting += DgvClientess_CellFormatting;
             // 
             // IdCliente
             // 

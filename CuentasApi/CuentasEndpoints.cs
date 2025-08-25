@@ -69,6 +69,20 @@ public static class CuentaEndpoints
             return Responses.ConvertToHttpResult(response);
         })
         .WithName("EditarCuenta");
+
+        group.MapGet("/tipoCuenta/obtener", async (ICuentaLogic cuentaLogic) =>
+        {
+            var response = await cuentaLogic.ObtenerTipoCuentas();
+            return Responses.ConvertToHttpResult(response);
+        })
+        .WithName("ObtenerTipoCuentaCuentas");
+
+        group.MapGet("/tipoPago/obtener", async (ICuentaLogic cuentaLogic) =>
+        {
+            var response = await cuentaLogic.ObtenerTipoPagoCuentas();
+            return Responses.ConvertToHttpResult(response);
+        })
+       .WithName("ObtenerTipoPagoCuentas");
     }
 
 

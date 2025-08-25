@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
-namespace DataAccess.Models;
+namespace CuentasApi.Entities;
 
-public partial class BdContext : DbContext
+public partial class AppDbContext : DbContext
 {
-    public BdContext()
+    public AppDbContext()
     {
     }
 
-    public BdContext(DbContextOptions<BdContext> options)
+    public AppDbContext(DbContextOptions<AppDbContext> options)
         : base(options)
     {
     }
@@ -66,14 +66,6 @@ public partial class BdContext : DbContext
                 .HasForeignKey(d => d.IdCliente)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Cuotas_Cliente");
-
-            entity.HasOne(d => d.IdTipoCuentaNavigation).WithMany(p => p.Cuenta)
-                .HasForeignKey(d => d.IdTipoCuenta)
-                .HasConstraintName("FK_Cuenta_TipoCuenta");
-
-            entity.HasOne(d => d.IdTipoPagoNavigation).WithMany(p => p.Cuenta)
-                .HasForeignKey(d => d.IdTipoPago)
-                .HasConstraintName("FK_Cuenta_TipoPago");
         });
 
         modelBuilder.Entity<Multimedium>(entity =>

@@ -12,6 +12,9 @@ namespace ApiCuentasInjection
         Task<BusinessLogicResponse> AgregarCuenta(CuentaDAO cuentaDAO);
         Task<BusinessLogicResponse> EditarCuenta(CuentaDAO cuentaDAO);
         Task<BusinessLogicResponse> ObtenerCuentas();
+        Task<BusinessLogicResponse> ObtenerTipoCuentas();
+        Task<BusinessLogicResponse> ObtenerTipoPagoCuentas();
+
 
         Task<BusinessLogicResponse> MultarCuenta(int idCuenta, DateOnly fechaPago);
         Task<BusinessLogicResponse> ActualizarEstadoPago(int idCuenta, int idPago);

@@ -16,11 +16,11 @@ namespace Cuentas
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            FrmOtp login = new FrmOtp();
-            if (login.ShowDialog() == DialogResult.OK)
-            {
+            //FrmOtp login = new FrmOtp();
+            //if (login.ShowDialog() == DialogResult.OK)
+            //{
                 Application.Run(new FrmAdministradorDeCuentas());
-            }
+            //}
 
         }
     }

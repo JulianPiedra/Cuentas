@@ -34,7 +34,9 @@
             lblTelefono = new Label();
             lblDireccion = new Label();
             lblCorreo = new Label();
+            lblApuntes = new Label();
             linkLblCuentas = new LinkLabel();
+            btnEditar = new Button();
             flpMultimedia = new FlowLayoutPanel();
             label1 = new Label();
             flowLayoutPanel1.SuspendLayout();
@@ -48,7 +50,9 @@
             flowLayoutPanel1.Controls.Add(lblTelefono);
             flowLayoutPanel1.Controls.Add(lblDireccion);
             flowLayoutPanel1.Controls.Add(lblCorreo);
+            flowLayoutPanel1.Controls.Add(lblApuntes);
             flowLayoutPanel1.Controls.Add(linkLblCuentas);
+            flowLayoutPanel1.Controls.Add(btnEditar);
             flowLayoutPanel1.Dock = DockStyle.Left;
             flowLayoutPanel1.Font = new Font("Segoe UI", 12F);
             flowLayoutPanel1.Location = new Point(0, 0);
@@ -106,15 +110,36 @@
             lblCorreo.Size = new Size(0, 21);
             lblCorreo.TabIndex = 10;
             // 
+            // lblApuntes
+            // 
+            lblApuntes.AutoSize = true;
+            lblApuntes.Font = new Font("Segoe UI", 12F);
+            lblApuntes.Location = new Point(280, 35);
+            lblApuntes.Margin = new Padding(5, 35, 50, 35);
+            lblApuntes.Name = "lblApuntes";
+            lblApuntes.Size = new Size(0, 21);
+            lblApuntes.TabIndex = 13;
+            // 
             // linkLblCuentas
             // 
             linkLblCuentas.AutoSize = true;
-            linkLblCuentas.Location = new Point(280, 35);
+            linkLblCuentas.Location = new Point(335, 35);
             linkLblCuentas.Margin = new Padding(5, 35, 50, 35);
             linkLblCuentas.Name = "linkLblCuentas";
             linkLblCuentas.Size = new Size(0, 21);
             linkLblCuentas.TabIndex = 12;
             linkLblCuentas.LinkClicked += linkLblCuentas_LinkClicked;
+            // 
+            // btnEditar
+            // 
+            btnEditar.Dock = DockStyle.Top;
+            btnEditar.Location = new Point(3, 94);
+            btnEditar.Name = "btnEditar";
+            btnEditar.Size = new Size(400, 39);
+            btnEditar.TabIndex = 8;
+            btnEditar.Text = "Editar Cliente";
+            btnEditar.UseVisualStyleBackColor = true;
+            btnEditar.Click += btnEditar_Click;
             // 
             // flpMultimedia
             // 
@@ -163,5 +188,7 @@
         private FlowLayoutPanel flpMultimedia;
         private Label label1;
         private LinkLabel linkLblCuentas;
+        private Button btnEditar;
+        private Label lblApuntes;
     }
 }

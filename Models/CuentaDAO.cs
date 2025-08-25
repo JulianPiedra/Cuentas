@@ -20,7 +20,8 @@ namespace Models
         public int Canceladas { get; set; }
         public DateOnly SiguientePago { get; set; }
         public  ClienteDAO Cliente { get; set; }
-
+        public TipoCuentaDAO? TipoCuenta { get; set; } = null!;
+        public TipoPagoDAO? TipoPago { get; set; } = null!;
 
         public List<PagoCuentaDAO> PagosCuenta { get; set; }
 

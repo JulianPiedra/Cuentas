@@ -1,4 +1,4 @@
-﻿using BussinessLogic;
+﻿using UILogic;
 using OtpNet;
 using System;
 using System.Collections.Generic;

@@ -28,7 +28,8 @@ namespace BussinessLogic
                     Correo = clienteDAO.Correo,
                     Telefono = clienteDAO.Telefono,
                     Direccion = clienteDAO.Direccion,
-                    Nombre = clienteDAO.Nombre
+                    Nombre = clienteDAO.Nombre,
+                    Apuntes = clienteDAO.Apuntes
                 };
 
                 await clientes.AddAsync(AddCliente);
@@ -148,6 +149,7 @@ namespace BussinessLogic
                     Telefono = cliente.Telefono,
                     Direccion = cliente.Direccion,
                     Nombre = cliente.Nombre,
+                    Apuntes = cliente.Apuntes,
                     Files = cliente.Multimedia?.ToDictionary(
                         m => $"{m.IdMultimedia}.{m.Extension}",
                         m => m.Multimedia),
@@ -172,7 +174,26 @@ namespace BussinessLogic
 
         public Task<BusinessLogicResponse> EditarCliente(ClienteDAO clienteDAO)
         {
-            return Task.FromResult(new BusinessLogicResponse(501, "Método aún no implementado"));
+            try
+            {
+                var cliente = Context.Clientes.FirstOrDefault(c => c.IdCliente == clienteDAO.IdCliente);
+                if (cliente == null)
+                    return Task.FromResult(new BusinessLogicResponse(404, "Cliente no encontrado"));
+
+                cliente.Correo = clienteDAO.Correo;
+                cliente.Telefono = clienteDAO.Telefono;
+                cliente.Direccion = clienteDAO.Direccion;
+                cliente.Nombre = clienteDAO.Nombre;
+                cliente.Apuntes = clienteDAO.Apuntes;
+                Context.Clientes.Update(cliente);
+                Context.SaveChanges();
+
+                return Task.FromResult(new BusinessLogicResponse(200, "Cliente editado con éxito"));
+            }
+            catch (Exception ex)
+            {
+                return Task.FromResult(new BusinessLogicResponse(500, $"Error al editar el cliente: {ex.Message}"));
+            }
         }
     }
 }
