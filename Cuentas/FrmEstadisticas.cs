@@ -62,7 +62,7 @@ namespace Cuentas
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al cargar estadísticas: " + ex.Message);
+                MessageBox.Show("Error al cargar estadísticas\n" + ex.Message);
             }
         }
     }

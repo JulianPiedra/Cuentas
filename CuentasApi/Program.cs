@@ -7,7 +7,7 @@ using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//CORS Configuration 
+// CORS
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", builder =>
@@ -17,8 +17,10 @@ builder.Services.AddCors(options =>
                .AllowAnyMethod();
     });
 });
+
+// Controllers (opcional si tienes también)
 builder.Services.AddControllers().AddJsonOptions(x =>
-                x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+    x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
 // Database context
 builder.Services.AddDbContext<BdContext>(options =>
@@ -53,20 +55,22 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 // Authentication & Authorization
-builder.Services.AddAuthorization();
 builder.Services.AddAuthentication("ApiKey")
     .AddScheme<ApiKeyAuthenticationSchemeOptions, ApiKeyAuthenticationSchemeHandler>(
         "ApiKey",
         opts => opts.ApiKey = builder.Configuration.GetValue<string>("ApiKey") ?? "No key provided"
     );
 
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("ApiKeyPolicy", policy =>
+        policy.RequireAuthenticatedUser());
+});
 
-// Dependency Injection for business logic
+// DI de lógica de negocio
 builder.Services.AddScoped<ICuentaLogic, CuentaLogic>();
 builder.Services.AddScoped<IClienteLogic, ClientesLogic>();
 builder.Services.AddScoped<IEstadisticasLogic, EstadisticasLogic>();
-
-
 
 var app = builder.Build();
 
@@ -74,18 +78,22 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 app.UseCors("AllowAll");
-app.MapControllers();
+
+// 🔹 Authentication y Authorization antes de mapear endpoints
+app.UseAuthentication();
+app.UseAuthorization();
+
+// Swagger
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-app.UseAuthentication();
-app.UseAuthorization();
-
+// Map Minimal APIs con autorización
 app.MapCuentaEndpoints();
 app.MapClienteEndpoints();
 app.MapEstadisticasEndpoints();
+
 
 app.Run();

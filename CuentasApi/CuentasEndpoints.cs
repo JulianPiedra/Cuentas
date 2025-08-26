@@ -11,7 +11,9 @@ public static class CuentaEndpoints
 {
     public static void MapCuentaEndpoints(this IEndpointRouteBuilder routes)
     {
-        var group = routes.MapGroup("/api/cuentas").WithTags(nameof(CuentaDAO));
+        var group = routes.MapGroup("/api/cuentas")
+                          .WithTags(nameof(CuentaDAO))
+                          .RequireAuthorization("ApiKeyPolicy"); // 🔹 aplicar política de API Key
 
         group.MapPost("/agregar", async (CuentaDAO cuenta, ICuentaLogic cuentaLogic) =>
         {
@@ -20,15 +22,13 @@ public static class CuentaEndpoints
 
             var response = await cuentaLogic.AgregarCuenta(cuenta);
             return Responses.ConvertToHttpResult(response);
-        })
-        .WithName("AgregarCuenta");
+        }).WithName("AgregarCuenta");
 
         group.MapGet("/obtener", async (ICuentaLogic cuentaLogic) =>
         {
             var response = await cuentaLogic.ObtenerCuentas();
             return Responses.ConvertToHttpResult(response);
-        })
-        .WithName("ObtenerCuentas");
+        }).WithName("ObtenerCuentas");
 
         group.MapGet("/{id:int}/pagos", async (int id, ICuentaLogic cuentaLogic) =>
         {
@@ -37,8 +37,7 @@ public static class CuentaEndpoints
 
             var response = await cuentaLogic.ObtenerCuentasConPagos(id);
             return Responses.ConvertToHttpResult(response);
-        })
-        .WithName("ObtenerCuentasConPagos");
+        }).WithName("ObtenerCuentasConPagos");
 
         group.MapPatch("/{idCuenta:int}/pago/{idPago:int}/estado", async (int idCuenta, int idPago, ICuentaLogic cuentaLogic) =>
         {
@@ -47,8 +46,7 @@ public static class CuentaEndpoints
 
             var response = await cuentaLogic.ActualizarEstadoPago(idCuenta, idPago);
             return Responses.ConvertToHttpResult(response);
-        })
-        .WithName("ActualizarEstadoPago");
+        }).WithName("ActualizarEstadoPago");
 
         group.MapPatch("/{idCuenta:int}/{fechaPago}/multar", async (int idCuenta, DateOnly fechaPago, ICuentaLogic cuentaLogic) =>
         {
@@ -57,8 +55,7 @@ public static class CuentaEndpoints
 
             var response = await cuentaLogic.MultarCuenta(idCuenta, fechaPago);
             return Responses.ConvertToHttpResult(response);
-        })
-        .WithName("MultarCuenta");
+        }).WithName("MultarCuenta");
 
         group.MapPut("/editar", async (CuentaDAO cuenta, ICuentaLogic cuentaLogic) =>
         {
@@ -67,24 +64,18 @@ public static class CuentaEndpoints
 
             var response = await cuentaLogic.EditarCuenta(cuenta);
             return Responses.ConvertToHttpResult(response);
-        })
-        .WithName("EditarCuenta");
+        }).WithName("EditarCuenta");
 
         group.MapGet("/tipoCuenta/obtener", async (ICuentaLogic cuentaLogic) =>
         {
             var response = await cuentaLogic.ObtenerTipoCuentas();
             return Responses.ConvertToHttpResult(response);
-        })
-        .WithName("ObtenerTipoCuentaCuentas");
+        }).WithName("ObtenerTipoCuentaCuentas");
 
         group.MapGet("/tipoPago/obtener", async (ICuentaLogic cuentaLogic) =>
         {
             var response = await cuentaLogic.ObtenerTipoPagoCuentas();
             return Responses.ConvertToHttpResult(response);
-        })
-       .WithName("ObtenerTipoPagoCuentas");
+        }).WithName("ObtenerTipoPagoCuentas");
     }
-
-
 }
-

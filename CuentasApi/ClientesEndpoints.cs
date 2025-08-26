@@ -11,7 +11,9 @@ public static class ClienteEndpoints
 {
     public static void MapClienteEndpoints(this IEndpointRouteBuilder routes)
     {
-        var group = routes.MapGroup("/api/clientes").WithTags(nameof(ClienteDAO));
+        var group = routes.MapGroup("/api/clientes")
+                          .WithTags(nameof(ClienteDAO))
+                          .RequireAuthorization("ApiKeyPolicy"); // 🔹 aplicar política de API Key
 
         group.MapPost("/agregar", async (ClienteDAO cliente, IClienteLogic clienteLogic) =>
         {
@@ -20,8 +22,7 @@ public static class ClienteEndpoints
 
             var response = await clienteLogic.AgregarCliente(cliente);
             return Responses.ConvertToHttpResult(response);
-        })
-        .WithName("AgregarCliente");
+        }).WithName("AgregarCliente");
 
         group.MapPost("/{idCliente}/multimedia", async (string idCliente, Dictionary<string, byte[]> archivos, IClienteLogic clienteLogic) =>
         {
@@ -30,15 +31,13 @@ public static class ClienteEndpoints
 
             var response = await clienteLogic.AgregarMultimedia(idCliente, archivos);
             return Responses.ConvertToHttpResult(response);
-        })
-        .WithName("AgregarMultimedia");
+        }).WithName("AgregarMultimedia");
 
         group.MapGet("/obtener", async (IClienteLogic clienteLogic) =>
         {
             var response = await clienteLogic.ObtenerClientes();
             return Responses.ConvertToHttpResult(response);
-        })
-        .WithName("ObtenerClientes");
+        }).WithName("ObtenerClientes");
 
         group.MapGet("/{idCliente}", async (string idCliente, IClienteLogic clienteLogic) =>
         {
@@ -47,8 +46,7 @@ public static class ClienteEndpoints
 
             var response = await clienteLogic.ObtenerClienteConMultimedia(idCliente);
             return Responses.ConvertToHttpResult(response);
-        })
-        .WithName("ObtenerClienteConMultimedia");
+        }).WithName("ObtenerClienteConMultimedia");
 
         group.MapPut("/editar", async (ClienteDAO cliente, IClienteLogic clienteLogic) =>
         {
@@ -57,8 +55,8 @@ public static class ClienteEndpoints
 
             var response = await clienteLogic.EditarCliente(cliente);
             return Responses.ConvertToHttpResult(response);
-        })
-        .WithName("EditarCliente");
+        }).WithName("EditarCliente");
     }
+
 }
 

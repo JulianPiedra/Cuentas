@@ -10,6 +10,7 @@ namespace UILogic
     public static class ApiFetch
     {
         private static readonly string baseUrl = Cifrado.Desencriptar(ConfigurationManager.AppSettings["ApiBaseUrl"]);
+        private static readonly string apiKey = Cifrado.Desencriptar(ConfigurationManager.AppSettings["ApiKey"]);
 
         public static async Task<T> FetchAsync<T>(
             string url,
@@ -25,7 +26,7 @@ namespace UILogic
                     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
                     HttpRequestMessage request = new HttpRequestMessage(method, $"/api{url}");
-
+                    request.Headers.Add("X_API_KEY", apiKey);
                     if (body != null)
                     {
                         var json = JsonConvert.SerializeObject(body);
@@ -64,7 +65,7 @@ namespace UILogic
             }
             catch (Exception ex)
             {
-                throw new Exception($"Error al realizar la solicitud a la API: {ex.Message}", ex);
+                throw new Exception($"{ex.Message}", ex);
             }
         }
 

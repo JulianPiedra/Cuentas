@@ -17,9 +17,16 @@ namespace Cuentas
         private async void InitializeAsync()
         {
             InicializarTimer();
-            await RecargarClientes();
-            await RecargarTipoPago();
-            await RecargarTipoCuenta();
+            try
+            {
+                await RecargarClientes();
+                await RecargarTipoPago();
+                await RecargarTipoCuenta();
+            }catch(Exception ex)
+            {
+                MessageBox.Show($"Error al cargar opciones\n{ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+            }
         }
         public FrmAgregarCuenta()
         {
@@ -383,7 +390,6 @@ namespace Cuentas
 
         private void FrmAgregarCuenta_Load(object sender, EventArgs e)
         {
-            RecargarClientes();
             if (_cuentum != null)
             {
                 btnCrearCuenta.Text = "Actualizar Cuenta";

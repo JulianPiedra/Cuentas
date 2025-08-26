@@ -10,7 +10,9 @@ public static class EstadisticasEndpoints
 {
     public static void MapEstadisticasEndpoints(this IEndpointRouteBuilder routes)
     {
-        var group = routes.MapGroup("/api/estadisticas").WithTags(nameof(Estadisticas));
+        var group = routes.MapGroup("/api/estadisticas")
+                          .WithTags(nameof(Estadisticas))
+                          .RequireAuthorization("ApiKeyPolicy"); // 🔹 usar la política de API Key
 
         group.MapGet("/total-clientes", async (IEstadisticasLogic logic) =>
         {
@@ -43,4 +45,3 @@ public static class EstadisticasEndpoints
         }).WithName("MontoPendienteCuentas");
     }
 }
-
