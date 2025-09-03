@@ -52,13 +52,12 @@
             flowLayoutPanel1.Controls.Add(lblCorreo);
             flowLayoutPanel1.Controls.Add(lblApuntes);
             flowLayoutPanel1.Controls.Add(linkLblCuentas);
-            flowLayoutPanel1.Controls.Add(btnEditar);
             flowLayoutPanel1.Dock = DockStyle.Left;
             flowLayoutPanel1.Font = new Font("Segoe UI", 12F);
             flowLayoutPanel1.Location = new Point(0, 0);
             flowLayoutPanel1.Margin = new Padding(4);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
-            flowLayoutPanel1.Size = new Size(553, 910);
+            flowLayoutPanel1.Size = new Size(553, 855);
             flowLayoutPanel1.TabIndex = 6;
             // 
             // lblCedula
@@ -135,13 +134,13 @@
             // 
             btnEditar.AutoSize = true;
             btnEditar.BackColor = Color.FromArgb(8, 138, 100);
-            btnEditar.Dock = DockStyle.Top;
+            btnEditar.Dock = DockStyle.Bottom;
             btnEditar.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnEditar.ForeColor = Color.White;
-            btnEditar.Location = new Point(4, 123);
+            btnEditar.Location = new Point(0, 855);
             btnEditar.Margin = new Padding(4);
             btnEditar.Name = "btnEditar";
-            btnEditar.Size = new Size(514, 55);
+            btnEditar.Size = new Size(1286, 55);
             btnEditar.TabIndex = 8;
             btnEditar.Text = "Editar Cliente";
             btnEditar.UseVisualStyleBackColor = false;
@@ -154,7 +153,7 @@
             flpMultimedia.Location = new Point(553, 28);
             flpMultimedia.Margin = new Padding(4);
             flpMultimedia.Name = "flpMultimedia";
-            flpMultimedia.Size = new Size(733, 882);
+            flpMultimedia.Size = new Size(733, 827);
             flpMultimedia.TabIndex = 7;
             // 
             // label1
@@ -178,6 +177,7 @@
             Controls.Add(flpMultimedia);
             Controls.Add(label1);
             Controls.Add(flowLayoutPanel1);
+            Controls.Add(btnEditar);
             Font = new Font("Segoe UI", 12F);
             Margin = new Padding(4);
             Name = "FrmVerDetalleCliente";

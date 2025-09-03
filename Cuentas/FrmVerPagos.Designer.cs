@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle5 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle6 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
             flowLayoutPanel1 = new FlowLayoutPanel();
             lblCliente = new Label();
             lblMonto = new Label();
@@ -59,7 +59,6 @@
             flowLayoutPanel1.Controls.Add(lblCanceladas);
             flowLayoutPanel1.Controls.Add(lblSiguientePago);
             flowLayoutPanel1.Controls.Add(lblTipoPago);
-            flowLayoutPanel1.Controls.Add(btnEditar);
             flowLayoutPanel1.Controls.Add(lblTipoCuenta);
             flowLayoutPanel1.Dock = DockStyle.Left;
             flowLayoutPanel1.FlowDirection = FlowDirection.TopDown;
@@ -67,7 +66,7 @@
             flowLayoutPanel1.Location = new Point(0, 0);
             flowLayoutPanel1.Margin = new Padding(4);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
-            flowLayoutPanel1.Size = new Size(650, 910);
+            flowLayoutPanel1.Size = new Size(650, 858);
             flowLayoutPanel1.TabIndex = 6;
             // 
             // lblCliente
@@ -141,12 +140,13 @@
             // btnEditar
             // 
             btnEditar.BackColor = Color.FromArgb(8, 138, 100);
+            btnEditar.Dock = DockStyle.Bottom;
             btnEditar.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnEditar.ForeColor = Color.White;
-            btnEditar.Location = new Point(4, 837);
+            btnEditar.Location = new Point(0, 858);
             btnEditar.Margin = new Padding(4);
             btnEditar.Name = "btnEditar";
-            btnEditar.Size = new Size(409, 52);
+            btnEditar.Size = new Size(1286, 52);
             btnEditar.TabIndex = 17;
             btnEditar.Text = "Editar cuenta";
             btnEditar.UseVisualStyleBackColor = false;
@@ -156,7 +156,7 @@
             // 
             lblTipoCuenta.AutoSize = true;
             lblTipoCuenta.Font = new Font("Segoe UI", 12F);
-            lblTipoCuenta.Location = new Point(423, 49);
+            lblTipoCuenta.Location = new Point(18, 49);
             lblTipoCuenta.Margin = new Padding(6, 49, 6, 49);
             lblTipoCuenta.Name = "lblTipoCuenta";
             lblTipoCuenta.Size = new Size(0, 21);
@@ -166,36 +166,36 @@
             // 
             DgvPagos.AllowUserToAddRows = false;
             DgvPagos.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle4.BackColor = Color.WhiteSmoke;
-            DgvPagos.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle1.BackColor = Color.WhiteSmoke;
+            DgvPagos.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             DgvPagos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             DgvPagos.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             DgvPagos.BackgroundColor = SystemColors.InactiveCaption;
-            dataGridViewCellStyle5.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle5.BackColor = SystemColors.Control;
-            dataGridViewCellStyle5.Font = new Font("Segoe UI", 12F);
-            dataGridViewCellStyle5.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle5.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = DataGridViewTriState.True;
-            DgvPagos.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = SystemColors.Control;
+            dataGridViewCellStyle2.Font = new Font("Segoe UI", 12F);
+            dataGridViewCellStyle2.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
+            DgvPagos.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             DgvPagos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             DgvPagos.Columns.AddRange(new DataGridViewColumn[] { IdPago, Pagos, Pagado });
-            dataGridViewCellStyle6.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle6.BackColor = SystemColors.Window;
-            dataGridViewCellStyle6.Font = new Font("Segoe UI", 12F);
-            dataGridViewCellStyle6.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle6.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle6.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle6.WrapMode = DataGridViewTriState.False;
-            DgvPagos.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle3.BackColor = SystemColors.Window;
+            dataGridViewCellStyle3.Font = new Font("Segoe UI", 12F);
+            dataGridViewCellStyle3.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.False;
+            DgvPagos.DefaultCellStyle = dataGridViewCellStyle3;
             DgvPagos.Dock = DockStyle.Fill;
             DgvPagos.EditMode = DataGridViewEditMode.EditOnEnter;
             DgvPagos.Location = new Point(650, 0);
             DgvPagos.Margin = new Padding(4);
             DgvPagos.Name = "DgvPagos";
             DgvPagos.RowHeadersVisible = false;
-            DgvPagos.Size = new Size(636, 910);
+            DgvPagos.Size = new Size(636, 858);
             DgvPagos.TabIndex = 16;
             DgvPagos.CellContentClick += DgvPagos_CellContentClick;
             // 
@@ -227,6 +227,7 @@
             ClientSize = new Size(1286, 910);
             Controls.Add(DgvPagos);
             Controls.Add(flowLayoutPanel1);
+            Controls.Add(btnEditar);
             Font = new Font("Segoe UI", 12F);
             Margin = new Padding(4);
             Name = "FrmVerPagos";
